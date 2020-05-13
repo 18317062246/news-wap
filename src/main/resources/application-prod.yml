@@ -1,0 +1,3 @@
+# 配置tomcat
+server:
+  port: 9091

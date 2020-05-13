@@ -1,0 +1,11 @@
+# jsp支持
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  thymeleaf: #关闭默认模板引擎
+    cache: false
+    enabled: false
+  profiles:
+    active: dev # 激活环境
