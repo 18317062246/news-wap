@@ -9,3 +9,15 @@ spring:
     enabled: false
   profiles:
     active: dev # 激活环境
+#日志路径
+log:
+  path: ./logs
+#api地址
+api:
+  domain: http://testnews.centanet.com/api/
+#静态文件版本号
+static:
+    version: 20200526
+#nginx转发静态文件
+    path: D:/100workspace/160code/news-html/pc/
+    url: https://static.centanet.com/news/2020060816/m
