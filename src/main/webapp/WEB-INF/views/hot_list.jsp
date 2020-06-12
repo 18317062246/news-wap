@@ -1,6 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 
@@ -26,7 +28,7 @@
 </head>
 
 <body>
-<div class="download-app" id="downloadApp">
+<%--<div class="download-app" id="downloadApp">
     <div class="centa-logo">
         <img src="https://static.centanet.com/wap/main/img/download.png" class="logo-icon">
     </div>
@@ -37,12 +39,16 @@
     <div class="download-btn">
         <a href="javascript:0" class="down-a">立即打开</a>
     </div>
-</div>
+</div>--%>
 <div class="search-new">
-    <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
-        <sapn class="search-title" style="font-size: 10px;">中原资讯</sapn>
-        <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
-    </a>
+    <div class="search-wrapper">
+        <a href="/m/${cityen}/" class="goback">
+            <sapn class="search-title">中原资讯</sapn>
+        </a>
+        <a href="//wap.centanet.com/bj/page/common/search.aspx?type=7" class="search-a">
+            <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+        </a>
+    </div>
 </div>
 <div>
     <div class="wrapper">
@@ -74,8 +80,12 @@
                     <div class="content">
                         <h4 class="title">${item.Title}</h4>
                         <div class="desc">
-                            <span class="txt">${item.Source}</span>
-                            <span>${item.PublishDate}</span>
+                            <span class="txt">${item.TypeName}</span>
+                            <span><%--${item.PublishDate}--%>
+                             <jsp:useBean id="myDate" class="java.util.Date"/>
+                                <c:set target="${myDate}" property="time" value="${item.PublishDate*1000}"/>
+                                <fmt:formatDate pattern="yyyy-MM-dd" value="${myDate}" type="both"/>
+                            </span>
                         </div>
                     </div>
                 </a>

@@ -24,8 +24,11 @@
     <link rel="stylesheet" href="${staticurl}/css/newsCommon.css?v=${ver}">
     <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css?v=${ver}">
     <style>
-        img{
-            width: 100% !important;
+        .newdetail-wrapper img {
+                            width:  100%   !important;
+                            height:  auto  !important;
+                            display:  block  !important;
+                        
         }
     </style>
 </head>
@@ -44,10 +47,14 @@
     </div>
 </div>
 <div class="search-new">
-    <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
-        <sapn class="search-title" style="font-size: 10px;">中原资讯</sapn>
-        <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
-    </a>
+    <div class="search-wrapper">
+        <a href="/m/${cityen}/" class="goback">
+            <sapn class="search-title">中原资讯</sapn>
+        </a>
+        <a href="//wap.centanet.com/bj/page/common/search.aspx?type=7" class="search-a">
+            <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+        </a>
+    </div>
 </div>
 <div class="newdetail-wrapper">
     <h3 class="new-title">${detail.Title}</h3>
@@ -59,9 +66,9 @@
             <fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${detailDate}" type="both"/>
         </span>
     </div>
-   <%-- <div class="new-main-img">
-        <img src="${detail.LitPic}" class="responsive-img" alt="">
-    </div>--%>
+    <%-- <div class="new-main-img">
+         <img src="${detail.LitPic}" class="responsive-img" alt="">
+     </div>--%>
     <div>
         <p class="new-content">
             ${detail.Content}
@@ -89,10 +96,12 @@
                         </div>
                     </div>
                     <div class="new-img">
-                       <%-- <img src="${n.LitPic}">--%>
-                        <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
+                            <%-- <img src="${n.LitPic}">--%>
+                        <c:set var="defaultpic"
+                               value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
                         <img class="lazy" src="${n.LitPic}?x-oss-process=style/180x130"
-                             data-original="${n.LitPic}?x-oss-process=style/180x130" alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
+                             data-original="${n.LitPic}?x-oss-process=style/180x130" alt="${item.Title}"
+                             onerror="this.src='${defaultpic}'"/>
                     </div>
                 </a>
             </li>
@@ -162,15 +171,15 @@
                     $("#agentName").html(data.Result.CnName);
                     $("#agentImg").attr("src", data.Result.StaffImg);
                     $("#talk").attr("href", "tel:" + bigCode + "," + extCode);
-                }else {
-                    $("#jingjirenInfo").css('display','none');//隐藏底部
-                    $("#downloadApp").css('display','none');//隐藏头部
+                } else {
+                    $("#jingjirenInfo").css('display', 'none');//隐藏底部
+                    $("#downloadApp").css('display', 'none');//隐藏头部
                 }
             }
         });
-    }else {
-        $("#jingjirenInfo").css('display','none');//隐藏底部
-        $("#downloadApp").css('display','none');//隐藏头部
+    } else {
+        $("#jingjirenInfo").css('display', 'none');//隐藏底部
+        $("#downloadApp").css('display', 'none');//隐藏头部
     }
 </script>
 <script>
@@ -181,6 +190,7 @@
             var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
             return svalue ? svalue[1] : svalue;
         }
+
         //获取渠道参数
         function GetSem() {
             var sem = getCookie('sem');
@@ -212,6 +222,7 @@
                 }
             }
         }
+
         //获取cookie
         function getCookie(name) {
             var arr,
@@ -219,6 +230,7 @@
             if ((arr = document.cookie.match(reg))) return unescape(arr[2]);
             else return null;
         }
+
         $("a.down-a").click(function () {
             var url = $(this).attr('href');
             var searchStr = location.search;

@@ -22,15 +22,31 @@
     <link rel="stylesheet" href="${staticurl}/css/zixunList.css?v=${ver}">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
+    <script crossorigin="anonymous" integrity="sha384-odQ2fsrmLLFFqugfvDsBEO0wZ9enzFjCquVGvj7I5yXSVuKCjNmrHfL3OzR4kpPF" src="https://lib.baomitu.com/vConsole/3.3.4/vconsole.min.js"></script>
+    <script>
+        var vConsole = new VConsole();
+        console.log('Hello world');
+    </script>
 </head>
 
 <body>
-<div class="search-new">
+<%--<div class="search-new">
     <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
         <sapn class="search-title">中原资讯</sapn>
         <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
     </a>
+</div>--%>
+<div class="search-new">
+<div class="search-wrapper">
+    <a href="/m/${cityen}/" class="goback">
+        <sapn class="search-title">中原资讯</sapn>
+    </a>
+    <a href="//wap.centanet.com/bj/page/common/search.aspx?type=7" class="search-a">
+        <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+    </a>
 </div>
+</div>
+
 <div>
     <div class="wrapper">
         <c:set var="error_image" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
@@ -56,12 +72,12 @@
                     <div class="new-main">
                         <h4 class="title">${item.Title}</h4>
                         <div class="desc">
-                            <span>${item.Source}</span>
+                            <span>${item.TypeName}</span>
                            <%-- <span class="time">${item.PublishDate}</span>--%>
-                            <p class="news_time">
+                            <p class="time">
                                 <jsp:useBean id="myDate" class="java.util.Date"/>
                                 <c:set target="${myDate}" property="time" value="${item.PublishDate*1000}"/>
-                                <fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${myDate}" type="both"/>
+                                <fmt:formatDate pattern="yyyy-MM-dd" value="${myDate}" type="both"/>
                             </p>
 
                         </div>
@@ -170,9 +186,9 @@
                 }else {
                     //如果现在的页数大于等于最大页码数，不再翻页
                     if (currentPage > pCount) {
-                        $(".new-list").append('<li class="item type'+colType+'"><a href="" class="item-a"><div class="new-main"><h6 class="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已到底部,无更多数据!</h6>' +
+                       /* $(".new-list").append('<li class="item type'+colType+'"><a href="" class="item-a"><div class="new-main"><h6 class="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已到底部,无更多数据!</h6>' +
                             '<div class="desc"> <span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="time"></span></div></div>  <div class="new-img"> ' +
-                            '<img class="lazy" src="//static.centanet.com/resourcewap/images/loadPhoto.jpg" data-original="static.centanet.com/resourcewap/images/loadPhoto.jpg"></div> </a></li>');
+                            '<img class="lazy" src="//static.centanet.com/resourcewap/images/loadPhoto.jpg" data-original="static.centanet.com/resourcewap/images/loadPhoto.jpg"></div> </a></li>');*/
                         //定义加载标志位，让其不能再加载
                         IS_OVER = 1;
                         $("#waiting").hide();
@@ -234,7 +250,7 @@
         var h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
         var m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes());// + ':';
         var s = (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
-        return Y+M+D+h+m;//+s;
+        return Y+M+D;//+s;
     }
 </script>
 </body>

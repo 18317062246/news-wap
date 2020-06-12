@@ -37,6 +37,8 @@ public class NewsController {
     public String staticurl;
     @Value("${static.version}")
     public String ver;
+    @Value("${city.dss}")
+    public String dss;
     /**
      * 热门专题
      */
@@ -44,6 +46,7 @@ public class NewsController {
 
     private static final String NEWS_LIST = "NewsList";
     private static final String RESULT = "Result";
+    private static final String DSS_COLNAME = "东三省共用频道";
 
     /**
      * @param: null
@@ -60,16 +63,28 @@ public class NewsController {
         setCommon(model, cityen);
         //获取栏目类型
         List<NewsType> types = typeList(cityen, null);
+        List<NewsType> dssType = new ArrayList<>();
+        //默认取第一个tab_type
+        type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
         if (types.isEmpty()) {
             log.error("栏目类型为空=>{}", cityen);
             return "index";
+        } else if (dss.contains(cityen)) {
+            //东三省sy,cc,dl,hrb结构不同
+            for (NewsType s : types) {
+                if (DSS_COLNAME.equals(s.getColumnsName())) {
+                    dssType.addAll(s.getChildList());
+                } else {
+                    dssType.add(s);
+                }
+            }
+            type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
         }
-        type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
         List<Integer> typeid = Arrays.asList(type);
         //栏目编号获取文章列表
         JSONObject result = newsList(cityen, typeid, 1, 15, null, null);
         List<Map> news = JSON.parseArray(JSON.toJSONString(result.get("NewsList")), Map.class);
-        model.addAttribute("types", types);
+        model.addAttribute("types", dss.contains(cityen) ? dssType : types);
         model.addAttribute("tabtype", type);
         model.addAttribute("news", news);
         for (NewsType t : types) {
@@ -159,6 +174,9 @@ public class NewsController {
         List<Integer> typeid = Arrays.asList();
         JSONObject newsList = newsList(cityen, typeid, 1, 10, 1, null);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get("NewsList")), Map.class);
+        if (!ObjectUtils.isEmpty(detail.get("Url"))) {
+            return "redirect:" + detail.get("Url");
+        }
         model.addAttribute("news", news);
         model.addAttribute("detail", detail);
         return "news_detail";
@@ -217,7 +235,7 @@ public class NewsController {
 
         //文章列表
         List<Map> news = new ArrayList<>();
-        JSONObject result=new JSONObject();
+        JSONObject result = new JSONObject();
         for (NewsType baike : baikeTypes) {
             List<Integer> typeid = new ArrayList<>(Arrays.asList(baike.getId()));
             result = newsList(cityen, typeid, page, pagesize, null, null);
