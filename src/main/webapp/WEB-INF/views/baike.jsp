@@ -7,6 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="icon" href="${staticurl}/images/favicon.ico" type="image/x-icon"/>
 		<meta name="viewport" content="width=device-width,  maximum-scale=1.0, minimum-scale=1.0" />
 		<title>${citycn}房地产资讯_${citycn}最新房产新闻_${citycn}楼市政策-${citycn}中原地产</title>
 		<meta name="keywords" content="${citycn}最新房产新闻,${citycn}房产资讯,${citycn}房地产资讯,${citycn}楼市政策,${citycn}楼市新闻" />

@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>
     <link rel="apple-touch-icon" sizes="114x114" href="images/touch-icon-iphone-retina.png"/>
     <link rel="apple-touch-icon" sizes="144x144" href="images/touch-icon-ipad-retina.png"/>
-    <link href="images/favicon.ico" type="image/x-icon" rel="icon">
+    <link rel="icon" href="${staticurl}/images/favicon.ico" type="image/x-icon"/>
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection"/>
     <link rel="stylesheet" href="${staticurl}/css/font.css?v=${ver}">
     <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css?v=${ver}">
