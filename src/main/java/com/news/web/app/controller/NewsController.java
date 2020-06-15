@@ -63,6 +63,9 @@ public class NewsController {
         setCommon(model, cityen);
         //获取栏目类型
         List<NewsType> types = typeList(cityen, null);
+        //栏目编号获取文章列表
+        List<NewsType> jtyyTypes = typeList("jtyy", null);
+        types.addAll(jtyyTypes);
         List<NewsType> dssType = new ArrayList<>();
         //默认取第一个tab_type
         type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
@@ -81,9 +84,25 @@ public class NewsController {
             type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
         }
         List<Integer> typeid = Arrays.asList(type);
-        //栏目编号获取文章列表
-        JSONObject result = newsList(cityen, typeid, 1, 15, null, null);
-        List<Map> news = JSON.parseArray(JSON.toJSONString(result.get("NewsList")), Map.class);
+        List<Map> news = new ArrayList<>();
+        //当前栏目ID是否集团资讯下的栏目
+        Boolean isJtyy = false;
+        for (NewsType jt : jtyyTypes) {
+            if (type.equals(jt.getId())) {
+                isJtyy = true;
+                //获取集团资讯栏目下的文章
+                JSONObject jtResult = newsList("jtyy", typeid, 1, 15, null, null);
+                if (!ObjectUtils.isEmpty(jtResult.get("NewsList"))) {
+                    List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get("NewsList")), Map.class);
+                    news.addAll(jtNews);
+                }
+            }
+        }
+        if (isJtyy == false) {
+            //栏目非集团栏目编号获取文章列表
+            JSONObject result = newsList(cityen, typeid, 1, 15, null, null);
+            news = JSON.parseArray(JSON.toJSONString(result.get("NewsList")), Map.class);
+        }
         model.addAttribute("types", dss.contains(cityen) ? dssType : types);
         model.addAttribute("tabtype", type);
         model.addAttribute("news", news);

@@ -22,11 +22,6 @@
     <link rel="stylesheet" href="${staticurl}/css/zixunList.css?v=${ver}">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
-    <script crossorigin="anonymous" integrity="sha384-odQ2fsrmLLFFqugfvDsBEO0wZ9enzFjCquVGvj7I5yXSVuKCjNmrHfL3OzR4kpPF" src="https://lib.baomitu.com/vConsole/3.3.4/vconsole.min.js"></script>
-    <script>
-        var vConsole = new VConsole();
-        console.log('Hello world');
-    </script>
 </head>
 
 <body>
@@ -50,10 +45,10 @@
 <div>
     <div class="wrapper">
         <c:set var="error_image" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-        <ul class="news-tab">
+        <ul class="news-tab" style="width: 593px;">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
             <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
-                <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}">${type.columnsName}</a></li>
+                <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
                 <%--  <li class="tab"><a href="#test2" class="active">中原资讯</a></li>
                   <li class="tab"><a href="#test3">地方楼市</a></li>
                   <li class="tab"><a href="#test4">专题</a></li>
@@ -111,9 +106,21 @@
             $(this).on("click", function () {
                 $(".news-tab").find(".active").removeClass("active");
                 $(this).children("a").addClass("active");
+               /* //居中
+                let liLeft = $(this).offset().left;
+                let liWidth = $(this).width()/2;
+                let widths = $(window).width()/2;
+                let scrollL = $('.wrapper').scrollLeft();
+                $('.wrapper').animate({
+                    scrollLeft: scrollL + (liLeft - widths) + liWidth
+                })*/
+
                 //切换分类文章
                 let typeid = $(this).children("a").attr('ref');
                 $('.new-list .item').hide().filter('.type' + typeid).show();
+
+
+
             });
         });
         $(".news-tab").width(sumWidth + 18);
@@ -122,6 +129,17 @@
         $(".news-tab  li[ref=" + index + "]").find('a').addClass("active").parent().siblings().children("a").removeClass("active");
         //图片延迟加载
         $("img.lazy").lazyload({effect: "fadeIn"});
+
+        //居中
+        //let liLeft = $(this).offset().left;
+        let liLeft = $(".news-tab  li[ref=" + index + "]").offset().left;
+        //let liWidth = $(this).width()/2;
+        let liWidth = $(".news-tab  li[ref=" + index + "]").width()/2;
+        let widths = $(window).width()/2;
+        let scrollL = $('.wrapper').scrollLeft();
+        $('.wrapper').animate({
+            scrollLeft: scrollL + (liLeft - widths) + liWidth
+        })
     });
     let wrapper = document.querySelector('.wrapper')
     let scroll = new BScroll(wrapper, {
@@ -143,10 +161,14 @@
     });
     //当滚动到屏幕底部时
     $(window).scroll(function () {
-        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        var newScrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+        var newScrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        /*newScrolltop>scrolltop是判断滚动方向为向下*/
+        if (newScrolltop + window.innerHeight >= (newScrollHeight-600)){
             //判断当前情况，如果滚动标志位为0时，表示可加载
             if(IS_OVER==0){
                 //当前页码数+1
+                console.log('index++'+IS_OVER);
                 beginShow++;
                 //加载新的页码数
                 list(beginShow,perNum);
@@ -156,7 +178,6 @@
 
     //aJax获取分页数据
     function list(currentPage,showCount){
-        console.log('currentPage:'+currentPage+',pCount:'+pCount);
         var year='2020';
         var month='5';
         var cityId='021';
@@ -164,8 +185,6 @@
         let serviceUrl = '';
         let colType=$('#tabtype').val();
         serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/";
-
-        //console.log(serviceUrl);
         $.ajax({
             type:'GET',
             url: serviceUrl,
@@ -175,6 +194,8 @@
             dataType:'json',
             cache:false,
             success:function(data){
+                //console.log('succcess'+JSON.stringify(data));
+                //console.log("pcount"+data.TotalPage);
                 pCount=data.TotalPage;
                 // var myList=data.Result.length;
                 //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
@@ -238,6 +259,9 @@
                     }
                 }
 
+            },
+            error:function (data) {
+                console.log('error data'+data);
             }
         });
     }

@@ -26,11 +26,12 @@
 			<ul class="tablist">
 				<%--<c:set var="imgArr" value="${fn:split('buyHouse.png,collectHouse.png,goTop-1.png
 														 ,loanDeal.png,propertyRight.png,seeHouse.png,subscription.png',','}"></c:set>--%>
-				<c:set var="arr" value="${fn:split('buyHouse.png,collectHouse.png,goTop-1.png,loanDeal.png,propertyRight.png,seeHouse.png,subscription.png',',')}"></c:set>
+				<c:set var="arr" value="${fn:split('buyHouse.png,seeHouse.png,subscription.png,loanDeal.png,collectHouse.png,propertyRight.png,goTop-1.png,propertyRight.png,subscription.png',',')}">
+				</c:set>
 				<c:forEach items="${types}" var="t" varStatus="status">
 					<li ref="${t.id}" class="${status.index==0?'active':''}">
 						<img src="${staticurl}/images/${arr[status.index]}" />
-						<p><a href="javacript:void(0);"></a></p>
+						<p><a href="javacript:void(0);">${t.columnsName}</a></p>
 					</li>
 				</c:forEach>
 

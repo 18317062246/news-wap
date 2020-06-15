@@ -87,11 +87,11 @@
                     <div class="new-main">
                         <h4 class="title">${n.Title}</h4>
                         <div class="desc">
-                            <span>全国楼市</span>
+                            <span>${n.TypeName}</span>
                             <span class="time">
                                 <jsp:useBean id="myDate" class="java.util.Date"/>
                                 <c:set target="${myDate}" property="time" value="${n.PublishDate*1000}"/>
-                                <fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${myDate}" type="both"/>
+                                <fmt:formatDate pattern="yyyy-MM-dd" value="${myDate}" type="both"/>
                             </span>
                         </div>
                     </div>
