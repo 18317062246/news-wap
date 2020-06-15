@@ -45,7 +45,7 @@
         <a href="/m/${cityen}/" class="goback">
             <sapn class="search-title">中原资讯</sapn>
         </a>
-        <a href="//wap.centanet.com/bj/page/common/search.aspx?type=7" class="search-a">
+        <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
             <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
         </a>
     </div>

@@ -30,6 +30,11 @@
                             display:  block  !important;
                         
         }
+        .newdetail-wrapper section{
+            width:  100%   !important;
+            height:  auto  !important;
+             display:  block  !important;
+        }
     </style>
 </head>
 
@@ -71,7 +76,7 @@
      </div>--%>
     <div>
         <p class="new-content">
-            ${detail.Content}
+            ${detailContent}
         </p>
     </div>
 </div>

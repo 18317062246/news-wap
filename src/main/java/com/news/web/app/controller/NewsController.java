@@ -55,16 +55,23 @@ public class NewsController {
      * @author: zouyuan1
      * @date: 2020-05-26
      */
-    @GetMapping(value = {"/m/{cityen}", "/m/{cityen}/list/c{type}", "/m/{cityen}/list/c{type}/p{page}"})
+    @GetMapping(value = {"/m/{cityen}/", "/m/{cityen}/list/c{type}", "/m/{cityen}/list/c{type}/p{page}"})
     public String index(Model model, @PathVariable(name = "cityen") String cityen,
                         @PathVariable(value = "type", required = false) Integer type,
                         @PathVariable(value = "page", required = false) Integer page,
-                        @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize) {
+                        @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize,
+                        @RequestParam(value = "key", required = false) String key) {
         setCommon(model, cityen);
         //获取栏目类型
         List<NewsType> types = typeList(cityen, null);
         //栏目编号获取文章列表
         List<NewsType> jtyyTypes = typeList("jtyy", null);
+        List<NewsType> childTypes = new ArrayList<>();
+        if (!ObjectUtils.isEmpty(jtyyTypes)) {
+            for (NewsType t : jtyyTypes) {
+                childTypes.addAll(t.getChildList());
+            }
+        }
         types.addAll(jtyyTypes);
         List<NewsType> dssType = new ArrayList<>();
         //默认取第一个tab_type
@@ -87,8 +94,8 @@ public class NewsController {
         List<Map> news = new ArrayList<>();
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
-        for (NewsType jt : jtyyTypes) {
-            if (type.equals(jt.getId())) {
+        for (NewsType jt : childTypes) {
+            if (type.equals(jtyyTypes.get(0).getId())) {
                 isJtyy = true;
                 //获取集团资讯栏目下的文章
                 JSONObject jtResult = newsList("jtyy", typeid, 1, 15, null, null);
@@ -100,7 +107,7 @@ public class NewsController {
         }
         if (isJtyy == false) {
             //栏目非集团栏目编号获取文章列表
-            JSONObject result = newsList(cityen, typeid, 1, 15, null, null);
+            JSONObject result = newsList(cityen, typeid, 1, 15, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get("NewsList")), Map.class);
         }
         model.addAttribute("types", dss.contains(cityen) ? dssType : types);
@@ -161,7 +168,11 @@ public class NewsController {
     private JSONObject newsList(String cityen, List<Integer> typeId, Integer page, Integer pagesize, Integer order, String key) {
         Map<String, Object> map = new HashMap<>();
         map.put("cityen", cityen);
-        map.put("typeid", typeId.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+        if(StringUtils.isEmpty(key)){
+            map.put("typeid", typeId.toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+        }else{
+            map.put("typeid", null);
+        }
         map.put("page", page);
         map.put("pagesize", pagesize);
         map.put("order", order);
@@ -197,6 +208,11 @@ public class NewsController {
             return "redirect:" + detail.get("Url");
         }
         model.addAttribute("news", news);
+        //将文章内容进行格式化
+        String content = (String) detail.get("Content");
+        if (!StringUtils.isEmpty(content)) {
+            model.addAttribute("detailContent", content.replace("crossorigin=\"anonymous\"", ""));
+        }
         model.addAttribute("detail", detail);
         return "news_detail";
     }
