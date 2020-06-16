@@ -1,3 +1,6 @@
 # 配置tomcat
 server:
   port: 9091
+#api地址
+api:
+  domain: https://news.centanet.com/api/

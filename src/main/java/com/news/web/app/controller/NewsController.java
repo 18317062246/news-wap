@@ -199,6 +199,32 @@ public class NewsController {
     }
 
     /**
+     * @param: cityen 城市
+     * @description: 默认百科资讯列表
+     * @return:
+     * @author: zouyuan1
+     * @date: 2020-05-25
+     */
+    private JSONObject newsListByBaike(String cityen, String location, Integer page, Integer pagesize, Integer order, String key) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cityen", cityen);
+        map.put("location", location);
+        map.put("page", page);
+        map.put("pagesize", pagesize);
+        map.put("order", order);
+        map.put("title", key);
+        map.put("description", key);
+        JSONObject jSONObject = restTemplate.getForObject(apiurl +
+                        "GetNewsList?cityen={cityen}&platform=wap&location={location}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}"
+                , JSONObject.class, map);
+        JSONObject newsList = jSONObject.getJSONObject(RESULT);
+        if (newsList.isEmpty()) {
+            log.error("请求文章列表为空=>{}", newsList);
+        }
+        return newsList;
+    }
+
+    /**
      * @param: null
      * @description: TODO
      * @return:
@@ -362,18 +388,29 @@ public class NewsController {
             if (!types.get(0).getChildList().isEmpty()) {
                 baikeTypes = types.get(0).getChildList().get(0).getChildList();
                 //第三层 841
-                type = ObjectUtils.isEmpty(type) ? types.get(0).getChildList().get(0).getChildList().get(0).getId() : type;
+                type = ObjectUtils.isEmpty(type) ? null : type;
             }
         }
 
         //文章列表
         List<Map> news = new ArrayList<>();
         JSONObject result = new JSONObject();
-        for (NewsType baike : baikeTypes) {
-            List<Integer> typeid = new ArrayList<>(Arrays.asList(baike.getId()));
-            result = newsList(cityen, typeid, page, pagesize, null, null);
-            //news= JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
-            news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
+
+        if(type != null) {
+            for (NewsType baike : baikeTypes) {
+                List<Integer> typeid = new ArrayList<>(Arrays.asList(baike.getId()));
+                result = newsList(cityen, typeid, page, pagesize, null, null);
+                if (result.get(NEWS_LIST) != null) {
+                    news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
+                }
+                //news= JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
+
+            }
+        }else {
+            result = newsListByBaike(cityen, "baike", page, pagesize, null, null);
+            if (result.get(NEWS_LIST) != null) {
+                news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
+            }
         }
         setCommon(model, cityen);
         model.addAttribute("types", baikeTypes);

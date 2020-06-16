@@ -1,3 +1,6 @@
 # 配置tomcat
 server:
   port: 9091
+#api地址
+api:
+  domain: http://127.0.0.1:8044/api/

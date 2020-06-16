@@ -186,7 +186,7 @@
 				/*let colName=$('.programa .active').text();
 				$('.colName').text(colName);*/
 				//隐藏全部列表
-				$('.scrollss > article').hide();
+				// $('.scrollss > article').hide();
 				//显示第一个列表
 				$('.scrollss > .column' + tabType).show();
 				let cityen = '${cityen}';

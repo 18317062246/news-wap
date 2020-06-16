@@ -8,13 +8,10 @@ spring:
     cache: false
     enabled: false
   profiles:
-    active: dev # 激活环境
+    active: prod # 激活环境
 #日志路径
 log:
   path: ./logs
-#api地址
-api:
-  domain: http://testnews.centanet.com/api/
 #静态文件版本号
 static:
     version: 2020061608

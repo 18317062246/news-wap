@@ -5,4 +5,7 @@ server:
     jsp:
       init-parameters:
         development: true
+#api地址
+api:
+  domain: https://news.centanet.com/api/
 
