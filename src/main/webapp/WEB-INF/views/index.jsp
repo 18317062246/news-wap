@@ -189,7 +189,13 @@
         var COURSE_CATEGORY_ID='20';
         let serviceUrl = '';
         let colType=$('#tabtype').val();
-        serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/?key="+key;
+        if(${flag >= 1}){
+            serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/?flag=${flag}&key="+key;
+        }else {
+            serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/?key="+key;
+        }
+        console.log(serviceUrl);
+
         $.ajax({
             type:'GET',
             url: serviceUrl,
@@ -199,6 +205,9 @@
             dataType:'json',
             cache:false,
             success:function(data){
+                console.log(data);
+                console.log("pcount="+data.TotalPage);
+                console.log("currentPage="+data.CurrentPage);
                 //console.log('succcess'+JSON.stringify(data));
                 //console.log("pcount"+data.TotalPage);
                 pCount=data.TotalPage;

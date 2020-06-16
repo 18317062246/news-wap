@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /*
@@ -59,7 +62,7 @@ public class NewsController {
     public String index(Model model, @PathVariable(name = "cityen") String cityen,
                         @PathVariable(value = "type", required = false) Integer type,
                         @PathVariable(value = "page", required = false) Integer page,
-                        @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize,
+                        @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize,
                         @RequestParam(value = "key", required = false) String key) {
         setCommon(model, cityen);
         //获取栏目类型
@@ -94,21 +97,29 @@ public class NewsController {
         List<Map> news = new ArrayList<>();
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
-        for (NewsType jt : childTypes) {
-            if (type.equals(jt.getId())) {
-                isJtyy = true;
+        //判断集团资讯是否有效
+        if (type.equals(41)) {//说明是集团资讯
+            if (!CollectionUtils.isEmpty(childTypes)) {
+                //默认获取第一个id
+                typeid = Arrays.asList(childTypes.get(0).getId());
+            }
+        }
+
+            if (isJtyy) {//说明是集团资讯
                 //获取集团资讯栏目下的文章
                 JSONObject jtResult = newsList("jtyy", typeid, 1, 15, null, null);
                 if (!ObjectUtils.isEmpty(jtResult.get("NewsList"))) {
                     List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get("NewsList")), Map.class);
                     news.addAll(jtNews);
                 }
+                model.addAttribute("flag", 1);
             }
-        }
-        if (isJtyy == false) {
+
+        if (!isJtyy) {
             //栏目非集团栏目编号获取文章列表
             JSONObject result = newsList(cityen, typeid, 1, 15, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get("NewsList")), Map.class);
+            model.addAttribute("flag", 0);
         }
         model.addAttribute("types", dss.contains(cityen) ? dssType : types);
         model.addAttribute("tabtype", type);
@@ -226,6 +237,7 @@ public class NewsController {
      * @param cityen 城市编号
      * @param type   栏目类型编号
      * @param page   页码
+     * @param flag 集团资讯专用标识 1 取第一个，2取二个 ， 3取第三个
      * @return
      */
     @ResponseBody
@@ -235,16 +247,98 @@ public class NewsController {
             , @PathVariable(name = "type", required = false) Integer type
             , @PathVariable(name = "page", required = false) Integer page
             , @RequestParam(value = "key", required = false) String key
-            , @RequestParam(value = "pagesize", defaultValue = "10", required = false) Integer pagesize) {
+            , @RequestParam(value = "pagesize", defaultValue = "15", required = false) Integer pagesize , @RequestParam(value = "flag", defaultValue = "1") Integer flag) {
         JSONObject obj = new JSONObject();
         //文章列表
         List<Integer> typeid = new ArrayList<>(Arrays.asList(type));
-        JSONObject result = newsList(cityen, typeid, page, pagesize, null, key);
-        List<Map> news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
-        Integer pageTotal = result.getInteger("PageTotal");
+
+        //栏目编号获取文章列表
+        List<NewsType> jtyyTypes = typeList("jtyy", null);
+        List<NewsType> childTypes = new ArrayList<>();
+        if (!ObjectUtils.isEmpty(jtyyTypes)) {
+            for (NewsType t : jtyyTypes) {
+                childTypes.addAll(t.getChildList());
+            }
+        }
+
+        //当前栏目ID是否集团资讯下的栏目
+        Boolean isJtyy = false;
+        if(type.equals(41)){//说明是集团资讯
+            isJtyy = true;
+        }
+
+        if (isJtyy) {//说明是集团资讯
+            //判断集团资讯是否有效
+            if (!CollectionUtils.isEmpty(childTypes)) {
+                switch (flag){
+                    case 1:
+                        //获取第一个id
+                        typeid = Arrays.asList(childTypes.get(0).getId());
+                        break;
+                    case 2:
+                        //获取第二个id
+                        typeid = Arrays.asList(childTypes.get(1).getId());
+                        break;
+                    case 3:
+                        //获取第三个id
+                        typeid = Arrays.asList(childTypes.get(2).getId());
+                        break;
+                    default:
+                        //默认取第一个id
+                        typeid = Arrays.asList(childTypes.get(0).getId());
+                        break;
+                }
+
+
+            }
+        }
+
+        //装载内容
+        List<Map> news = null;
+        //装载总共有多少条数据
+        Integer pageTotal = 0;
+
+        if (isJtyy) {//说明是集团资讯
+            //获取集团资讯栏目下的文章
+            JSONObject jtResult = newsList("jtyy", typeid, page, pagesize, null, null);
+            news = JSON.parseArray(JSON.toJSONString(jtResult.get(NEWS_LIST)), Map.class);
+            pageTotal = jtResult.getInteger("PageTotal");
+            if (!ObjectUtils.isEmpty(jtResult.get("NewsList"))) {
+                List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get("NewsList")), Map.class);
+                news.addAll(jtNews);
+            }
+
+            //判断pageTotal是否和当前页相等
+            if(page >= pageTotal){
+                //判断typeid是否等于childTypes
+                if(childTypes.get(0).getId().equals(typeid.get(0))){
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(0)), page, pagesize, null, null);
+                    pageTotal = jtResult.getInteger("PageTotal");
+                    obj.put("flag", 1);
+                }else if(childTypes.get(1).getId().equals(typeid.get(1))){
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(1)), page, pagesize, null, null);
+                    pageTotal = jtResult.getInteger("PageTotal");
+                    obj.put("flag", 2);
+                }else if(childTypes.get(2).getId().equals(typeid.get(2))){
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(2)), page, pagesize, null, null);
+                    pageTotal = jtResult.getInteger("PageTotal");
+                    obj.put("flag", 3);
+                }
+            }else {
+                obj.put("flag", 1);
+            }
+
+        }
+
+        if(!isJtyy) {
+            JSONObject result = newsList(cityen, typeid, page, pagesize, null, key);
+            news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
+            pageTotal = result.getInteger("PageTotal");
+        }
         obj.put("Result", news);
         obj.put("TotalPage", pageTotal);
         obj.put("ResultNo", 0);
+        obj.put("CurrentPage", page);
         return obj;
     }
 
