@@ -113,6 +113,7 @@ public class NewsController {
         model.addAttribute("types", dss.contains(cityen) ? dssType : types);
         model.addAttribute("tabtype", type);
         model.addAttribute("news", news);
+        model.addAttribute("key", key);
         for (NewsType t : types) {
             if (type.equals(t.getId())) {
                 String colName = t.getColumnsName();
@@ -173,11 +174,14 @@ public class NewsController {
         }else{
             map.put("typeid", null);
         }
+        map.put("key", key);
         map.put("page", page);
         map.put("pagesize", pagesize);
         map.put("order", order);
+        map.put("title", key);
+        map.put("description", key);
         JSONObject jSONObject = restTemplate.getForObject(apiurl +
-                        "GetNewsList?cityen={cityen}&platform=wap&typeid={typeid}&page={page}&pagesize={pagesize}&order={order}"
+                        "GetNewsList?cityen={cityen}&platform=wap&typeid={typeid}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}"
                 , JSONObject.class, map);
         JSONObject result = (JSONObject) jSONObject.getJSONObject("Result");
         return result;

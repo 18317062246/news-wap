@@ -161,6 +161,10 @@
     });
     //当滚动到屏幕底部时
     $(window).scroll(function () {
+        let key='${key}';
+        if(key){
+            return false;
+        }
         var newScrolltop = document.documentElement.scrollTop || document.body.scrollTop;
         var newScrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
         /*newScrolltop>scrolltop是判断滚动方向为向下*/
@@ -178,13 +182,14 @@
 
     //aJax获取分页数据
     function list(currentPage,showCount){
+        let key='${key}';
         var year='2020';
         var month='5';
         var cityId='021';
         var COURSE_CATEGORY_ID='20';
         let serviceUrl = '';
         let colType=$('#tabtype').val();
-        serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/";
+        serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/?key="+key;
         $.ajax({
             type:'GET',
             url: serviceUrl,
