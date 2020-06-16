@@ -95,7 +95,7 @@ public class NewsController {
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
         for (NewsType jt : childTypes) {
-            if (type.equals(jtyyTypes.get(0).getId())) {
+            if (type.equals(jt.getId())) {
                 isJtyy = true;
                 //获取集团资讯栏目下的文章
                 JSONObject jtResult = newsList("jtyy", typeid, 1, 15, null, null);
