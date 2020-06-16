@@ -17,7 +17,7 @@ api:
   domain: http://testnews.centanet.com/api/
 #静态文件版本号
 static:
-    version: 20200528
+    version: 2020061608
 #nginx转发静态文件
     path: D:/100workspace/160code/news-html/pc/
     url: https://static.centanet.com/news/2020061519/m
