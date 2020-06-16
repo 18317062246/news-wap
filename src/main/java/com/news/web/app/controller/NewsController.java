@@ -312,15 +312,15 @@ public class NewsController {
             if(page >= pageTotal){
                 //判断typeid是否等于childTypes
                 if(childTypes.get(0).getId().equals(typeid.get(0))){
-                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(0)), page, pagesize, null, null);
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(childTypes.get(0).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger("PageTotal");
                     obj.put("flag", 1);
-                }else if(childTypes.get(1).getId().equals(typeid.get(1))){
-                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(1)), page, pagesize, null, null);
+                }else if(childTypes.get(1).getId().equals(typeid.get(0))){
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(childTypes.get(1).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger("PageTotal");
                     obj.put("flag", 2);
-                }else if(childTypes.get(2).getId().equals(typeid.get(2))){
-                    JSONObject tempResult = newsList("jtyy", Arrays.asList(typeid.get(2)), page, pagesize, null, null);
+                }else if(childTypes.get(2).getId().equals(typeid.get(0))){
+                    JSONObject tempResult = newsList("jtyy", Arrays.asList(childTypes.get(2).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger("PageTotal");
                     obj.put("flag", 3);
                 }
