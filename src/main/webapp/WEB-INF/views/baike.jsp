@@ -29,10 +29,14 @@
 				<c:set var="arr" value="${fn:split('buyHouse.png,seeHouse.png,subscription.png,loanDeal.png,collectHouse.png,propertyRight.png,goTop-1.png,propertyRight.png,subscription.png',',')}">
 				</c:set>
 				<c:forEach items="${types}" var="t" varStatus="status">
-					<li ref="${t.id}" class="${status.index==0?'active':''}">
-						<img src="${staticurl}/images/${arr[status.index]}" />
-						<p><a href="javacript:void(0);">${t.columnsName}</a></p>
-					</li>
+					<a href="/m/${cityen}/baike?channel=${t.id}">
+						<li ref="${t.id}" class="${tabtype == t.id ?'active':''}">
+
+								<img src="${staticurl}/images/${arr[status.index]}" />
+
+							<p>${t.columnsName}</p>
+						</li>
+					</a>
 				</c:forEach>
 
 			</ul>
@@ -50,131 +54,6 @@
 				</ul>
 			</article>
 			</c:forEach>
-		<%--	<article class="column2" style="display: none;">
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12110.html">3分钟看懂开发商所说的“赠送面积”</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12105.html">高层和小高层 一字之差区别大！</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12101.html">买毛坯房好 还是精装房好？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12094.html">什么是公寓式住宅，它和普通住宅的区别是什么</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12092.html">小户型住房应该如何选择？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/kfxf/12091.html">这些房再便宜也不能买!装修时才发现亏大了</a>
-					</li>
-				</ul>
-
-			</article>
-			<article class="column3" style="display: none;">
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/qyrg/12120.html">不看后悔！房产证名字写谁的好？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/qyrg/12117.html">房产证办理需要多久？记好这些办理注意事项不吃亏</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/qyrg/12116.html">六步教你学会新房的认购流程</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/qyrg/12115.html">新房认购签约时需要注意哪些事项</a>
-					</li>
-				</ul>
-
-			</article>
-			<article class="column4" style="display: none;">
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12237.html">注意！${citycn}提取公积金有新变化！</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12130.html">房屋贷款主要的3种类型</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12129.html">公积金可以在异地买房吗？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12128.html">快速掌握贷款买房小窍门！让你购房更轻松</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12127.html">买房贷款时间越长越好？怎样选择合适的贷款年限！</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/dkbl/12125.html">全款买房和贷款买房哪个更省钱？贷款买房要小心这些陷阱！</a>
-					</li>
-				</ul>
-
-			</article>
-			<article class="column5" style="display: none;">
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/sfyf/12068.html">收房时要注意哪些事项？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/sfyf/12067.html">新房和二手房在收房时有什么区别？</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/sfyf/12066.html">新房入住的交接流程，需要注意什么？</a>
-					</li>
-				</ul>
-
-			</article>
-			<article class="column6" style="display: none;">
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/cqlz/12064.html">不动产权证、房产证区别</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/cqlz/12063.html">产权证迟迟拿不到？教你这么做！</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="/m/sy/baike/goufangliuchen/cqlz/12060.html">哪些房子拿不到不动产证？</a>
-					</li>
-				</ul>
-
-			</article>--%>
 
 		</div>
 		<script>
@@ -207,5 +86,7 @@
 			})();
 		</script>
 	</body>
+	<%--统计代码--%>
+	<%@include file="/WEB-INF/views/statistics_code.jsp" %>
 
 </html>

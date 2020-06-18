@@ -55,14 +55,8 @@
         <ul class="news-tab" style="width: 593px;">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
             <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
-                <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}">${type.columnsName}</a></li>
+                    <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
             </c:forEach>
-          <%--  <li class="tab fs12"><a href="#test2" class="active">中原资讯</a></li>
-            <li class="tab fs12"><a href="#test3">地方楼市</a></li>
-            <li class="tab fs12"><a href="#test4">专题</a></li>
-            <li class="tab fs12"><a href="#test1">最新</a></li>
-            <li class="tab fs12"><a href="#test4">专题</a></li>
-            <li class="tab fs12"><a href="#test1">热门专题</a></li>--%>
         </ul>
     </div>
 </div>
@@ -91,34 +85,6 @@
                 </a>
             </li>
         </c:forEach>
-     <%--   <li class="item">
-            <a class="item-a" href="61_资讯详情.html?rand=1">
-                <div class="img-box">
-                    <img src="./images/ad1.jpg">
-                </div>
-                <div class="content">
-                    <h4 class="title">壹线国际 适合你的实用精品房</h4>
-                    <div class="desc">
-                        <span class="txt">全国楼市</span>
-                        <span>2020-05-30</span>
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li class="item">
-            <a class="item-a" href="61_资讯详情.html?rand=1">
-                <div class="img-box">
-                    <img src="./images/ad1.jpg">
-                </div>
-                <div class="content">
-                    <h4 class="title">壹线国际 适合你的实用精品房</h4>
-                    <div class="desc">
-                        <span class="txt">全国楼市</span>
-                        <span>2020-05-30</span>
-                    </div>
-                </div>
-            </a>
-        </li>--%>
     </ul>
 </div>
 <div class="news-project-list">
@@ -126,38 +92,12 @@
 
     </ul>
 </div>
-<%--统计代码--%>
-<%@include file="/WEB-INF/views/statistics_code.jsp" %>
+
 <%--<script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>--%>
 <script type="text/javascript" src="${staticurl}/js/materialize.min.js?v=${ver}"></script>
 <script type="text/javascript" src="${staticurl}/js/iscroll-probe.js?v=${ver}"></script>
 <%--<script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>--%>
 <script src="${staticurl}/js/bscroll.min.js"></script>
-<%--<script>
-    $(function () {
-        let sumWidth = 0;
-        $(".news-tab").children("li").each(function (item, index) {
-            sumWidth += $(this).width() + 36;
-            $(this).on("click", function () {
-                $(".news-tab").find(".active").removeClass("active");
-                $(this).children("a").addClass("active");
-                //切换分类文章
-                let typeid = $(this).children("a").attr('ref');
-                $('.new-list .item').hide().filter('.type' + typeid).show();
-            });
-        });
-        $(".news-tab").width(sumWidth + 18);
-        //上一次点击的tab加红色样式
-        let index = $("#tabtype").val();
-        $(".news-tab  li[ref=" + index + "]").find('a').addClass("active").parent().siblings().children("a").removeClass("active");
-    });
-    let wrapper = document.querySelector('.wrapper')
-    let scroll = new BScroll(wrapper, {
-        scrollX: true,
-        click: true,
-        startX: 0
-    })
-</script>--%>
 <script>
     $(function () {
         let sumWidth = 0;
@@ -184,127 +124,9 @@
         click: true,
         startX: 0
     })
- /*   let searchStr = window.location.href;
-    var beginShow=1,//初始化显示的条数，以后作为当前第二页
-        perNum = 15,//每次滚动时加载的数量
-        pCount = 1;//定义一个总页数，在ajax返回的时候会修改它
-    //设置是否继续滚动加载的标志位(0:可以加载 1：不再加载)
-    var IS_OVER=0;
-    //刚进页面第一次加载
-    $(function(){
-        //将标签编号默认设置为0
-        $("#labelNumHidden").val(0);
-        list(beginShow,perNum);
-    });
-    //当滚动到屏幕底部时
-    $(window).scroll(function () {
-        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-            //判断当前情况，如果滚动标志位为0时，表示可加载
-            if(IS_OVER==0){
-                //当前页码数+1
-                beginShow++;
-                //加载新的页码数
-                list(beginShow,perNum);
-            }
-        }
-    });
-
-    //aJax获取分页数据
-    function list(currentPage,showCount){
-        console.log('当前页:'+currentPage);
-        var year='2020';
-        var month='5';
-        var cityId='021';
-        var COURSE_CATEGORY_ID='20';
-        let serviceUrl = '';
-        let searchStrTemp = searchStr.substr(searchStr.lastIndexOf("c") + 1);
-        let array = searchStrTemp.split('p');
-        console.log('array[0]='+array[0]);
-        serviceUrl = '/m/${cityen}/list/c'+ array[0] +'p' + currentPage + "/page/";
-
-        console.log(serviceUrl);
-        $.ajax({
-            type:'GET',
-            url: serviceUrl,
-            /!*data:{currentPage:currentPage,showCount:showCount,SECTION_ID:'3',
-                STATUS:'0',TYPE:'3',year:year,month:month,
-                COURSE_CITY_ID:cityId,COURSE_CATEGORY_ID:COURSE_CATEGORY_ID},*!/
-            dataType:'json',
-            cache:false,
-            success:function(data){
-                console.log(data);
-                pCount=data.TotalPage;
-                // var myList=data.Result.length;
-                //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
-                if(currentPage==1&&data.Result == null){
-                    $(".new_list").html('<li class="item">这里暂无数据</li>');
-                    IS_OVER=1;
-                    //隐藏等待图标
-                    $("#waiting").hide();
-                }else {
-                    //如果现在的页数大于等于最大页码数，不再翻页
-                    if (currentPage >= pCount) {
-                        //定义加载标志位，让其不能再加载
-                        IS_OVER = 1;
-                        $("#waiting").hide();
-                    }
-                }
-                let sum = '';
-                if(data.ResultNo == 0 && data.Result != null && data.Result != null){
-
-                    for(let i = 0 ; i < data.Result.length ; i++){
-                        let content = data.Result[i];
-                        let temp = '<li class="item">';
-                        temp += '<a href="/m/${cityen}/detail/'+content.ID+'.html" class="item-a">';
-                        temp += '<div class="img-box">';
-                        temp += '<img src="'+ content.LitPic +'" onerror="this.src=\'${error_img}\'">';
-                        temp += '</div>';
-                        temp += ' <div class="content">';
-                        temp += '<h4 class="title">'+ content.Title +'</h4>';
-                        temp += '<div class="desc">';
-                        temp += ' <span>' + content.TypeName + '</span>&nbsp;&nbsp;';
-                        temp += '<span>'+ timestampToTime(content.PublishDate)  +'</span>';
-                        temp += '</div>';
-                        temp += ' </div>';
-                        temp += '  </a>';
-                        temp += '  </li>';
-                        sum += temp;
-                    }
-                    $("#project_list").append(sum);
-                }else {
-                    pCount=data.TotalPage;
-                    var myList=data.Result;
-                    //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
-                    if(currentPage==1&&myList== null){
-                        $(".new_list").html('<li class="item">这里暂无数据</li>');
-                        IS_OVER=1;
-                        //隐藏等待图标
-                        $("#waiting").hide();
-                    }else {
-                        //如果现在的页数大于等于最大页码数，不再翻页
-                        if (currentPage >= pCount) {
-                            //定义加载标志位，让其不能再加载
-                            IS_OVER = 1;
-                            $("#waiting").hide();
-                        }
-                    }
-                }
-
-            }
-        });
-    }
-    //将时间戳转换成年月日时分秒
-    function timestampToTime(timestamp) {
-        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        var D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
-        var h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
-        var m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes());// + ':';
-        var s = (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
-        return Y+M+D+h+m;//+s;
-    }*/
 </script>
 </body>
+<%--统计代码--%>
+<%@include file="/WEB-INF/views/statistics_code.jsp" %>
 
 </html>

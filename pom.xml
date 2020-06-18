@@ -7,6 +7,7 @@
     <groupId>com.news.website</groupId>
     <artifactId>m</artifactId>
     <version>1.0.0</version>
+    <name>com.news.website.m</name>
 
     <!--将打包方式改为jar-->
     <packaging>war</packaging>

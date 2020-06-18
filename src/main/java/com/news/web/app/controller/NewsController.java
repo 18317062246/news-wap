@@ -2,7 +2,10 @@ package com.news.web.app.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
+import com.news.web.app.model.esf.ESFResult;
+import com.news.web.app.model.xinfang.XinfangResult;
 import com.news.web.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /*
@@ -36,6 +40,14 @@ public class NewsController {
     private RestTemplate restTemplate;
     @Value("${api.domain}")
     public String apiurl;
+    @Value("${api.xinfang.other.city}")
+    public String xinfangOtherCityAddress;
+    @Value("${api.xinfang.sz.city}")
+    public String xinfangSZCityAddress;
+    @Value("${api.esf.other.city}")
+    public String esfOtherCityAddress;
+    @Value("${api.esf.sz.city}")
+    public String esfSZCityAddress;
     @Value("${static.url}")
     public String staticurl;
     @Value("${static.version}")
@@ -49,6 +61,10 @@ public class NewsController {
 
     private static final String NEWS_LIST = "NewsList";
     private static final String RESULT = "Result";
+    /**
+     * 是否存在房源信息
+     */
+    private static final String NEWS_RELATED = "NewsRelated";
     private static final String DSS_COLNAME = "东三省共用频道";
 
     /**
@@ -99,6 +115,7 @@ public class NewsController {
         Boolean isJtyy = false;
         //判断集团资讯是否有效
         if (type.equals(41)) {//说明是集团资讯
+            isJtyy = true;//将集团资讯置为true
             if (!CollectionUtils.isEmpty(childTypes)) {
                 //默认获取第一个id
                 typeid = Arrays.asList(childTypes.get(0).getId());
@@ -205,7 +222,7 @@ public class NewsController {
      * @author: zouyuan1
      * @date: 2020-05-25
      */
-    private JSONObject newsListByBaike(String cityen, String location, Integer page, Integer pagesize, Integer order, String key) {
+    private JSONObject newsListByBaike(String cityen,Integer typeId,  String location, Integer page, Integer pagesize, Integer order, String key) {
         Map<String, Object> map = new HashMap<>();
         map.put("cityen", cityen);
         map.put("location", location);
@@ -214,8 +231,16 @@ public class NewsController {
         map.put("order", order);
         map.put("title", key);
         map.put("description", key);
+        if(!ObjectUtils.isEmpty(typeId)){
+            map.put("typeid", typeId);
+        }
+
+        StringBuffer sql = new StringBuffer("GetNewsList?cityen={cityen}&platform=wap&location={location}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}");
+        if(!ObjectUtils.isEmpty(typeId)){
+            sql.append("&typeid={typeid}");
+        }
         JSONObject jSONObject = restTemplate.getForObject(apiurl +
-                        "GetNewsList?cityen={cityen}&platform=wap&location={location}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}"
+                        sql.toString()
                 , JSONObject.class, map);
         JSONObject newsList = jSONObject.getJSONObject(RESULT);
         if (newsList.isEmpty()) {
@@ -225,8 +250,96 @@ public class NewsController {
     }
 
     /**
+     * 获取新房信息
+     * @param xinfangTypes 新房集合
+     * @param cityen 城市简称
+     * @return
+     */
+    public List<XinfangResult> getXinFangInfo(List<NewsRelated> xinfangTypes , String cityen){
+        //定义一个需要返回的集合对象
+        List<XinfangResult> resultList = new ArrayList<>();
+        //访问接口需要传入的map
+        Map<String, Object> map = new HashMap<>();
+        map.put("cityen", cityen);
+        //定义一个服务接口，用于获取房源数据
+        String serviceUrl;
+        if(Objects.equals(cityen , "sz")){//如果是深圳，使用深圳的新房接口
+            serviceUrl = xinfangSZCityAddress;
+        }else {//否则就使用其他城市公用的新房接口
+            serviceUrl = xinfangOtherCityAddress;
+        }
+        //循环新房集合,取出新房数据
+        xinfangTypes.stream().forEach(l -> {
+            map.put("estExtId", l.getOid());
+            JSONObject jSONObject = restTemplate.getForObject( serviceUrl + "?cityen={cityen}&EstExtId={estExtId}&platform=wap", JSONObject.class, map);
+            JSONObject newsList = jSONObject.getJSONObject(RESULT);
+            if (CollectionUtils.isEmpty(newsList)) {
+                log.error("请求文章列表为空=>{}", newsList);
+            }
+            if(!CollectionUtils.isEmpty(newsList)){
+                String data = JSON.toJSONString(jSONObject.get(RESULT));
+                XinfangResult xinfangResult = JSON.parseObject(data, XinfangResult.class);
+                if(!Objects.isNull(xinfangResult)){
+                    xinfangResult.setNewsId(l.getNewsid());
+                    xinfangResult.setOid(l.getOid());
+                }
+                resultList.add(xinfangResult);
+
+            }
+        });
+        //将结果集进行过滤
+        List<XinfangResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
+    }
+
+    /**
+     * 获取二手房信息
+     * @param ershoufangTypes 二手房集合
+     * @param cityen 城市简称
+     * @return
+     */
+    public List<ESFResult> getErshouFangInfo(List<NewsRelated> ershoufangTypes , String cityen){
+        //定义一个需要返回的集合对象
+        List<ESFResult> resultList = new ArrayList<>();
+        //访问接口需要传入的map
+        Map<String, Object> map = new HashMap<>();
+        map.put("cityen", cityen);
+
+        //定义一个服务接口，用于获取房源数据
+        String serviceUrl;
+        if(Objects.equals(cityen , "sz")){//如果是深圳，使用深圳的新房接口
+            serviceUrl = esfSZCityAddress;
+        }else {//否则就使用其他城市公用的新房接口
+            serviceUrl = esfOtherCityAddress;
+        }
+
+        //循环新房集合,取出新房数据
+        ershoufangTypes.stream().forEach(l -> {
+            map.put("adsNo", l.getOid());
+            JSONObject jSONObject = restTemplate.getForObject(serviceUrl + "?cityen={cityen}&AdsNo={adsNo}&platform=wap", JSONObject.class, map);
+            JSONObject newsList = jSONObject.getJSONObject(RESULT);
+            if (CollectionUtils.isEmpty(newsList)) {
+                log.error("请求文章列表为空=>{}", newsList);
+            }
+            if(!CollectionUtils.isEmpty(newsList)){
+                String data = JSON.toJSONString(jSONObject.get(RESULT));
+                ESFResult esfResult = JSON.parseObject(data, ESFResult.class);
+                if(!Objects.isNull(esfResult)){
+                    esfResult.setNewsId(l.getNewsid());
+                    esfResult.setOid(l.getOid());
+                }
+                //将esfResult添加到结果集中
+                resultList.add(esfResult);
+            }
+        });
+        //将结果集进行过滤
+        List<ESFResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
+    }
+
+    /**
      * @param: null
-     * @description: TODO
+     * @description:
      * @return:
      * @author: zouyuan1
      * @date: 2020-05-28
@@ -239,13 +352,47 @@ public class NewsController {
         setCommon(model, cityen);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
+        //判断是否存在房源
+        if(result.get(RESULT) != null){
+            JSONObject detailByProp = result.getJSONObject("Result");
+            if(detailByProp != null) {
+                //将房源对象进行转换
+                String newsRelatedData = JSON.toJSONString(detailByProp.get(NEWS_RELATED));
+                List<NewsRelated> types = JSON.parseArray(newsRelatedData, NewsRelated.class);
+                //将新房和二手房进行过滤
+                List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals("xinfang")).collect(Collectors.toList());
+                List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals("ershoufang")).collect(Collectors.toList());
+
+                //判断新房是否有数据
+                if(!CollectionUtils.isEmpty(xinfangTypes)){
+                    //获取新房信息
+                    List<XinfangResult> xinFangInfo = getXinFangInfo(xinfangTypes, cityen);
+                    //如果新房集合不为空，就添加到总的房源集合
+                    if(!CollectionUtils.isEmpty(xinFangInfo)){
+                        model.addAttribute("xfHouseList", xinFangInfo);
+                    }
+                }
+
+                //判断二手房是否有数据
+                if(!CollectionUtils.isEmpty(esfTypes)){
+                    //获取二手房信息
+                    List<ESFResult> esfInfo = getErshouFangInfo(esfTypes, cityen);
+                    //如果二手房集合不为空，就添加到总的房源集合
+                    if(!CollectionUtils.isEmpty(esfInfo)){
+                        model.addAttribute("esfHouseList", esfInfo);
+                    }
+                }
+            }
+        }
+
         JSONObject detail = result.getJSONObject("Result");
 
         //热点排行
         List<Integer> typeid = Arrays.asList();
         JSONObject newsList = newsList(cityen, typeid, 1, 10, 1, null);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get("NewsList")), Map.class);
-        if (!ObjectUtils.isEmpty(detail.get("Url"))) {
+
+        if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
             return "redirect:" + detail.get("Url");
         }
         model.addAttribute("news", news);
@@ -255,6 +402,8 @@ public class NewsController {
             model.addAttribute("detailContent", content.replace("crossorigin=\"anonymous\"", ""));
         }
         model.addAttribute("detail", detail);
+        model.addAttribute("newsDetailClickAddress", apiurl);
+        model.addAttribute("newsId", id);
         return "news_detail";
     }
 
@@ -375,11 +524,11 @@ public class NewsController {
      * @author: zouyuan1
      * @date: 2020-05-27
      */
-    @GetMapping(value = {"/m/{cityen}/baike", "/m/{cityen}/baike/c{type}/p{page}"})
+    @GetMapping(value = "/m/{cityen}/baike")
     public String baike(Model model, @PathVariable("cityen") String cityen,
-                        @PathVariable(value = "type", required = false) Integer type,
                         @PathVariable(value = "page", required = false) Integer page,
-                        @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize) {
+                        @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize,
+                        @RequestParam(value = "channel" , required = false) Integer channel) {
         page = ObjectUtils.isEmpty(page) ? 1 : page;
         //栏目类型
         List<NewsType> types = typeList(cityen, "baike");
@@ -388,33 +537,32 @@ public class NewsController {
             if (!types.get(0).getChildList().isEmpty()) {
                 baikeTypes = types.get(0).getChildList().get(0).getChildList();
                 //第三层 841
-                type = ObjectUtils.isEmpty(type) ? null : type;
+                channel = ObjectUtils.isEmpty(channel) ? null : channel;
             }
         }
 
         //文章列表
         List<Map> news = new ArrayList<>();
-        JSONObject result = new JSONObject();
+        //获取文章列表的结果集
+        JSONObject result;
 
-        if(type != null) {
-            for (NewsType baike : baikeTypes) {
-                List<Integer> typeid = new ArrayList<>(Arrays.asList(baike.getId()));
-                result = newsList(cityen, typeid, page, pagesize, null, null);
+        if(channel != null) {
+                result = newsListByBaike(cityen, channel,"baike", page, pagesize, null, null);
                 if (result.get(NEWS_LIST) != null) {
                     news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
                 }
-                //news= JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
-
-            }
         }else {
-            result = newsListByBaike(cityen, "baike", page, pagesize, null, null);
+            result = newsListByBaike(cityen, null , "baike", page, pagesize, null, null);
             if (result.get(NEWS_LIST) != null) {
                 news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
             }
         }
         setCommon(model, cityen);
+        if(ObjectUtils.isEmpty(channel)){
+           channel = types.get(0).getChildList().get(0).getChildList().get(0).getId();
+        }
         model.addAttribute("types", baikeTypes);
-        model.addAttribute("tabtype", type);
+        model.addAttribute("tabtype", channel);
         model.addAttribute("news", news);
         Integer pageCount = result.getInteger("PageTotal");
         PageUtil p = new PageUtil(pageCount, page, pagesize);

@@ -13,6 +13,7 @@
     <title>资讯详情</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
+    <meta name="referrer" content="no-referrer" />
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>
     <link rel="apple-touch-icon" sizes="114x114" href="images/touch-icon-iphone-retina.png"/>
     <link rel="apple-touch-icon" sizes="144x144" href="images/touch-icon-ipad-retina.png"/>
@@ -23,12 +24,15 @@
     <link rel="stylesheet" href="${staticurl}/css/common.css?v=${ver}">
     <link rel="stylesheet" href="${staticurl}/css/newsCommon.css?v=${ver}">
     <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css?v=${ver}">
+
+    <%--分享--%>
+   <%-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="${staticurl}/js/shareJssdk.js"></script>--%>
     <style>
         .newdetail-wrapper img {
-                            width:  100%   !important;
-                            height:  auto  !important;
-                            display:  block  !important;
-                        
+             width:  100%   !important;
+             height:  auto  !important;
+             display:  block  !important;
         }
         .newdetail-wrapper section{
             width:  100%   !important;
@@ -56,7 +60,7 @@
         <a href="/m/${cityen}/" class="goback">
             <sapn class="search-title">中原资讯</sapn>
         </a>
-        <a href="//wap.centanet.com/bj/page/common/search.aspx?type=7" class="search-a">
+        <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
             <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
         </a>
     </div>
@@ -83,6 +87,81 @@
 <%--<p class="new-disclaimer">
     免责声明：本文仅代表作者个人观点，与环球网无关。其原创性以及文中陈述文字和内容未经本站证实，对本文以及其中全部或者部分内容、文字的真实性、完整性、及时性本站不作任何保证或承诺，请读者仅作参考，并请自行核实相关内容。
 </p>--%>
+<div class="room-container">
+
+    <c:forEach items="${xfHouseList}" varStatus="status" var="n">
+        <div class="roomlists">
+            <div class="room-item" >
+                <div class="room-img">
+                    <a href="//${cityen}.centanet.com/xinfang/lp-${n.oid}">
+                        <img src="${n.defaultImage}" alt="" />
+                    </a>
+                </div>
+                <div class="room-mid">
+                    <h5>${n.adName}</h5>
+                    <div class="room-type" style="white-space: nowrap;">${n.roomsName}</div>
+                    <p class="room-address" style="white-space: nowrap;">${n.baseNewProp.address}</p>
+                    <c:if test="${n.averagePrice != null && n.averagePrice > 0}">
+                        <div style=" white-space: nowrap;display: inline-block;">
+                            <p class="room-price">${n.averagePrice}元/平</p>
+                        </div>
+                    </c:if>
+                </div>
+                <div class="room-side">
+                    <p class="onsale"><%--${n.estType}--%>
+                        <c:if test="${n.estType.contains('公寓')}">
+                            公寓
+                        </c:if>
+                        <c:if test="${n.estType.contains('住宅')}">
+                            住宅
+                        </c:if>
+                        <c:if test="${n.estType.contains('别墅')}">
+                            别墅
+                        </c:if>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </c:forEach>
+
+    <c:forEach items="${esfHouseList}" varStatus="status" var="n">
+        <div class="roomlists">
+            <div class="room-item" >
+                <div class="room-img">
+                    <a href="//${cityen}.centanet.com/ershoufang/${n.oid}.html" >
+                        <img src="${n.fullImagePath}" alt="" />
+                    </a>
+                </div>
+                <div class="room-mid">
+                    <h5>${n.estateName}</h5>
+                    <div class="room-type" style="white-space: nowrap;">${n.title}</div>
+                    <p class="room-address" style="white-space: nowrap;">${n.address}</p>
+                    <c:if test="${n.salePrice != null && n.salePrice > 0}">
+                        <div style=" white-space: nowrap;display: inline-block;">
+                            <p class="room-price">
+                                    ${fn;fn:substring(n.salePrice , 0 , 3)}万</p>
+                        </div>
+                    </c:if>
+                </div>
+                <div class="room-side">
+                    <p class="onsale"><%--${n.propertyType}--%>
+                        <c:if test="${n.propertyType.contains('公寓')}">
+                            公寓
+                        </c:if>
+                        <c:if test="${n.propertyType.contains('住宅')}">
+                            住宅
+                        </c:if>
+                        <c:if test="${n.propertyType.contains('别墅')}">
+                            别墅
+                        </c:if>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </c:forEach>
+
+</div>
+<p class="new-disclaimer"></p>
 <section class="new-houseblock">
     <h3 class="hot">热点排行</h3>
     <ul class="new-list">
@@ -123,8 +202,7 @@
     </div>
     <div class="referTel right"><a id="talk" href="#" style="color: #fff;">打电话</a></div>
 </div>
-<%--统计代码--%>
-<%@include file="/WEB-INF/views/statistics_code.jsp" %>
+
 <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
 <script src="${staticurl}/js/jquery.lazyload.js" type="text/javascript" language="javascript"></script>
@@ -187,6 +265,36 @@
         $("#downloadApp").css('display', 'none');//隐藏头部
     }
 </script>
+<script type="text/javascript">
+    /**
+     * 以下代码是判断是人还是蜘蛛
+     */
+        //获取当前进入页面的地址
+    let r = document.referrer;
+    r = r.toLowerCase(); //转为小写
+    let aSites = new Array('google.','baidu.','soso.','so.','360.','yahoo.','youdao.','sogou.','gougou.');
+    let flag = false;
+    for (i in aSites){
+        if (r.indexOf(aSites[i]) > 0){
+            flag = true;
+            break;
+        }
+    }
+
+    //如果flag为false，证明是人，需要给页面加入访问量
+    if(!flag){
+        $.get(
+            "${newsDetailClickAddress}NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+r+"&platform=pc",
+            function (data) {
+                console.log(data);
+                if(parseInt(data.Result.Status) == 1){
+                    console.log('成功发送点击量');
+                }
+            });
+    }
+
+</script>
+
 <script>
     $(function () {
 
@@ -254,5 +362,7 @@
     });
 </script>
 </body>
+<%--统计代码--%>
+<%@include file="/WEB-INF/views/statistics_code.jsp" %>
 
 </html>

@@ -48,13 +48,7 @@
         <ul class="news-tab" style="width: 593px;">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
             <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
-                <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
-                <%--  <li class="tab"><a href="#test2" class="active">中原资讯</a></li>
-                  <li class="tab"><a href="#test3">地方楼市</a></li>
-                  <li class="tab"><a href="#test4">专题</a></li>
-                  <li class="tab"><a href="#test1">最新</a></li>
-                  <li class="tab"><a href="#test4">专题</a></li>
-                  <li class="tab"><a href="#test1">热门专题</a></li>--%>
+                    <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
             </c:forEach>
         </ul>
     </div>
@@ -68,17 +62,16 @@
                         <h4 class="title">${item.Title}</h4>
                         <div class="desc">
                             <span>${item.TypeName}</span>
-                           <%-- <span class="time">${item.PublishDate}</span>--%>
-                            <p class="time">
+                            <span class="time">
                                 <jsp:useBean id="myDate" class="java.util.Date"/>
                                 <c:set target="${myDate}" property="time" value="${item.PublishDate*1000}"/>
                                 <fmt:formatDate pattern="yyyy-MM-dd" value="${myDate}" type="both"/>
-                            </p>
+                            </span>
 
                         </div>
                     </div>
                     <div class="new-img">
-                        <%--<img src="${item.LitPic}">--%>
+                       <%-- <img src="${item.LitPic}">--%>
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
                         <c:set var="lazyPic" value="${item.LitPic}?x-oss-process=style/180x130"></c:set>
                         <img class="lazy" src="${item.LitPic == ''?defaultpic:lazyPic}"
@@ -90,8 +83,7 @@
     </ul>
 </section>
 
-<%--统计代码--%>
-<%@include file="/WEB-INF/views/statistics_code.jsp" %>
+
 <%--<script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>--%>
 <script type="text/javascript" src="${staticurl}/js/materialize.min.js?v=${ver}"></script>
 <script type="text/javascript" src="${staticurl}/js/iscroll-probe.js?v=${ver}"></script>
@@ -148,7 +140,7 @@
         startX: 0
     })
     let searchStr = window.location.href;
-    var beginShow=1,//初始化显示的条数，以后作为当前第二页
+    var beginShow=2,//初始化显示的条数，以后作为当前第二页
         perNum = 15,//每次滚动时加载的数量
         pCount = 1;//定义一个总页数，在ajax返回的时候会修改它
     //设置是否继续滚动加载的标志位(0:可以加载 1：不再加载)
@@ -291,5 +283,7 @@
         return Y+M+D;//+s;
     }
 </script>
+<%--统计代码--%>
+<%@include file="/WEB-INF/views/statistics_code.jsp" %>
 </body>
 </html>
