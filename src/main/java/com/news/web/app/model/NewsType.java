@@ -4,7 +4,6 @@ package com.news.web.app.model;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -14,6 +13,7 @@ import java.util.Map;
  *
  * @create: 2020-05-27 10:24
  **/
+@SuppressWarnings("all")
 @Data
 public class NewsType {
     private Integer Id;
