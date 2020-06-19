@@ -149,38 +149,48 @@
 
                 </div>
                 <div class="room-side">
+                    <c:set var="apartmentStr" value="公寓"></c:set>
+                    <c:set var="residenceStr" value="住宅"></c:set>
+                    <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
+                    <c:set var="villaStr" value="别墅"></c:set>
                     <p class="onsale"><%--${n.estType}--%>
                         <c:if test="${n.xinfangResult != null}">
-                            <c:if test="${n.xinfangResult.estType.contains('公寓')}">
-                                公寓
+                            <c:if test="${fn:contains(apartmentStr, n.xinfangResult.estType)}">
+                                ${apartmentStr}
                             </c:if>
-                            <c:if test="${n.xinfangResult.estType.contains('住宅')}">
-                                住宅
+                            <c:if test="${fn:contains(residenceStr, n.xinfangResult.estType)}">
+                                ${residenceStr}
                             </c:if>
-                            <c:if test="${n.xinfangResult.estType.contains('别墅')}">
-                                别墅
+                            <c:if test="${fn:contains(villaStr, n.xinfangResult.estType)}">
+                                ${villaStr}
                             </c:if>
                         </c:if>
                         <c:if test="${n.esfResult != null}">
-                            <c:if test="${n.esfResult.propertyType.contains('公寓')}">
-                                公寓
+                            <c:if test="${fn:contains(apartmentStr, n.esfResult.propertyType)}">
+                                ${apartmentStr}
                             </c:if>
-                            <c:if test="${n.esfResult.propertyType.contains('住宅')}">
-                                住宅
+                            <c:if test="${fn:contains(residenceStr, n.esfResult.propertyType)}">
+                                ${residenceStr}
                             </c:if>
-                            <c:if test="${n.esfResult.propertyType.contains('别墅')}">
-                                别墅
+                            <c:if test="${fn:contains(villaStr, n.esfResult.propertyType)}">
+                                ${villaStr}
+                            </c:if>
+                            <c:if test="${fn:contains(vilaResidenceStr, n.esfResult.propertyType)}">
+                                ${residenceStr}
                             </c:if>
                         </c:if>
                         <c:if test="${n.xiaoQuResult != null}">
-                            <c:if test="${n.xiaoQuResult.propertyType.contains('公寓')}">
-                                公寓
+                            <c:if test="${fn:contains(apartmentStr, n.xiaoQuResult.propertyType)}">
+                                ${apartmentStr}
                             </c:if>
-                            <c:if test="${n.xiaoQuResult.propertyType.contains('住宅')}">
-                                住宅
+                            <c:if test="${fn:contains(residenceStr, n.xiaoQuResult.propertyType)}">
+                                ${residenceStr}
                             </c:if>
-                            <c:if test="${n.xiaoQuResult.propertyType.contains('别墅')}">
-                                别墅
+                            <c:if test="${fn:contains(vilaResidenceStr, n.xiaoQuResult.propertyType)}">
+                                ${residenceStr}
+                            </c:if>
+                            <c:if test="${fn:contains(villaStr, n.xiaoQuResult.propertyType)}">
+                                ${villaStr}
                             </c:if>
                         </c:if>
                     </p>
@@ -316,10 +326,6 @@
         $.get(
             "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+r+"&platform=pc",
             function (data) {
-                console.log(data);
-                if(parseInt(data.Result.Status) == 1){
-                    console.log('成功发送点击量');
-                }
             });
     }
 
