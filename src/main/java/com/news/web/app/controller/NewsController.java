@@ -2,9 +2,12 @@ package com.news.web.app.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
+import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.model.esf.ESFResult;
+import com.news.web.app.model.xiaoqu.XiaoQuResult;
 import com.news.web.app.model.xinfang.XinfangResult;
 import com.news.web.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,12 +52,17 @@ public class NewsController {
     public String esfOtherCityAddress;
     @Value("${api.esf.sz.city}")
     public String esfSZCityAddress;
+    @Value("${api.xiaoqu.other.city}")
+    public String xiaoquOtherCityAddress;
+    @Value("${api.xiaoqu.sz.city}")
+    public String xiaoquSZCityAddress;
     @Value("${static.url}")
     public String staticurl;
     @Value("${static.version}")
     public String ver;
     @Value("${city.dss}")
     public String dss;
+
     /**
      * 热门专题
      */
@@ -255,9 +264,9 @@ public class NewsController {
      * @param cityen 城市简称
      * @return
      */
-    public List<XinfangResult> getXinFangInfo(List<NewsRelated> xinfangTypes , String cityen){
+    public List<CommonHouseResult> getXinFangInfo(List<NewsRelated> xinfangTypes , String cityen){
         //定义一个需要返回的集合对象
-        List<XinfangResult> resultList = new ArrayList<>();
+        List<CommonHouseResult> resultList = new ArrayList<>();
         //访问接口需要传入的map
         Map<String, Object> map = new HashMap<>();
         map.put("cityen", cityen);
@@ -283,12 +292,12 @@ public class NewsController {
                     xinfangResult.setNewsId(l.getNewsid());
                     xinfangResult.setOid(l.getOid());
                 }
-                resultList.add(xinfangResult);
+                resultList.add(new CommonHouseResult(xinfangResult , null , null));
 
             }
         });
         //将结果集进行过滤
-        List<XinfangResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        List<CommonHouseResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
         return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
     }
 
@@ -298,9 +307,9 @@ public class NewsController {
      * @param cityen 城市简称
      * @return
      */
-    public List<ESFResult> getErshouFangInfo(List<NewsRelated> ershoufangTypes , String cityen){
+    public List<CommonHouseResult> getErshouFangInfo(List<NewsRelated> ershoufangTypes , String cityen){
         //定义一个需要返回的集合对象
-        List<ESFResult> resultList = new ArrayList<>();
+        List<CommonHouseResult> resultList = new ArrayList<>();
         //访问接口需要传入的map
         Map<String, Object> map = new HashMap<>();
         map.put("cityen", cityen);
@@ -325,17 +334,81 @@ public class NewsController {
                 String data = JSON.toJSONString(jSONObject.get(RESULT));
                 ESFResult esfResult = JSON.parseObject(data, ESFResult.class);
                 if(!Objects.isNull(esfResult)){
+                    //如果价格不为空，就对价格进行格式化
+                    if(esfResult.getSalePrice() != null && esfResult.getSalePrice() > 0D) {
+                        //将数据进行格式化
+                        BigDecimal db = new BigDecimal(esfResult.getSalePrice());
+                        String plainString = db.toPlainString();
+                        String salePrice = plainString.substring(0, plainString.lastIndexOf("0000"));
+                        esfResult.setSalePriceString(salePrice);
+                        esfResult.setSalePrice(Double.parseDouble(salePrice));
+                    }
                     esfResult.setNewsId(l.getNewsid());
                     esfResult.setOid(l.getOid());
                 }
                 //将esfResult添加到结果集中
-                resultList.add(esfResult);
+                resultList.add(new CommonHouseResult(null , esfResult , null));
             }
         });
         //将结果集进行过滤
-        List<ESFResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        List<CommonHouseResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
         return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
     }
+
+    /**
+     * 获取小区信息
+     * @param xiaoquTypes 小区集合
+     * @param cityen 城市简称
+     * @return
+     */
+    public List<CommonHouseResult> getXiaoQuInfo(List<NewsRelated> xiaoquTypes , String cityen){
+        //定义一个需要返回的集合对象
+        List<CommonHouseResult> resultList = Lists.newArrayList();
+
+        //访问接口需要传入的map
+        Map<String, Object> map = new HashMap<>();
+        map.put("cityen", cityen);
+        //定义一个服务接口，用于获取房源数据
+        String serviceUrl;
+
+        if(Objects.equals(cityen , "sz")){//如果是深圳，使用深圳的小区接口
+            serviceUrl = xiaoquSZCityAddress;
+        }else {//否则就使用其他城市公用的新房接口
+            serviceUrl = xiaoquOtherCityAddress;
+        }
+
+        //循环新房集合,取出新房数据
+        xiaoquTypes.stream().forEach(l -> {
+            map.put("estateCode", l.getOid());
+            JSONObject jSONObject = restTemplate.getForObject(serviceUrl + "?cityen={cityen}&EstateCode={estateCode}&platform=pc&ImageWidth=375&ImageHeight=250", JSONObject.class, map);
+            JSONObject newsList = jSONObject.getJSONObject(RESULT);
+            if (CollectionUtils.isEmpty(newsList)) {
+                log.error("请求文章列表为空=>{}", newsList);
+            }
+            if(!CollectionUtils.isEmpty(newsList)){
+                String data = JSON.toJSONString(jSONObject.get(RESULT));
+                XiaoQuResult xiaoQuResult = JSON.parseObject(data, XiaoQuResult.class);
+                if(!Objects.isNull(xiaoQuResult)){
+                    //如果价格不为空，就对价格进行格式化
+                    if(xiaoQuResult.getSaleAvgPrice() != null && xiaoQuResult.getSaleAvgPrice() > 0D) {
+                        //将数据进行格式化
+                        //对平均价进行四舍五入
+                        long saleAvgPrice = Math.round(xiaoQuResult.getSaleAvgPrice());
+                        xiaoQuResult.setSaleAvgPriceString(saleAvgPrice);
+                    }
+                    xiaoQuResult.setOid(l.getOid());
+                }
+                //将esfResult添加到结果集中
+                resultList.add(new CommonHouseResult(null , null , xiaoQuResult));
+            }
+
+        });
+        //将结果集进行过滤
+        List<CommonHouseResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
+    }
+
+
 
     /**
      * @param: null
@@ -363,24 +436,46 @@ public class NewsController {
                 List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals("xinfang")).collect(Collectors.toList());
                 List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals("ershoufang")).collect(Collectors.toList());
 
+                List<NewsRelated> xiaoquTypes = types.stream().filter(l -> l.getOtype().equals("xiaoqu")).collect(Collectors.toList());
+                //创建一个公共的对象，用于返回房源数据
+                List<CommonHouseResult> commonHouseResult = new ArrayList<>();
                 //判断新房是否有数据
-                if(!CollectionUtils.isEmpty(xinfangTypes)){
+                if (!CollectionUtils.isEmpty(xinfangTypes)) {
                     //获取新房信息
-                    List<XinfangResult> xinFangInfo = getXinFangInfo(xinfangTypes, cityen);
+                    List<CommonHouseResult> xinFangInfo = getXinFangInfo(xinfangTypes, cityen);
                     //如果新房集合不为空，就添加到总的房源集合
-                    if(!CollectionUtils.isEmpty(xinFangInfo)){
-                        model.addAttribute("xfHouseList", xinFangInfo);
+                    if (!CollectionUtils.isEmpty(xinFangInfo)) {
+//                        model.addAttribute("xfHouseList", xinFangInfo);
+                        commonHouseResult.addAll(xinFangInfo);
                     }
                 }
 
                 //判断二手房是否有数据
-                if(!CollectionUtils.isEmpty(esfTypes)){
+                if (!CollectionUtils.isEmpty(esfTypes)) {
                     //获取二手房信息
-                    List<ESFResult> esfInfo = getErshouFangInfo(esfTypes, cityen);
+                    List<CommonHouseResult> esfInfo = getErshouFangInfo(esfTypes, cityen);
                     //如果二手房集合不为空，就添加到总的房源集合
-                    if(!CollectionUtils.isEmpty(esfInfo)){
-                        model.addAttribute("esfHouseList", esfInfo);
+                    if (!CollectionUtils.isEmpty(esfInfo)) {
+//                        model.addAttribute("esfHouseList", esfInfo);
+                        commonHouseResult.addAll(esfInfo);
                     }
+                }
+
+                //判断小区是否有数据
+                if (!CollectionUtils.isEmpty(xiaoquTypes)) {
+                    //获取小区信息
+                    List<CommonHouseResult> xiaoquInfos = getXiaoQuInfo(xiaoquTypes, cityen);
+                    //如果小区集合不为空，就添加到总的房源集合
+                    if (!CollectionUtils.isEmpty(xiaoquInfos)) {
+//                        model.addAttribute("esfHouseList", esfInfo);
+                        commonHouseResult.addAll(xiaoquInfos);
+                    }
+                }
+
+                //判断总的房源是否为空，如果不为空就返回到页面
+                if(!CollectionUtils.isEmpty(commonHouseResult)){
+
+                    model.addAttribute("commonHouseResult" , commonHouseResult);
                 }
             }
         }

@@ -45,6 +45,8 @@
             <scope>provided</scope>
         </dependency>
         <!--用于编译jsp end -->
+
+
         <!-- fastjson start -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -52,6 +54,28 @@
             <version>1.2.68</version>
         </dependency>
         <!-- fastjson end -->
+
+        <!--common-lang3 start -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!--common-lang3 end-->
+
+        <!--使用外部tomcat start -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--使用外部tomcat end -->
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version>
+        </dependency>
+
     </dependencies>
 
     <build>

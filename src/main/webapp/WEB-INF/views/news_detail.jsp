@@ -39,6 +39,9 @@
             height:  auto  !important;
              display:  block  !important;
         }
+        img {
+            max-width :100% !important;
+        }
     </style>
 </head>
 
@@ -89,34 +92,96 @@
 </p>--%>
 <div class="room-container">
 
-    <c:forEach items="${xfHouseList}" varStatus="status" var="n">
+    <c:forEach items="${commonHouseResult}" varStatus="status" var="n">
         <div class="roomlists">
             <div class="room-item" >
                 <div class="room-img">
-                    <a href="//${cityen}.centanet.com/xinfang/lp-${n.oid}">
-                        <img src="${n.defaultImage}" alt="" />
-                    </a>
+                    <c:if test="${n.xinfangResult != null}">
+                        <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
+                            <img src="${n.xinfangResult.defaultImage}" alt="" />
+                        </a>
+                    </c:if>
+                    <c:if test="${n.esfResult != null}">
+                        <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
+                            <img src="${n.esfResult.fullImagePath}" alt="" />
+                        </a>
+                    </c:if>
+                    <c:if test="${n.xiaoQuResult != null}">
+                        <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
+                            <img src="${n.xiaoQuResult.imagePath}" alt="" />
+                        </a>
+                    </c:if>
+
                 </div>
                 <div class="room-mid">
-                    <h5>${n.adName}</h5>
-                    <div class="room-type" style="white-space: nowrap;">${n.roomsName}</div>
-                    <p class="room-address" style="white-space: nowrap;">${n.baseNewProp.address}</p>
-                    <c:if test="${n.averagePrice != null && n.averagePrice > 0}">
-                        <div style=" white-space: nowrap;display: inline-block;">
-                            <p class="room-price">${n.averagePrice}元/平</p>
-                        </div>
+                    <c:if test="${n.xinfangResult != null}">
+                        <h5>${n.xinfangResult.adName}</h5>
+                        <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
+                        <p class="room-address" style="white-space: nowrap;">${n.xinfangResult.baseNewProp.address}</p>
+                        <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
+                            <div style=" white-space: nowrap;display: inline-block;">
+                                <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
+                            </div>
+                        </c:if>
                     </c:if>
+                    <c:if test="${n.esfResult != null}">
+                        <h5>${n.esfResult.estateName}</h5>
+                        <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
+                        <p class="room-address" style="white-space: nowrap;">${n.esfResult.address}</p>
+                        <c:if test="${n.esfResult.salePriceString != null}">
+                            <div style=" white-space: nowrap;display: inline-block;">
+                                <p class="room-price">
+                                        ${n.esfResult.salePriceString}万</p>
+                            </div>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${n.xiaoQuResult != null}">
+                        <h5>${n.xiaoQuResult.estateName}</h5>
+                       <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
+                        <p class="room-address" style="white-space: nowrap;">${n.xiaoQuResult.address}</p>
+                        <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
+                            <div style=" white-space: nowrap;display: inline-block;">
+                                <p class="room-price">
+                                        ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
+                            </div>
+                        </c:if>
+                    </c:if>
+
                 </div>
                 <div class="room-side">
                     <p class="onsale"><%--${n.estType}--%>
-                        <c:if test="${n.estType.contains('公寓')}">
-                            公寓
+                        <c:if test="${n.xinfangResult != null}">
+                            <c:if test="${n.xinfangResult.estType.contains('公寓')}">
+                                公寓
+                            </c:if>
+                            <c:if test="${n.xinfangResult.estType.contains('住宅')}">
+                                住宅
+                            </c:if>
+                            <c:if test="${n.xinfangResult.estType.contains('别墅')}">
+                                别墅
+                            </c:if>
                         </c:if>
-                        <c:if test="${n.estType.contains('住宅')}">
-                            住宅
+                        <c:if test="${n.esfResult != null}">
+                            <c:if test="${n.esfResult.propertyType.contains('公寓')}">
+                                公寓
+                            </c:if>
+                            <c:if test="${n.esfResult.propertyType.contains('住宅')}">
+                                住宅
+                            </c:if>
+                            <c:if test="${n.esfResult.propertyType.contains('别墅')}">
+                                别墅
+                            </c:if>
                         </c:if>
-                        <c:if test="${n.estType.contains('别墅')}">
-                            别墅
+                        <c:if test="${n.xiaoQuResult != null}">
+                            <c:if test="${n.xiaoQuResult.propertyType.contains('公寓')}">
+                                公寓
+                            </c:if>
+                            <c:if test="${n.xiaoQuResult.propertyType.contains('住宅')}">
+                                住宅
+                            </c:if>
+                            <c:if test="${n.xiaoQuResult.propertyType.contains('别墅')}">
+                                别墅
+                            </c:if>
                         </c:if>
                     </p>
                 </div>
@@ -124,41 +189,6 @@
         </div>
     </c:forEach>
 
-    <c:forEach items="${esfHouseList}" varStatus="status" var="n">
-        <div class="roomlists">
-            <div class="room-item" >
-                <div class="room-img">
-                    <a href="//${cityen}.centanet.com/ershoufang/${n.oid}.html" >
-                        <img src="${n.fullImagePath}" alt="" />
-                    </a>
-                </div>
-                <div class="room-mid">
-                    <h5>${n.estateName}</h5>
-                    <div class="room-type" style="white-space: nowrap;">${n.title}</div>
-                    <p class="room-address" style="white-space: nowrap;">${n.address}</p>
-                    <c:if test="${n.salePrice != null && n.salePrice > 0}">
-                        <div style=" white-space: nowrap;display: inline-block;">
-                            <p class="room-price">
-                                    ${fn;fn:substring(n.salePrice , 0 , 3)}万</p>
-                        </div>
-                    </c:if>
-                </div>
-                <div class="room-side">
-                    <p class="onsale"><%--${n.propertyType}--%>
-                        <c:if test="${n.propertyType.contains('公寓')}">
-                            公寓
-                        </c:if>
-                        <c:if test="${n.propertyType.contains('住宅')}">
-                            住宅
-                        </c:if>
-                        <c:if test="${n.propertyType.contains('别墅')}">
-                            别墅
-                        </c:if>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </c:forEach>
 
 </div>
 <p class="new-disclaimer"></p>
@@ -284,7 +314,7 @@
     //如果flag为false，证明是人，需要给页面加入访问量
     if(!flag){
         $.get(
-            "${newsDetailClickAddress}NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+r+"&platform=pc",
+            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+r+"&platform=pc",
             function (data) {
                 console.log(data);
                 if(parseInt(data.Result.Status) == 1){

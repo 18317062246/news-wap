@@ -17,7 +17,7 @@ static:
     version: 2020061608
 #nginx转发静态文件
     path: D:/100workspace/160code/news-html/pc/
-    url: https://static.centanet.com/news/2020061722/m
+    url: https://static.centanet.com/news/2020061923/m
 
 city:
   dss: sy,cc,dl,hrb
