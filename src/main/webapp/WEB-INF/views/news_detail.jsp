@@ -46,7 +46,7 @@
 </head>
 
 <body>
-<div class="download-app" id="downloadApp">
+<div class="download-app" id="downloadApp" style="display: none;">
     <div class="centa-logo">
         <img src="https://static.centanet.com/wap/main/img/download.png" class="logo-icon">
     </div>
@@ -232,7 +232,7 @@
         </c:forEach>
     </ul>
 </section>
-<div class="referBroker" id="jingjirenInfo">
+<div class="referBroker" id="jingjirenInfo" style="display: none;">
     <div class="referImg left">
         <img src="" alt="" id="agentImg">
     </div>
@@ -252,6 +252,7 @@
         //图片延迟加载
         $("img.lazy").lazyload({effect: "fadeIn"});
     });
+
     var searchStr = location.search;
     if (searchStr.indexOf("staffNo") > 0) {
         //由于searchStr属性值包括“?”，所以除去该字符
@@ -271,7 +272,7 @@
              },*/
             success: function (data) {
                 if (data.ResultNo == 0) {
-                    $("#AplusShare").show();
+                    $("#jingjirenInfo").show();
                     $(".download-app").show();
                     $("#StaffName").html(data.Result.CnName);
                     $("#ThumbImage").attr("src", data.Result.StaffImg);
