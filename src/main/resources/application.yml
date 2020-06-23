@@ -14,9 +14,7 @@ log:
   path: ./logs
 #静态文件版本号
 static:
-    version: 2020061608
 #nginx转发静态文件
-    path: D:/100workspace/160code/news-html/pc/
     url: https://static.centanet.com/news/2020062325/m
 
 city:

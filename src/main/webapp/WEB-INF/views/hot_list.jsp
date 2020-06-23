@@ -18,11 +18,11 @@
     <link rel="apple-touch-icon" sizes="144x144" href="images/touch-icon-ipad-retina.png"/>
     <link rel="icon" href="${staticurl}/images/favicon.ico" type="image/x-icon"/>
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection"/>
-    <link rel="stylesheet" href="${staticurl}/css/font.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/common.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css?v=${ver}">
+    <link rel="stylesheet" href="${staticurl}/css/font.css">
+    <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
+    <link rel="stylesheet" href="${staticurl}/css/common.css">
+    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css">
+    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
 </head>
@@ -101,8 +101,8 @@
 </div>
 
 <%--<script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>--%>
-<script type="text/javascript" src="${staticurl}/js/materialize.min.js?v=${ver}"></script>
-<script type="text/javascript" src="${staticurl}/js/iscroll-probe.js?v=${ver}"></script>
+<script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
+<script type="text/javascript" src="${staticurl}/js/iscroll-probe.js"></script>
 <%--<script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>--%>
 <script src="${staticurl}/js/bscroll.min.js"></script>
 <script>

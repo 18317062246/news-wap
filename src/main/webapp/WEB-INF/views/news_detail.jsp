@@ -19,11 +19,11 @@
     <link rel="apple-touch-icon" sizes="144x144" href="images/touch-icon-ipad-retina.png"/>
     <link rel="icon" href="${staticurl}/images/favicon.ico" type="image/x-icon"/>
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection"/>
-    <link rel="stylesheet" href="${staticurl}/css/font.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/common.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css?v=${ver}">
-    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css?v=${ver}">
+    <link rel="stylesheet" href="${staticurl}/css/font.css">
+    <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
+    <link rel="stylesheet" href="${staticurl}/css/common.css">
+    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css">
+    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css">
 
     <%--分享--%>
    <%-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
