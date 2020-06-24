@@ -26,7 +26,7 @@
 			<ul class="tablist">
 				<%--<c:set var="imgArr" value="${fn:split('buyHouse.png,collectHouse.png,goTop-1.png
 														 ,loanDeal.png,propertyRight.png,seeHouse.png,subscription.png',','}"></c:set>--%>
-				<c:set var="arr" value="${fn:split('buy_house.png,see_house.png,subscription.png,loan_deal.png,collect_house.png,property_right.png,goTop-1.png,property_right.png,subscription.png',',')}">
+				<c:set var="arr" value="${fn:split('buy_house.png,see_house.png,subscription.png,loan_deal.png,collect_house.png,property_right.png,go_top-1.png,property_right.png,subscription.png',',')}">
 				</c:set>
 				<c:forEach items="${types}" var="t" varStatus="status">
 					<a href="/m/${cityen}/baike?channel=${t.id}">
@@ -42,7 +42,7 @@
 			</ul>
 		</aside>
 		<div class="scroll ying">
-			<div id="toTop"><img src="${staticurl}/images/goTop-1.png" /></div>
+			<div id="toTop"><img src="${staticurl}/images/go_top-1.png" /></div>
 		</div>
 		<div class="scrollss">
 			<c:forEach items="${news}" var="n">

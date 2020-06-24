@@ -28,11 +28,6 @@
     <!-- 调用微信分享插件 -->
     <script src="https://static.centanet.com/wap/js/wx-share.js"></script>
 
-
-
-    <%--分享--%>
-   <%-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="${staticurl}/js/shareJssdk.js"></script>--%>
     <style>
         .newdetail-wrapper img {
              width:  100%   !important;
