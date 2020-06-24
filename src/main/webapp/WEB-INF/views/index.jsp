@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="${staticurl}/css/font.css">
     <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
     <link rel="stylesheet" href="${staticurl}/css/common.css">
-    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css">
-    <link rel="stylesheet" href="${staticurl}/css/zixunList.css">
+    <link rel="stylesheet" href="${staticurl}/css/news_common.css">
+    <link rel="stylesheet" href="${staticurl}/css/zixun_list.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
 </head>
@@ -247,7 +247,7 @@
                         temp += '  <div class="new-img">';
                         //temp += '  <img src="'+content.LitPic+'" onerror="this.src=\'${error_img}\'"> ';
                         temp += ' <img class="lazy" src="'+content.LitPic+'?x-oss-process=style/180x130"' +
-                            'data-original="'+content.LitPic+'?x-oss-process=style/180x130" onerror="this.src=\'//static.centanet.com/resourcewap/images/loadPhoto.jpg\'">';
+                            'data-original="'+content.LitPic+'?x-oss-process=style/180x130" onerror="this.src=\'//static.centanet.com/resourcewap/images/load_photo.jpg\'">';
                         temp += '  </div>';
                         temp += '  </a>';
                         temp += '  </li>';

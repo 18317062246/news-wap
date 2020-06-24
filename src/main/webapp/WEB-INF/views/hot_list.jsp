@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="${staticurl}/css/font.css">
     <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
     <link rel="stylesheet" href="${staticurl}/css/common.css">
-    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css">
-    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css">
+    <link rel="stylesheet" href="${staticurl}/css/news_common.css">
+    <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
 </head>

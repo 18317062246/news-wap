@@ -10,8 +10,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,  maximum-scale=1.0, minimum-scale=1.0"/>
-    <title>资讯详情</title>
-    <meta name="description" content="">
+    <title>中原资讯</title>
+    <!-- 默认meta标签中的content作为描述 -->
+    <meta name="description" content="${detail.Title}">
     <meta name="keywords" content="">
     <meta name="referrer" content="no-referrer" />
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>
@@ -22,8 +23,12 @@
     <link rel="stylesheet" href="${staticurl}/css/font.css">
     <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
     <link rel="stylesheet" href="${staticurl}/css/common.css">
-    <link rel="stylesheet" href="${staticurl}/css/newsCommon.css">
-    <link rel="stylesheet" href="${staticurl}/css/zixunDetail.css">
+    <link rel="stylesheet" href="${staticurl}/css/news_common.css">
+    <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
+    <!-- 调用微信分享插件 -->
+    <script src="https://static.centanet.com/wap/js/wx-share.js"></script>
+
+
 
     <%--分享--%>
    <%-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -46,6 +51,8 @@
 </head>
 
 <body>
+<!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
+<img  src="https://static.centanet.com/wap/img/m-logo.png"  style="display: none;">
 <div class="download-app" id="downloadApp" style="display: none;">
     <div class="centa-logo">
         <img src="https://static.centanet.com/wap/main/img/download.png" class="logo-icon">
