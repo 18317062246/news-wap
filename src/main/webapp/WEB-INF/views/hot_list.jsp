@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="mfn" uri="/WEB-INF/mfn.tld"%>
 <!DOCTYPE html>
 <html>
 
@@ -24,7 +25,7 @@
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
+    <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.min.js" language="javascript"></script>
 </head>
 
 <body>
@@ -75,8 +76,8 @@
                     <div class="img-box">
                         <%--<img src="${item.LitPic}">--%>
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-                        <img class="lazy" src="${item.LitPic}?x-oss-process=style/180x130"
-                             data-original="${item.LitPic}?x-oss-process=style/180x130" alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
+                        <img class="lazy" src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_1000x700_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                             data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_1000x700_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}" alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
                     </div>
                     <div class="content">
                         <h4 class="title">${item.Title}</h4>

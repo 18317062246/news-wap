@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="mfn" uri="/WEB-INF/mfn.tld"%>
 <!DOCTYPE html>
 <html>
 
@@ -21,7 +22,7 @@
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_list.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>
+    <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.min.js" language="javascript"></script>
 </head>
 
 <body>
@@ -81,9 +82,10 @@
                     <div class="new-img">
                        <%-- <img src="${item.LitPic}">--%>
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-                        <c:set var="lazyPic" value="${item.LitPic}?x-oss-process=style/180x130"></c:set>
-                        <img class="lazy" src="${item.LitPic == ''?defaultpic:lazyPic}"
-                             data-original="${item.LitPic == ''?defaultpic:lazyPic}" alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
+                        <%--<c:set var="lazyPic" value="${item.LitPic}?x-oss-process=style/180x130"></c:set>--%>
+                        <img class="lazy" src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                             data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                             alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
                     </div>
                 </a>
             </li>
@@ -172,7 +174,6 @@
             //判断当前情况，如果滚动标志位为0时，表示可加载
             if(IS_OVER==0){
                 //当前页码数+1
-                console.log('index++'+IS_OVER);
                 beginShow++;
                 //加载新的页码数
                 list(beginShow,perNum);
@@ -194,7 +195,6 @@
         }else {
             serviceUrl = '/m/${cityen}/list/c'+ colType +'p' + currentPage + "/page/?key="+key;
         }
-        console.log(serviceUrl);
 
         $.ajax({
             type:'GET',
@@ -205,11 +205,7 @@
             dataType:'json',
             cache:false,
             success:function(data){
-                console.log(data);
-                console.log("pcount="+data.TotalPage);
-                console.log("currentPage="+data.CurrentPage);
-                //console.log('succcess'+JSON.stringify(data));
-                //console.log("pcount"+data.TotalPage);
+
                 pCount=data.TotalPage;
                 // var myList=data.Result.length;
                 //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
@@ -246,8 +242,9 @@
                         temp += '  </div>';
                         temp += '  <div class="new-img">';
                         //temp += '  <img src="'+content.LitPic+'" onerror="this.src=\'${error_img}\'"> ';
-                        temp += ' <img class="lazy" src="'+content.LitPic+'?x-oss-process=style/180x130"' +
-                            'data-original="'+content.LitPic+'?x-oss-process=style/180x130" onerror="this.src=\'//static.centanet.com/resourcewap/images/load_photo.jpg\'">';
+                        let litPic = content.LitPic;
+                        temp += ' <img class="lazy" src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"' +
+                            'data-original="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length) +'" onerror="this.src=\'${staticurl}/images/load_photo.jpg\'">';
                         temp += '  </div>';
                         temp += '  </a>';
                         temp += '  </li>';
@@ -275,7 +272,6 @@
 
             },
             error:function (data) {
-                console.log('error data'+data);
             }
         });
     }

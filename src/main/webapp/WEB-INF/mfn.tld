@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>JSTL 1.1 functions library</description>
+    <display-name>JSTL functions</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>mfn</short-name>
+    <uri>/WEB-INF/mfn.tld</uri>
+
+    <function>
+        <description>
+            Returns the index withing a string of the last occurrence of a specified substring.
+        </description>
+        <name>lastIndexOf</name>
+        <function-class>com.news.web.util.StringResource</function-class>
+        <function-signature>int lastIndexOf(java.lang.String, java.lang.String)</function-signature>
+        <example>
+            ${mfn:lastIndexOf(url, ".")}
+        </example>
+    </function>
+
+</taglib>

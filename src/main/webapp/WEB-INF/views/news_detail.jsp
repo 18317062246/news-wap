@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="mfn" uri="/WEB-INF/mfn.tld"%>
 <!DOCTYPE html>
 <html>
 
@@ -26,7 +27,8 @@
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
     <!-- 调用微信分享插件 -->
-    <script src="https://static.centanet.com/wap/js/wx-share.js"></script>
+    <%--<script src="https://static.centanet.com/wap/js/wx-share.js"></script>--%>
+    <script src="${staticurl}/js/wx-share.js"></script>
 
     <style>
         .newdetail-wrapper img {
@@ -107,17 +109,26 @@
                 <div class="room-img">
                     <c:if test="${n.xinfangResult != null}">
                         <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
-                            <img src="${n.xinfangResult.defaultImage}" alt="" />
+                            <img class="lazy" <%--src="${n.xinfangResult.defaultImage}"--%>
+                                 src="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
+                                 data-original="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
+                                 alt="" />
                         </a>
                     </c:if>
                     <c:if test="${n.esfResult != null}">
                         <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
-                            <img src="${n.esfResult.fullImagePath}" alt="" />
+                            <img  class="lazy" <%--src="${n.esfResult.fullImagePath}"--%>
+                                  src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  alt="" />
                         </a>
                     </c:if>
                     <c:if test="${n.xiaoQuResult != null}">
                         <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
-                            <img src="${n.xiaoQuResult.imagePath}" alt="" />
+                            <img  class="lazy" <%--src="${n.xiaoQuResult.imagePath}"--%>
+                                    src="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                    data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                    alt="" />
                         </a>
                     </c:if>
 
@@ -232,8 +243,11 @@
                             <%-- <img src="${n.LitPic}">--%>
                         <c:set var="defaultpic"
                                value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-                        <img class="lazy" src="${n.LitPic}?x-oss-process=style/180x130"
-                             data-original="${n.LitPic}?x-oss-process=style/180x130" alt="${item.Title}"
+                        <img class="lazy" <%--src="${n.LitPic}?x-oss-process=style/180x130"
+                             data-original="${n.LitPic}?x-oss-process=style/180x130"--%>
+                             src="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                             data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                             alt="${item.Title}"
                              onerror="this.src='${defaultpic}'"/>
                     </div>
                 </a>
@@ -254,7 +268,7 @@
 
 <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
-<script src="${staticurl}/js/jquery.lazyload.js" type="text/javascript" language="javascript"></script>
+<script src="${staticurl}/js/jquery.lazyload.min.js" type="text/javascript" language="javascript"></script>
 <script type="text/javascript">
 
     $(function () {
