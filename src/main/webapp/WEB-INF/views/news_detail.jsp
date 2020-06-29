@@ -11,9 +11,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,  maximum-scale=1.0, minimum-scale=1.0"/>
-    <title>中原资讯</title>
+    <title>${detail.Title}</title>
     <!-- 默认meta标签中的content作为描述 -->
-    <meta name="description" content="${detail.Title}">
+    <meta name="description" content="${fn:substring(detail.Description,0 ,30)}">
     <meta name="keywords" content="">
     <meta name="referrer" content="no-referrer" />
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>
@@ -50,16 +50,18 @@
 <body>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
 <img  src="https://static.centanet.com/wap/img/m-logo.png"  style="display: none;">
-<div class="download-app" id="downloadApp" style="display: none;">
-    <div class="centa-logo">
-        <img src="https://static.centanet.com/wap/main/img/download.png" class="logo-icon">
-    </div>
-    <div class="content">
-        <h4>下载中原找房APP</h4>
-        <p class="desc">地图找房，与经纪人在线直聊！</p>
-    </div>
-    <div class="download-btn">
-        <a href="javascript:0" class="down-a">立即打开</a>
+<div class="header-down">
+    <div class="download-app" id="downloadApp" style="display: none;">
+        <div class="centa-logo">
+            <img src="https://static.centanet.com/wap/main/img/download.png" class="logo-icon">
+        </div>
+        <div class="content">
+            <h4>下载中原找房APP</h4>
+            <p class="desc">地图找房，与经纪人在线直聊！</p>
+        </div>
+        <div class="download-btn">
+            <a href="javascript:0" class="down-a">立即打开</a>
+        </div>
     </div>
 </div>
 <div class="search-new">
@@ -110,24 +112,24 @@
                     <c:if test="${n.xinfangResult != null}">
                         <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
                             <img class="lazy" <%--src="${n.xinfangResult.defaultImage}"--%>
-                                 src="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
-                                 data-original="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
+                                 src="${n.xinfangResult.defaultImage}"
+                                 data-original="${n.xinfangResult.defaultImage}"
                                  alt="" />
                         </a>
                     </c:if>
                     <c:if test="${n.esfResult != null}">
                         <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
                             <img  class="lazy" <%--src="${n.esfResult.fullImagePath}"--%>
-                                  src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                  data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  src="${n.esfResult.fullImagePath}"
+                                  data-original="${n.esfResult.fullImagePath}"
                                   alt="" />
                         </a>
                     </c:if>
                     <c:if test="${n.xiaoQuResult != null}">
                         <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
                             <img  class="lazy" <%--src="${n.xiaoQuResult.imagePath}"--%>
-                                    src="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                    data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                    src="${n.xiaoQuResult.imagePath}"
+                                    data-original="${n.xiaoQuResult.imagePath}"
                                     alt="" />
                         </a>
                     </c:if>
@@ -284,19 +286,31 @@
             var str = searchStr.split('&');
             searchStr = str[0];
         }
+
+        //定义一个serviceUrl
+        let serviceUrl;
+
+        //判断是否为深圳,深圳独有获取经纪人地址
+        if(${cityen == 'sz'}){
+            serviceUrl = 'https://apisz.centanet.com/v6/json/reply/StaffRequest?staffNo='+ searchStr +'&cityen=${cityen}&platform=wap';
+        }else {//其他城市公用获取经纪人地址
+            serviceUrl = 'https://mobileapi.centanet.com/v6/json/reply/StaffRequest?StaffNo='+ searchStr +'&cityen=${cityen}&platform=wap';
+        }
         $.ajax({
             type: "GET",
             async: false,
-            url: "https://mobileapi.centanet.com/v6/json/reply/StaffRequest?StaffNo=" + searchStr + "&cityen=${cityen}&platform=wap",
+            url: serviceUrl,
             /* data: {
                  StaffNo: searchStr,
                  cityen:cityShort,
                  platform: "wap"
              },*/
             success: function (data) {
+                console.log(data);
                 if (data.ResultNo == 0) {
-                    $("#jingjirenInfo").show();
-                    $(".download-app").show();
+                    $("#jingjirenInfo").show();//打开经纪人展示信息
+                    $(".download-app").show();//打开下载APP
+                    $(".header-down").show();//打开头部
                     $("#StaffName").html(data.Result.CnName);
                     $("#ThumbImage").attr("src", data.Result.StaffImg);
                     var telstr = data.Result.Staff400Tel;
@@ -321,12 +335,14 @@
                 } else {
                     $("#jingjirenInfo").css('display', 'none');//隐藏底部
                     $("#downloadApp").css('display', 'none');//隐藏头部
+                    $(".header-down").css('display', 'none');//隐藏头部
                 }
             }
         });
     } else {
         $("#jingjirenInfo").css('display', 'none');//隐藏底部
         $("#downloadApp").css('display', 'none');//隐藏头部
+        $(".header-down").css('display', 'none');//隐藏头部
     }
 </script>
 <script type="text/javascript">
