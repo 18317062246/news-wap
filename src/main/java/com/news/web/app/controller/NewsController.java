@@ -128,6 +128,57 @@ public class NewsController {
             }
             type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
         }
+
+        //判断types是否为空，不为空就进行判断，栏目是否不存在新闻列表
+        if(!CollectionUtils.isEmpty(types)) {
+            //创建一个List对象，将没有文章的栏目进行存储
+            List<NewsType> newsTypesRemove = new ArrayList<>();
+            //循环types,将没有文章的栏目进行删除
+            for (NewsType newsType : types) {
+                //41为中原资讯，如果是41，则进行跳过
+                if(Objects.equals(newsType.getId() , 41)){
+                    continue;
+                }
+                //获取集团资讯栏目下的文章
+                JSONObject jtResult = newsList(cityen, Arrays.asList(newsType.getId()), 1, 15, null, null);
+                //若该栏目下的文章为空，将该文章对象添加到集合中
+                if (ObjectUtils.isEmpty(jtResult.get(NEWS_LIST))) {
+                    newsTypesRemove.add(newsType);
+                }
+            }
+
+            //若newsTypesRemove对象不为空，就删除栏目
+            if(!CollectionUtils.isEmpty(newsTypesRemove)) {
+                //删除所有栏目
+                types.removeAll(newsTypesRemove);
+            }
+        }
+
+        //判断dssType是否为空，不为空就进行判断，栏目是否不存在新闻列表
+        if(!CollectionUtils.isEmpty(dssType)) {
+            //创建一个List对象，将没有文章的栏目进行存储(东三省)
+            List<NewsType> dssNewsTypesRemove = new ArrayList<>();
+            //循环东三省types,将没有文章的栏目进行删除
+            for (NewsType newsType : dssType) {
+                //41为中原资讯，如果是41，则进行跳过
+                if(Objects.equals(newsType.getId() , 41)){
+                    continue;
+                }
+                //获取集团资讯栏目下的文章
+                JSONObject jtResult = newsList(cityen, Arrays.asList(newsType.getId()), 1, 15, null, null);
+                //若该栏目下的文章为空，将该文章对象添加到集合中
+                if (ObjectUtils.isEmpty(jtResult.get(NEWS_LIST))) {
+                    dssNewsTypesRemove.add(newsType);
+                }
+            }
+
+            //若dssNewsTypesRemove对象不为空，就删除栏目
+            if(!CollectionUtils.isEmpty(dssNewsTypesRemove)) {
+                //删除所有栏目(东三省)
+                dssType.removeAll(dssNewsTypesRemove);
+            }
+        }
+
         List<Integer> typeid = Arrays.asList(type);
         List<Map> news = new ArrayList<>();
         //当前栏目ID是否集团资讯下的栏目
@@ -153,8 +204,10 @@ public class NewsController {
 
         if (!isJtyy) {
             //栏目非集团栏目编号获取文章列表
+
             JSONObject result = newsList(cityen, typeid, 1, 15, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
+
             model.addAttribute("flag", 0);
         }
         model.addAttribute("types", dss.contains(cityen) ? dssType : types);

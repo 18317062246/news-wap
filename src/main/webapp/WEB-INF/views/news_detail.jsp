@@ -44,12 +44,20 @@
         img {
             max-width :100% !important;
         }
+        /*.wxtip{background: rgba(0,0,0,0.8); text-align: center; position: fixed; left:0; top: 0; width: 100%; height: 100%; z-index: 998; display: none;}
+        .wxtip-icon{width: 52px; height: 67px; background: url(weixin-tip.png) no-repeat; display: block; position: absolute; right: 20px; top: 20px;}
+        .wxtip-txt{margin-top: 107px; color: #fff; font-size: 16px; line-height: 1.5;}
+*/
     </style>
 </head>
 
 <body>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
 <img  src="https://static.centanet.com/wap/img/m-logo.png"  style="display: none;">
+   <%-- <div class="wxtip" id="JweixinTip">
+        <span class="wxtip-icon"></span>
+        <p class="wxtip-txt">下载APP,点击右上角<br/>选择在浏览器中打开</p>
+    </div>--%>
 <div class="header-down">
     <div class="download-app" id="downloadApp" style="display: none;">
         <div class="centa-logo">
@@ -60,7 +68,7 @@
             <p class="desc">地图找房，与经纪人在线直聊！</p>
         </div>
         <div class="download-btn">
-            <a href="javascript:0" class="down-a">立即打开</a>
+            <a href="javascript:0" class="down-a" onclick="downApp()">立即打开</a>
         </div>
     </div>
 </div>
@@ -374,6 +382,14 @@
 <script>
     $(function () {
 
+       /* $("#JweixinTip").css('display' , 'none');
+        var ua = navigator.userAgent;
+        var isWeixin = !!/MicroMessenger/i.test(ua);
+        if(isWeixin){
+            $("#JweixinTip").css('display' , 'block');//打开弹窗
+            $("#downloadApp").css('display', 'none');//隐藏头部
+        }*/
+
         /*获取地址栏指定参数*/
         function GetUrl(item) {
             var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
@@ -420,7 +436,7 @@
             else return null;
         }
 
-        $("a.down-a").click(function () {
+        /*$("a.down-a").click(function () {
             var url = $(this).attr('href');
             var searchStr = location.search;
             var url2 = "";
@@ -433,9 +449,35 @@
                 url2 = "https://datayi.cn/re61OwJ";
                 $(this).attr('href', url2);
             }
-        })
+        })*/
         //$(".button-collapse").sideNav();
     });
+
+    function downApp() {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        var isWechat = u.toLowerCase().match(/MicroMessenger/i) == 'micromessenger';
+        var iosUrl="https://itunes.apple.com/cn/app/zhong-yuan-zhao-fang/id880575384?mt=8";
+        var adrUrl="https://static.centanet.com/apk/salehouse.apk";
+        var tenUrl="https://a.app.qq.com/o/simple.jsp?pkgname=com.centaline.androidsalesblog";
+        var iosSchema="SaleHouse://static.centanet.com/salehouseuniversallink";
+        var adrSchema="salehouse://static.centanet.com/salehouseuniversallink";
+        //由于webview无法检测用户是否安装app,schema协议执行后,2s后不管用户是否跳转至app,都跳下载页
+        if (isiOS) {
+            location.href = isWechat?tenUrl:iosSchema;
+            !isWechat&&setTimeout(function () {location.href = iosUrl;}, 2000);
+        }
+        else if (isAndroid) {
+            location.href = isWechat?tenUrl:adrSchema;
+            !isWechat&&setTimeout(function () {location.href = adrUrl;}, 2000);
+        }else {
+            //无设备标识的跳转到wap下载引导页
+            location.href='//wap.centanet.com/applink/?fwx';
+        }
+    }
+
+
 </script>
 </body>
 <%--统计代码--%>
