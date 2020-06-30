@@ -44,20 +44,14 @@
         img {
             max-width :100% !important;
         }
-        /*.wxtip{background: rgba(0,0,0,0.8); text-align: center; position: fixed; left:0; top: 0; width: 100%; height: 100%; z-index: 998; display: none;}
-        .wxtip-icon{width: 52px; height: 67px; background: url(weixin-tip.png) no-repeat; display: block; position: absolute; right: 20px; top: 20px;}
-        .wxtip-txt{margin-top: 107px; color: #fff; font-size: 16px; line-height: 1.5;}
-*/
+
     </style>
 </head>
 
 <body>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
 <img  src="https://static.centanet.com/wap/img/m-logo.png"  style="display: none;">
-   <%-- <div class="wxtip" id="JweixinTip">
-        <span class="wxtip-icon"></span>
-        <p class="wxtip-txt">下载APP,点击右上角<br/>选择在浏览器中打开</p>
-    </div>--%>
+
 <div class="header-down">
     <div class="download-app" id="downloadApp" style="display: none;">
         <div class="centa-logo">
@@ -381,14 +375,6 @@
 
 <script>
     $(function () {
-
-       /* $("#JweixinTip").css('display' , 'none');
-        var ua = navigator.userAgent;
-        var isWeixin = !!/MicroMessenger/i.test(ua);
-        if(isWeixin){
-            $("#JweixinTip").css('display' , 'block');//打开弹窗
-            $("#downloadApp").css('display', 'none');//隐藏头部
-        }*/
 
         /*获取地址栏指定参数*/
         function GetUrl(item) {
