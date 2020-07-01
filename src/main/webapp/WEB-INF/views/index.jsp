@@ -37,16 +37,19 @@
     <a href="/m/${cityen}/" class="goback">
         <sapn class="search-title">中原资讯</sapn>
     </a>
-    <c:if test="${cityen == 'sz'}">
-        <a href="//m.${cityen}.centanet.com/search?type=7" class="search-a">
-            <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
-        </a>
-    </c:if>
-    <c:if test="${cityen != 'sz'}">
-        <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
-            <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
-        </a>
-    </c:if>
+    <c:choose>
+        <c:when test="${cityen == 'sz' || cityen == 'gz'}">
+            <a href="//m.${cityen}.centanet.com/search?type=7" class="search-a">
+                <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+            </a>
+        </c:when>
+        <c:otherwise>
+            <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
+                <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+            </a>
+        </c:otherwise>
+    </c:choose>
+
 
 </div>
 </div>
@@ -163,8 +166,12 @@
     });
     //当滚动到屏幕底部时
     $(window).scroll(function () {
-        let key='${key}';
+        /*let key='{key}';
         if(key){
+            return false;
+        }*/
+        //若当前页大于等于总页数，则不进行翻页
+        if(beginShow >= pCount){
             return false;
         }
         var newScrolltop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -183,11 +190,9 @@
 
     //aJax获取分页数据
     function list(currentPage,showCount){
+        //搜索的关键字
         let key='${key}';
-        var year='2020';
-        var month='5';
-        var cityId='021';
-        var COURSE_CATEGORY_ID='20';
+        //需要调用的方法
         let serviceUrl = '';
         let colType=$('#tabtype').val();
         if(${flag >= 1}){
@@ -199,33 +204,12 @@
         $.ajax({
             type:'GET',
             url: serviceUrl,
-            /*data:{currentPage:currentPage,showCount:showCount,SECTION_ID:'3',
-                STATUS:'0',TYPE:'3',year:year,month:month,
-                COURSE_CITY_ID:cityId,COURSE_CATEGORY_ID:COURSE_CATEGORY_ID},*/
             dataType:'json',
             cache:false,
             success:function(data){
 
                 pCount=data.TotalPage;
-                // var myList=data.Result.length;
-                //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
-                if(currentPage==1&&data.Result == null){
-                    $(".new_list").html('<li class="item type'+colType+'">暂无更多数据</li>');
-                    IS_OVER=1;
-                    //隐藏等待图标
-                    $("#waiting").hide();
-                }else {
-                    //如果现在的页数大于等于最大页码数，不再翻页
-                    if (currentPage > pCount) {
-                       /* $(".new-list").append('<li class="item type'+colType+'"><a href="" class="item-a"><div class="new-main"><h6 class="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已到底部,无更多数据!</h6>' +
-                            '<div class="desc"> <span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="time"></span></div></div>  <div class="new-img"> ' +
-                            '<img class="lazy" src="//static.centanet.com/resourcewap/images/loadPhoto.jpg" data-original="static.centanet.com/resourcewap/images/loadPhoto.jpg"></div> </a></li>');*/
-                        //定义加载标志位，让其不能再加载
-                        IS_OVER = 1;
-                        $("#waiting").hide();
-                        //return;
-                    }
-                }
+
                 let sum = '';
                 let defaultpic='https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111';
                 if(data.ResultNo == 0 && data.Result != null && data.Result.length>0){
@@ -251,22 +235,18 @@
                         sum += temp;
                     }
                     $(".new-list").append(sum);
-                }else {
-                    pCount=data.TotalPage;
-                    var myList=data.Result;
-                    //如果现在处在第一页，且获取到的课程数量为空时，给用户显示的内容
-                    if(currentPage==1&&myList== null){
-                        $(".new_list").html('<li class="item">这里暂无数据</li>');
-                        IS_OVER=1;
-                        //隐藏等待图标
+
+                    //如果现在的页数大于等于最大页码数，不再翻页
+                    if (currentPage >= pCount) {
+                        //加入等待线
+                        let tempLine = '<li class="item" style="text-align: center;">';
+                        tempLine += '<br/><div style="color: #000;"><h4 class="title">---------------没有更多数据了--------------</h4></div><br/>';
+                        tempLine += '</li>';
+                        $(".new-list").append(tempLine);
+
+                        //定义加载标志位，让其不能再加载
+                        IS_OVER = 1;
                         $("#waiting").hide();
-                    }else {
-                        //如果现在的页数大于等于最大页码数，不再翻页
-                        if (currentPage >= pCount) {
-                            //定义加载标志位，让其不能再加载
-                            IS_OVER = 1;
-                            $("#waiting").hide();
-                        }
                     }
                 }
 
