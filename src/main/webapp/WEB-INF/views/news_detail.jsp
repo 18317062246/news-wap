@@ -113,8 +113,14 @@
         <div class="roomlists">
             <div class="room-item" >
                 <div class="room-img">
+                    <c:set var="citys" value="sz,gz"></c:set>
                     <c:if test="${n.xinfangResult != null}">
-                        <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
+                        <c:if test="${fn:contains(citys, cityen)}">
+                            <a href="//m.${cityen}.centanet.com/xinfang/lp-${n.xinfangResult.oid}/">
+                        </c:if>
+                        <c:if test="${!fn:contains(citys, cityen)}">
+                            <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
+                        </c:if>
                             <img class="lazy" <%--src="${n.xinfangResult.defaultImage}"--%>
                                  src="${n.xinfangResult.defaultImage}"
                                  data-original="${n.xinfangResult.defaultImage}"
@@ -122,7 +128,12 @@
                         </a>
                     </c:if>
                     <c:if test="${n.esfResult != null}">
-                        <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
+                        <c:if test="${fn:contains(citys, cityen)}">
+                            <a href="//m.${cityen}.centanet.com/ershoufang/${n.esfResult.oid}.html/" >
+                        </c:if>
+                        <c:if test="${!fn:contains(citys, cityen)}">
+                            <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
+                        </c:if>
                             <img  class="lazy" <%--src="${n.esfResult.fullImagePath}"--%>
                                   src="${n.esfResult.fullImagePath}"
                                   data-original="${n.esfResult.fullImagePath}"
@@ -130,7 +141,13 @@
                         </a>
                     </c:if>
                     <c:if test="${n.xiaoQuResult != null}">
-                        <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
+                      <c:if test="${fn:contains(citys, cityen)}">
+                            <a href="//m.${cityen}.centanet.com/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
+                       </c:if>
+                       <c:if test="${!fn:contains(citys, cityen)}">
+                           <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
+                       </c:if>
+
                             <img  class="lazy" <%--src="${n.xiaoQuResult.imagePath}"--%>
                                     src="${n.xiaoQuResult.imagePath}"
                                     data-original="${n.xiaoQuResult.imagePath}"

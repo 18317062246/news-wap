@@ -62,7 +62,11 @@
 </div>
 <div>
     <div class="wrapper">
-        <ul class="news-tab" style="width: 593px;">
+        <ul class="news-tab" style="width: 593px;
+            <c:if test="${hidetab}">
+                    display: none;
+            </c:if>
+        ">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
             <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
                     <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>

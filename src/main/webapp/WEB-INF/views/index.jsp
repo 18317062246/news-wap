@@ -57,7 +57,11 @@
 <div>
     <div class="wrapper">
         <c:set var="error_image" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-        <ul class="news-tab" style="width: 593px;">
+        <ul class="news-tab" style="width: 593px;
+            <c:if test="${hidetab}">
+                    display: none;
+            </c:if>
+        ">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
             <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
                     <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
