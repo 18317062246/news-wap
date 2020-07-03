@@ -68,7 +68,7 @@
             </c:if>
         ">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
-            <c:forEach items="${types}" var="type" varStatus="status" begin="0" end="6">
+            <c:forEach items="${types}" var="type" varStatus="status">
                     <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
             </c:forEach>
         </ul>
