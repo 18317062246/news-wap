@@ -122,8 +122,10 @@
                             <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
                         </c:if>
                             <img class="lazy" <%--src="${n.xinfangResult.defaultImage}"--%>
-                                 src="${n.xinfangResult.defaultImage}"
-                                 data-original="${n.xinfangResult.defaultImage}"
+                                 <%--src="${n.xinfangResult.defaultImage}"
+                                 data-original="${n.xinfangResult.defaultImage}"--%>
+                                 src="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
+                                 data-original="${fn:substring(n.xinfangResult.defaultImage, 0 , mfn:lastIndexOf(n.xinfangResult.defaultImage, "."))}_180x130_c${fn:substring(n.xinfangResult.defaultImage,mfn:lastIndexOf(n.xinfangResult.defaultImage, ".") , fn:length(n.xinfangResult.defaultImage))}"
                                  alt="" />
                         </a>
                     </c:if>
@@ -135,8 +137,10 @@
                             <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
                         </c:if>
                             <img  class="lazy" <%--src="${n.esfResult.fullImagePath}"--%>
-                                  src="${n.esfResult.fullImagePath}"
-                                  data-original="${n.esfResult.fullImagePath}"
+                                 <%-- src="${n.esfResult.fullImagePath}"
+                                  data-original="${n.esfResult.fullImagePath}"--%>
+                                  src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
                                   alt="" />
                         </a>
                     </c:if>
@@ -149,8 +153,10 @@
                        </c:if>
 
                             <img  class="lazy" <%--src="${n.xiaoQuResult.imagePath}"--%>
-                                    src="${n.xiaoQuResult.imagePath}"
-                                    data-original="${n.xiaoQuResult.imagePath}"
+                                    <%--src="${n.xiaoQuResult.imagePath}"
+                                    data-original="${n.xiaoQuResult.imagePath}"--%>
+                                  src="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                  data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
                                     alt="" />
                         </a>
                     </c:if>
