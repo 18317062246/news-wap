@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -239,21 +240,9 @@ public class NewsController {
     public String index(Model model
             , @PathVariable(name = "cityen") String cityen
             , @PathVariable(name = "id") String id
-            ,@RequestParam(name = "staffNo" , required = false) String staffNo
-            ,@RequestParam(name = "from" , required = false) String from
-            ,@RequestParam(name = "isappinstalled" , required = false) Integer isappinstalled
-            ,@RequestParam(name = "staffno" , required = false) String staffno ) {
+            ,HttpServletRequest request) {
+
         log.info("detail id=>{}", id);
-        //若staffNo和from、isappinstalled都不为空的时候，重定向到详情页面
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
-           return "redirect:/m/"+ cityen + "/detail/"+ id+".html" + String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffNo , from , isappinstalled);
-            ////若staffNo和from都不为空的时候，重定向到详情页面
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
-            return "redirect:/m/"+ cityen + "/detail/"+ id+".html" +  String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffNo , from);
-            //若staffNo不为空的时候，重定向到详情页面
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo)){
-            return "redirect:/m/"+ cityen + "/detail/"+ id+".html" +  String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffNo);
-        }
         setCommon(model, cityen);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
@@ -319,16 +308,15 @@ public class NewsController {
         if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
             return "redirect:" + detail.get("Url");
         }
-        //若staffNo和from、isappinstalled都不为空的时候，存储带是否安装应用的长经纪人key
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
-            model.addAttribute(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffno , from , isappinstalled));
-            ////若staffNo和from都不为空的时候，存储长经纪人key
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
-            model.addAttribute(StringResource.LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffno , from));
-            //若staffNo不为空的时候，存储短经纪人key
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno)){
-            model.addAttribute(StringResource.SHORT_JINGJIREN_SHARE_KEY , String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffno));
+        //获取所有参数
+        String queryString = request.getQueryString();
+        //如果queryString不为空，就将经纪人的信息参数存储起来
+        if(org.apache.commons.lang3.StringUtils.isNoneBlank(queryString)){
+            //如果不为空，就转换成小写
+            queryString = queryString.toLowerCase();
+            model.addAttribute(StringResource.JINGJIREN_SHARE_KEY , String.format(StringResource.JINGJIREN_SHARE_VALUE , queryString));
         }
+
         model.addAttribute("news", news);
         //将文章内容进行格式化
         String content = (String) detail.get("Content");

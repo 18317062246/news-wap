@@ -11,34 +11,14 @@ import java.io.Serializable;
 public class StringResource implements Serializable {
 
     /**
-     * 短经纪人分享需要绑定的数据key
+     * 经纪人信息需要存储的参数
      */
-    public static String SHORT_JINGJIREN_SHARE_VALUE = "?staffno=%s";
+    public static String JINGJIREN_SHARE_VALUE = "?%s";
 
     /**
-     * 长经纪人分享需要绑定的数据key
+     * 经纪人存储key
      */
-    public static String LONG_JINGJIREN_SHARE_VALUE = "?staffno=%s&from=%s";
-
-    /**
-     * 短经纪人存储key
-     */
-    public static String SHORT_JINGJIREN_SHARE_KEY = "shortJingJiRenShareKey";
-
-    /**
-     * 长经纪人存储key
-     */
-    public static String LONG_JINGJIREN_SHARE_KEY = "longJingJiRenShareKey";
-
-    /**
-     * 长经纪人是否安装应用绑定数据key
-     */
-    public static String IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE = "?staffno=%s&from=%s&isappinstalled=%s";
-
-    /**
-     * 长经纪人是否安装应用存储key
-     */
-    public static String IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_KEY = "isAppInstalledLongJingJiRenShareKey";
+    public static String JINGJIREN_SHARE_KEY = "jingJiRenShareKey";
 
     /**
      *

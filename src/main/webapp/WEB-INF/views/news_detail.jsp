@@ -257,14 +257,8 @@
         <c:forEach items="${news}" var="n">
             <li class="item">
                 <c:choose>
-                    <c:when test="${shortJingJiRenShareKey != null}">
-                        <a href="/m/${cityen}/detail/${n.ID}.html${shortJingJiRenShareKey}" class="item-a">
-                    </c:when>
-                    <c:when test="${longJingJiRenShareKey != null}">
-                        <a href="/m/${cityen}/detail/${n.ID}.html${longJingJiRenShareKey}" class="item-a">
-                    </c:when>
-                    <c:when test="${isAppInstalledLongJingJiRenShareKey != null}">
-                        <a href="/m/${cityen}/detail/${n.ID}.html${isAppInstalledLongJingJiRenShareKey}" class="item-a">
+                    <c:when test="${jingJiRenShareKey != null}">
+                        <a href="/m/${cityen}/detail/${n.ID}.html${jingJiRenShareKey}" class="item-a">
                     </c:when>
                     <c:otherwise>
                         <a href="/m/${cityen}/detail/${n.ID}.html" class="item-a">
@@ -321,8 +315,8 @@
         $("img.lazy").lazyload({effect: "fadeIn"});
     });
 
-    var searchStr = location.search;
-    if (searchStr.toLowerCase().indexOf("staffno") > 0) {
+    var searchStr = "${jingJiRenShareKey}";
+    if (searchStr.indexOf("staffno") > 0) {
         //由于searchStr属性值包括“?”，所以除去该字符
         searchStr = searchStr.substr(9);
         if (searchStr.indexOf("&") > 0) {
