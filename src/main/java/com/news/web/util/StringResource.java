@@ -7,7 +7,7 @@ package com.news.web.util;
 
 import java.io.Serializable;
 
-
+@SuppressWarnings("all")
 public class StringResource implements Serializable {
 
     /**
