@@ -300,7 +300,9 @@
 </section>
 <div class="referBroker" id="jingjirenInfo" style="display: none;">
     <div class="referImg left">
-        <img src="" alt="" id="agentImg">
+        <c:set var="jingjinrensharedefaultpic"
+               value="//static.centanet.com/resourcewap/images/photo_normal.jpg"></c:set>
+        <img src="" alt="" id="agentImg" onerror="this.src='${jingjinrensharedefaultpic}'">
     </div>
     <div class="referCon left">
         <span class="fs14" id="agentName"></span>
@@ -320,7 +322,7 @@
     });
 
     var searchStr = location.search;
-    if (searchStr.indexOf("staffNo") > 0) {
+    if (searchStr.toLowerCase().indexOf("staffno") > 0) {
         //由于searchStr属性值包括“?”，所以除去该字符
         searchStr = searchStr.substr(9);
         if (searchStr.indexOf("&") > 0) {

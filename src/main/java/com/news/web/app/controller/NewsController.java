@@ -241,8 +241,19 @@ public class NewsController {
             , @PathVariable(name = "id") String id
             ,@RequestParam(name = "staffNo" , required = false) String staffNo
             ,@RequestParam(name = "from" , required = false) String from
-            ,@RequestParam(name = "isappinstalled" , required = false) Integer isappinstalled) {
+            ,@RequestParam(name = "isappinstalled" , required = false) Integer isappinstalled
+            ,@RequestParam(name = "staffno" , required = false) String staffno ) {
         log.info("detail id=>{}", id);
+        //若staffNo和from、isappinstalled都不为空的时候，重定向到详情页面
+        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
+           return "redirect:/m/"+ cityen + "/detail/"+ id+".html" + String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffNo , from , isappinstalled);
+            ////若staffNo和from都不为空的时候，重定向到详情页面
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
+            return "redirect:/m/"+ cityen + "/detail/"+ id+".html" +  String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffNo , from);
+            //若staffNo不为空的时候，重定向到详情页面
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo)){
+            return "redirect:/m/"+ cityen + "/detail/"+ id+".html" +  String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffNo);
+        }
         setCommon(model, cityen);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
@@ -309,14 +320,14 @@ public class NewsController {
             return "redirect:" + detail.get("Url");
         }
         //若staffNo和from、isappinstalled都不为空的时候，存储带是否安装应用的长经纪人key
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
-            model.addAttribute(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffNo , from , isappinstalled));
+        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
+            model.addAttribute(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffno , from , isappinstalled));
             ////若staffNo和from都不为空的时候，存储长经纪人key
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
-            model.addAttribute(StringResource.LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffNo , from));
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
+            model.addAttribute(StringResource.LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffno , from));
             //若staffNo不为空的时候，存储短经纪人key
-        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo)){
-            model.addAttribute(StringResource.SHORT_JINGJIREN_SHARE_KEY , String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffNo));
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffno)){
+            model.addAttribute(StringResource.SHORT_JINGJIREN_SHARE_KEY , String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffno));
         }
         model.addAttribute("news", news);
         //将文章内容进行格式化

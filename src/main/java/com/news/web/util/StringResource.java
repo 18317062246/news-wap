@@ -13,12 +13,12 @@ public class StringResource implements Serializable {
     /**
      * 短经纪人分享需要绑定的数据key
      */
-    public static String SHORT_JINGJIREN_SHARE_VALUE = "?staffNo=%s";
+    public static String SHORT_JINGJIREN_SHARE_VALUE = "?staffno=%s";
 
     /**
      * 长经纪人分享需要绑定的数据key
      */
-    public static String LONG_JINGJIREN_SHARE_VALUE = "?staffNo=%s&from=%s";
+    public static String LONG_JINGJIREN_SHARE_VALUE = "?staffno=%s&from=%s";
 
     /**
      * 短经纪人存储key
@@ -33,7 +33,7 @@ public class StringResource implements Serializable {
     /**
      * 长经纪人是否安装应用绑定数据key
      */
-    public static String IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE = "?staffNo=%s&from=%s&isappinstalled=%s";
+    public static String IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE = "?staffno=%s&from=%s&isappinstalled=%s";
 
     /**
      * 长经纪人是否安装应用存储key
