@@ -7,6 +7,7 @@ import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
 import com.news.web.util.PageUtil;
+import com.news.web.util.StringResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -237,7 +238,10 @@ public class NewsController {
     @GetMapping("/m/{cityen}/detail/{id}.html")
     public String index(Model model
             , @PathVariable(name = "cityen") String cityen
-            , @PathVariable(name = "id") String id) {
+            , @PathVariable(name = "id") String id
+            ,@RequestParam(name = "staffNo" , required = false) String staffNo
+            ,@RequestParam(name = "from" , required = false) String from
+            ,@RequestParam(name = "isappinstalled" , required = false) Integer isappinstalled) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
         //详情
@@ -303,6 +307,16 @@ public class NewsController {
 
         if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
             return "redirect:" + detail.get("Url");
+        }
+        //若staffNo和from、isappinstalled都不为空的时候，存储带是否安装应用的长经纪人key
+        if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from) && isappinstalled != null){
+            model.addAttribute(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.IS_APP_INSTALLED_LONG_JINGJIREN_SHARE_VALUE , staffNo , from , isappinstalled));
+            ////若staffNo和from都不为空的时候，存储长经纪人key
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo) && org.apache.commons.lang3.StringUtils.isNoneBlank(from)){
+            model.addAttribute(StringResource.LONG_JINGJIREN_SHARE_KEY , String.format(StringResource.LONG_JINGJIREN_SHARE_VALUE , staffNo , from));
+            //若staffNo不为空的时候，存储短经纪人key
+        }else if(org.apache.commons.lang3.StringUtils.isNoneBlank(staffNo)){
+            model.addAttribute(StringResource.SHORT_JINGJIREN_SHARE_KEY , String.format(StringResource.SHORT_JINGJIREN_SHARE_VALUE , staffNo));
         }
         model.addAttribute("news", news);
         //将文章内容进行格式化

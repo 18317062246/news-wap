@@ -256,7 +256,21 @@
     <ul class="new-list">
         <c:forEach items="${news}" var="n">
             <li class="item">
-                <a href="/m/${cityen}/detail/${n.ID}.html" class="item-a">
+                <c:choose>
+                    <c:when test="${shortJingJiRenShareKey != null}">
+                        <a href="/m/${cityen}/detail/${n.ID}.html${shortJingJiRenShareKey}" class="item-a">
+                    </c:when>
+                    <c:when test="${longJingJiRenShareKey != null}">
+                        <a href="/m/${cityen}/detail/${n.ID}.html${longJingJiRenShareKey}" class="item-a">
+                    </c:when>
+                    <c:when test="${isAppInstalledLongJingJiRenShareKey != null}">
+                        <a href="/m/${cityen}/detail/${n.ID}.html${isAppInstalledLongJingJiRenShareKey}" class="item-a">
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/m/${cityen}/detail/${n.ID}.html" class="item-a">
+                    </c:otherwise>
+                </c:choose>
+
                     <div class="new-main">
                         <h4 class="title">${n.Title}</h4>
                         <div class="desc">
