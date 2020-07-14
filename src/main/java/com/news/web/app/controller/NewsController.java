@@ -143,6 +143,18 @@ public class NewsController {
                 //删除所有栏目
                 types.removeAll(newsTypesRemove);
             }
+
+            //如果是北京，删除北京写字楼资讯栏目
+            if(Objects.equals(cityen , "bj")){
+                //筛选出北京写字楼栏目对象，栏目id为659
+                List<NewsType> xzlDelList = types.stream().filter(l -> Objects.equals(659, l.getId())).collect(Collectors.toList());
+                //如果北京写字楼资讯栏目集合不为空，就删除这些栏目
+                if(!CollectionUtils.isEmpty(xzlDelList)){
+                    //删除写字楼相关的所有栏目
+                    types.removeAll(xzlDelList);
+                }
+            }
+
         }
 
         //判断dssType是否为空，不为空就进行判断，栏目是否不存在新闻列表
@@ -492,6 +504,91 @@ public class NewsController {
         PageUtil p = new PageUtil(pageCount, page, pagesize);
         model.addAttribute("p", p);
         return BAIKE;
+    }
+
+    /**
+     * @param: null
+     * @description: 资讯城市首页
+     * @return:
+     * @author: zouyuan1
+     * @date: 2020-05-26
+     */
+    @SuppressWarnings("all")
+    @GetMapping(value = {"/m/{cityen}/xzl/list"})
+    public String xzlIndex(Model model, @PathVariable(name = "cityen") String cityen,
+                        @PathVariable(value = "page", required = false) Integer page,
+                        @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize) {
+        setCommon(model, cityen);
+
+        //装载数据
+        List<Map> news = new ArrayList<>();
+
+
+
+        List<Integer> typeid = null;
+        //如果是北京，那么typeid设置为659
+        if(Objects.equals(cityen , "bj")){
+            typeid = Arrays.asList(659);
+        }
+        //若typeid不为空，那么查询对应城市写字楼的数据
+        if(!CollectionUtils.isEmpty(typeid)) {
+            //获取写字楼栏目下的文章
+            JSONObject xzlResult = newsService.newsList(cityen, typeid, 1, 15, null, null);
+            if (!ObjectUtils.isEmpty(xzlResult.get(NEWS_LIST))) {
+                List<Map> xzlNews = JSON.parseArray(JSON.toJSONString(xzlResult.get(NEWS_LIST)), Map.class);
+                news.addAll(xzlNews);
+            }
+        }
+
+
+
+        //若news不为空，那么将数据传递到前台页面
+        if(!CollectionUtils.isEmpty(news)) {
+            model.addAttribute("news", news);
+        }
+        return "business_headline_list";
+    }
+
+    /**
+     * @param: null
+     * @description: 资讯城市首页
+     * @return:
+     * @author: zouyuan1
+     * @date: 2020-05-26
+     */
+    @SuppressWarnings("all")
+    @GetMapping(value = {"/m/{cityen}/xzl/detail/{id}.html"})
+    public String xzlDetail(Model model, @PathVariable(name = "cityen") String cityen,
+                        @PathVariable(value = "type", required = false) Integer type,
+                        @PathVariable(value = "id" , required = true) Integer id) {
+        setCommon(model, cityen);
+
+        //获取详情
+        JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
+        //将数据格式化成JSONObject对象
+        JSONObject detail = result.getJSONObject(RESULT);
+
+        //热点排行
+        List<Integer> typeid = Arrays.asList();
+        JSONObject newsList = newsService.newsList(cityen, 1, 5, 0);
+        List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
+
+        if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
+            return "redirect:" + detail.get("Url");
+        }
+
+        model.addAttribute("news", news);
+        //将文章内容进行格式化
+        String content = (String) detail.get("Content");
+        if (!StringUtils.isEmpty(content)) {
+            model.addAttribute("detailContent", content.replace("crossorigin=\"anonymous\"", ""));
+        }
+
+
+        model.addAttribute("news", news);
+        model.addAttribute("detail", detail);
+        model.addAttribute("newsId", id);
+        return "business_headline_detail";
     }
 
 
