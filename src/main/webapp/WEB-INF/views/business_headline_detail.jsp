@@ -111,5 +111,7 @@
     }
 
 </script>
+<%--统计代码--%>
+<%@include file="/WEB-INF/views/statistics_code.jsp" %>
 </body>
 </html>
