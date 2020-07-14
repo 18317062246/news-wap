@@ -507,11 +507,9 @@ public class NewsController {
     }
 
     /**
-     * @param: null
-     * @description: 资讯城市首页
-     * @return:
-     * @author: zouyuan1
-     * @date: 2020-05-26
+     * @description: 写字楼列表
+     * @author: Steven.yu
+     * @date: 2020-07-14
      */
     @SuppressWarnings("all")
     @GetMapping(value = {"/m/{cityen}/xzl/list"})
@@ -550,11 +548,9 @@ public class NewsController {
     }
 
     /**
-     * @param: null
-     * @description: 资讯城市首页
-     * @return:
-     * @author: zouyuan1
-     * @date: 2020-05-26
+     * @description: 写字楼详情
+     * @author: Steven.yu
+     * @date: 2020-07-14
      */
     @SuppressWarnings("all")
     @GetMapping(value = {"/m/{cityen}/xzl/detail/{id}.html"})
