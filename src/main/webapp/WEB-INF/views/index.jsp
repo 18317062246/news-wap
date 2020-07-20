@@ -87,12 +87,21 @@
                         </div>
                     </div>
                     <div class="new-img">
-                       <%-- <img src="${item.LitPic}">--%>
+
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-                        <%--<c:set var="lazyPic" value="${item.LitPic}?x-oss-process=style/180x130"></c:set>--%>
-                        <img class="lazy" src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
-                             data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
-                             alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
+                       <c:choose>
+                           <c:when test="${item.LitPic != null && item.LitPic.length() >= 10}">
+                               <img class="lazy" src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                                    data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                                    alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
+                           </c:when>
+                           <c:otherwise>
+                               <img class="lazy" src="${defaultpic}"
+                                    data-original="${defaultpic}"
+                                    alt="${item.Title}"/>
+                           </c:otherwise>
+                       </c:choose>
+
                     </div>
                 </a>
             </li>
@@ -229,10 +238,15 @@
                         temp += '   </div>';
                         temp += '  </div>';
                         temp += '  <div class="new-img">';
-                        //temp += '  <img src="'+content.LitPic+'" onerror="this.src=\'${error_img}\'"> ';
                         let litPic = content.LitPic;
-                        temp += ' <img class="lazy" src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"' +
-                            'data-original="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length) +'" onerror="this.src=\'${staticurl}/images/load_photo.jpg\'">';
+                        if(litPic != null && litPic.length >= 10){
+                            temp += ' <img class="lazy" src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"' +
+                                'data-original="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length) +'">';
+                        }else {
+                            temp += ' <img class="lazy" src="${staticurl}/images/load_photo.jpg"' +
+                                'data-original="${staticurl}/images/load_photo.jpg">';
+                        }
+
                         temp += '  </div>';
                         temp += '  </a>';
                         temp += '  </li>';

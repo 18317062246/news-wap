@@ -83,10 +83,21 @@
                         <a href="/m/${cityen}/xzl/detail/${item.ID}.html" class="animsition-link houselink" data-animsition-out="fade-out-left-lg">
                             <div class="house-img news-img">
                                 <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-                                <img class="lazy"
-                                     src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
-                                     data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
-                                     alt="${item.Title}" onerror="this.src='${defaultpic}'">
+                                <c:choose>
+                                    <c:when test="${item.LitPic != null && item.LitPic.length() >= 10}">
+                                        <img class="lazy"
+                                             src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                                             data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                                             alt="${item.Title}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="lazy"
+                                             src="${defaultpic}"
+                                             data-original="${defaultpic}"
+                                             alt="${item.Title}">
+                                    </c:otherwise>
+                                </c:choose>
+
                             </div>
                             <div class="house-title news-title">
                                 <h2 class="fs15">${item.Title}</h2>
