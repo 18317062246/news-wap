@@ -67,6 +67,7 @@ public class NewsController {
     private static final String CITYEN = "cityen";
     private static final String PAGE_TOTAL = "PageTotal";
     private static final String BAIKE = "baike";
+    private static final String SZWORLD_CITYEN = "szworld";
 
     /**
      * @param: null
@@ -124,10 +125,16 @@ public class NewsController {
         if(!CollectionUtils.isEmpty(types)) {
             //创建一个List对象，将没有文章的栏目进行存储
             List<NewsType> newsTypesRemove = new ArrayList<>();
+            //创建一个List对象，深圳海外城市需要将中原资讯频道移除
+            List<NewsType> jtNewsTypesRemove = new ArrayList<>();
             //循环types,将没有文章的栏目进行删除
             for (NewsType newsType : types) {
-                //41为中原资讯，如果是41，则进行跳过
+                //41为中原资讯，如果是41，则进行跳过，深圳海外城市需要移除中原资讯，其他的城市保留
                 if(Objects.equals(newsType.getId() , 41)){
+                    //深圳海外城市需要移除中原资讯
+                    if(Objects.equals(SZWORLD_CITYEN , cityen)){
+                        jtNewsTypesRemove.add(newsType);
+                    }
                     continue;
                 }
                 //获取集团资讯栏目下的文章
@@ -142,6 +149,12 @@ public class NewsController {
             if(!CollectionUtils.isEmpty(newsTypesRemove)) {
                 //删除所有栏目
                 types.removeAll(newsTypesRemove);
+            }
+
+            //若jtNewsTypesRemove对象不为空，就删除栏目
+            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
+                //删除所有栏目
+                types.removeAll(jtNewsTypesRemove);
             }
 
             //如果是北京，删除北京写字楼资讯栏目
