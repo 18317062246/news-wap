@@ -15,7 +15,7 @@ log:
 #静态文件版本号
 static:
 #nginx转发静态文件
-    url: https://static.centanet.com/news/2020071434/m
+    url: https://static.centanet.com/news/2020080635/m
 
 city:
   dss: sy,cc,dl,hrb

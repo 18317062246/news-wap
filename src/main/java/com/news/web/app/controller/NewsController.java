@@ -68,6 +68,10 @@ public class NewsController {
     private static final String PAGE_TOTAL = "PageTotal";
     private static final String BAIKE = "baike";
     private static final String SZWORLD_CITYEN = "szworld";
+    private static final String CC_CITYEN = "cc";
+    private static final String DL_CITYEN = "dl";
+    private static final String SY_CITYEN = "sy";
+    private static final String HRB_CITYEN = "hrb";
 
     /**
      * @param: null
@@ -129,9 +133,9 @@ public class NewsController {
             List<NewsType> jtNewsTypesRemove = new ArrayList<>();
             //循环types,将没有文章的栏目进行删除
             for (NewsType newsType : types) {
-                //41为中原资讯，如果是41，则进行跳过，深圳海外城市需要移除中原资讯，其他的城市保留
+                //41为中原资讯，如果是41，则进行跳过，深圳海外城市，其他的城市保留
                 if(Objects.equals(newsType.getId() , 41)){
-                    //深圳海外城市需要移除中原资讯
+                    //深圳海外城市，移除中原资讯
                     if(Objects.equals(SZWORLD_CITYEN , cityen)){
                         jtNewsTypesRemove.add(newsType);
                     }
@@ -174,11 +178,13 @@ public class NewsController {
         if(!CollectionUtils.isEmpty(dssType)) {
             //创建一个List对象，将没有文章的栏目进行存储(东三省)
             List<NewsType> dssNewsTypesRemove = new ArrayList<>();
+            //创建一个List对象，东三省城市需要将中原资讯频道移除
+            List<NewsType> jtNewsTypesRemove = new ArrayList<>();
             //循环东三省types,将没有文章的栏目进行删除
             for (NewsType newsType : dssType) {
-                //41为中原资讯，如果是41，则进行跳过
+                //41为中原资讯，移除当前栏目
                 if(Objects.equals(newsType.getId() , 41)){
-                    continue;
+                    jtNewsTypesRemove.add(newsType);
                 }
                 //获取集团资讯栏目下的文章
                 JSONObject jtResult = newsService.newsList(cityen, Arrays.asList(newsType.getId()), 1, 15, null, null);
@@ -192,6 +198,12 @@ public class NewsController {
             if(!CollectionUtils.isEmpty(dssNewsTypesRemove)) {
                 //删除所有栏目(东三省)
                 dssType.removeAll(dssNewsTypesRemove);
+            }
+
+            //若jtNewsTypesRemove对象不为空，就删除栏目
+            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
+                //删除中原资讯栏目(东三省)
+                dssType.removeAll(jtNewsTypesRemove);
             }
         }
 
