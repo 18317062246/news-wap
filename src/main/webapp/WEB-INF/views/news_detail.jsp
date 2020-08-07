@@ -26,6 +26,11 @@
     <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
+
+    <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
+    <script src="${staticurl}/js/jquery.lazyload.min.js" type="text/javascript" language="javascript"></script>
+
     <!-- 调用微信分享插件 -->
     <%--<script src="https://static.centanet.com/wap/js/wx-share.js"></script>--%>
     <script src="${staticurl}/js/wx-share.js"></script>
@@ -44,6 +49,9 @@
         img {
             max-width :100% !important;
         }
+
+        *{max-width:100%!important;}
+
 
     </style>
 </head>
@@ -305,9 +313,7 @@
     <div class="referTel right"><a id="talk" href="#" style="color: #fff;">打电话</a></div>
 </div>
 
-<script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
-<script src="${staticurl}/js/jquery.lazyload.min.js" type="text/javascript" language="javascript"></script>
+
 <script type="text/javascript">
 
     $(function () {

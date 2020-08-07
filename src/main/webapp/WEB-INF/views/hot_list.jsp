@@ -127,6 +127,17 @@
         $(".news-tab  li[ref=" + index + "]").find('a').addClass("active").parent().siblings().children("a").removeClass("active");
         //图片延迟加载
         $("img.lazy").lazyload({effect: "fadeIn"});
+
+        //居中
+        //let liLeft = $(this).offset().left;
+        let liLeft = $(".news-tab  li[ref=" + index + "]").offset().left;
+        //let liWidth = $(this).width()/2;
+        let liWidth = $(".news-tab  li[ref=" + index + "]").width()/2;
+        let widths = $(window).width()/2;
+        let scrollL = $('.wrapper').scrollLeft();
+        $('.wrapper').animate({
+            scrollLeft: scrollL + (liLeft - widths) + liWidth
+        })
     });
     let wrapper = document.querySelector('.wrapper')
     let scroll = new BScroll(wrapper, {

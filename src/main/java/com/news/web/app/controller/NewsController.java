@@ -108,8 +108,7 @@ public class NewsController {
         }
         types.addAll(jtyyTypes);
         List<NewsType> dssType = new ArrayList<>();
-        //默认取第一个tab_type
-        type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
+
         if (types.isEmpty()) {
             log.error("栏目类型为空=>{}", cityen);
             return "index";
@@ -122,7 +121,6 @@ public class NewsController {
                     dssType.add(s);
                 }
             }
-            type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
         }
 
         //判断types是否为空，不为空就进行判断，栏目是否不存在新闻列表
@@ -172,7 +170,14 @@ public class NewsController {
                 }
             }
 
+            //不是东三省城市
+            if(!dss.contains(cityen)) {
+                //默认取第一个tab_type
+                type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
+            }
         }
+
+
 
         //判断dssType是否为空，不为空就进行判断，栏目是否不存在新闻列表
         if(!CollectionUtils.isEmpty(dssType)) {
@@ -204,6 +209,11 @@ public class NewsController {
             if(!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
                 //删除中原资讯栏目(东三省)
                 dssType.removeAll(jtNewsTypesRemove);
+            }
+            //是东三省城市
+            if(dss.contains(cityen)) {
+                //东三省城市判断type是否存在，存在就正常赋值，不存在将第一个栏目id赋值给type
+                type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
             }
         }
 
