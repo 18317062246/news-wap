@@ -68,10 +68,6 @@ public class NewsController {
     private static final String PAGE_TOTAL = "PageTotal";
     private static final String BAIKE = "baike";
     private static final String SZWORLD_CITYEN = "szworld";
-    private static final String CC_CITYEN = "cc";
-    private static final String DL_CITYEN = "dl";
-    private static final String SY_CITYEN = "sy";
-    private static final String HRB_CITYEN = "hrb";
 
     /**
      * @param: null
