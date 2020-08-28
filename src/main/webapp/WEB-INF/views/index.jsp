@@ -40,12 +40,26 @@
     <c:choose>
         <c:when test="${cityen == 'sz' || cityen == 'gz'}">
             <a href="//m.${cityen}.centanet.com/search?type=7" class="search-a">
-                <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+                <div class="search-box"><i class="icon-sousuo iconfont"></i>
+                    <c:if test="${key != null && key.length() > 0}">
+                        ${key}
+                    </c:if>
+                    <c:if test="${key == null || key.length() < 0}">
+                        请输入资讯标题或内容
+                    </c:if>
+                </div>
             </a>
         </c:when>
         <c:otherwise>
             <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
-                <div class="search-box"><i class="icon-sousuo iconfont"></i>请输入资讯标题或内容</div>
+                <div class="search-box">${key}<i class="icon-sousuo iconfont"></i>
+                    <c:if test="${key != null && key.length() > 0}">
+                        ${key}
+                    </c:if>
+                    <c:if test="${key == null || key.length() < 0}">
+                        请输入资讯标题或内容
+                    </c:if>
+                </div>
             </a>
         </c:otherwise>
     </c:choose>
