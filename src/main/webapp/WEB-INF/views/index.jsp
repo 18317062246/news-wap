@@ -121,6 +121,15 @@
             </li>
         </c:forEach>
     </ul>
+    <c:if test="${news == null}">
+        <div class="blankPage">
+            <img src="${staticurl}/images/question_none.png" alt="" class="center-align" style="width:35%">
+            <div class="blankCon">
+                <h1 class="fs15 f333 center-align">没有找到相关资讯</h1>
+                <p class="fs13 f90 center-align">换个条件试试</p>
+            </div>
+        </div>
+    </c:if>
 </section>
 
 
