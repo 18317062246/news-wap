@@ -52,7 +52,7 @@
         </c:when>
         <c:otherwise>
             <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
-                <div class="search-box">${key}<i class="icon-sousuo iconfont"></i>
+                <div class="search-box"><i class="icon-sousuo iconfont"></i>
                     <c:if test="${key != null && key.length() > 0}">
                         ${key}
                     </c:if>
