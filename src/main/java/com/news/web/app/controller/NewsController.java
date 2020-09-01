@@ -56,6 +56,12 @@ public class NewsController {
      * 热门专题
      */
     private static final String HOT_SUB = "热门专题";
+    private static final String WH_HOT_SUB = "武汉热门专题";
+
+    /**
+     * 武汉城市
+     */
+    private static final String WH_CITY_EN = "wh";
 
     private static final String NEWS_LIST = "NewsList";
     private static final String RESULT = "Result";
@@ -251,7 +257,12 @@ public class NewsController {
         for (NewsType t : types) {
             if (type.equals(t.getId())) {
                 String colName = t.getColumnsName();
-                if (HOT_SUB.equals(colName)) {
+                //不是武汉的城市，是否为热门专题栏目
+                if (!Objects.equals(cityen , WH_CITY_EN) && HOT_SUB.equals(colName)) {
+                    return "hot_list";
+                }
+                //武汉城市，是否为武汉热门专题栏目
+                if (Objects.equals(cityen , WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
                     return "hot_list";
                 }
             }
