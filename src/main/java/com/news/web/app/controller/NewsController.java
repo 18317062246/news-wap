@@ -6,6 +6,7 @@ import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
+import com.news.web.util.AttributeKeyHelper;
 import com.news.web.util.PageUtil;
 import com.news.web.util.StringResource;
 import lombok.extern.slf4j.Slf4j;
@@ -92,16 +93,16 @@ public class NewsController {
                         @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab) {
         setCommon(model, cityen);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals("open" , hidetab)){
-            model.addAttribute("hidetab" , true);
+        if(org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN , hidetab)){
+            model.addAttribute(AttributeKeyHelper.HIDE_TAB, true);
         }else {
             //否则不隐藏tab，赋值hidetab为false
-            model.addAttribute("hidetab" , false);
+            model.addAttribute(AttributeKeyHelper.HIDE_TAB , false);
         }
         //获取栏目类型
         List<NewsType> types = newsService.typeList(cityen, null);
         //栏目编号获取文章列表
-        List<NewsType> jtyyTypes = newsService.typeList("jtyy", null);
+        List<NewsType> jtyyTypes = newsService.typeList(AttributeKeyHelper.CENTANET, null);
         List<NewsType> childTypes = new ArrayList<>();
         if (!ObjectUtils.isEmpty(jtyyTypes)) {
             for (NewsType t : jtyyTypes) {
@@ -113,7 +114,7 @@ public class NewsController {
 
         if (types.isEmpty()) {
             log.error("栏目类型为空=>{}", cityen);
-            return "index";
+            return AttributeKeyHelper.INDEX_PAGE;
         } else if (dss.contains(cityen)) {
             //东三省sy,cc,dl,hrb结构不同
             for (NewsType s : types) {
@@ -162,7 +163,7 @@ public class NewsController {
             }
 
             //如果是北京，删除北京写字楼资讯栏目
-            if(Objects.equals(cityen , "bj")){
+            if(Objects.equals(cityen , AttributeKeyHelper.BJ_CITY_EN)){
                 //筛选出北京写字楼栏目对象，栏目id为659
                 List<NewsType> xzlDelList = types.stream().filter(l -> Objects.equals(659, l.getId())).collect(Collectors.toList());
                 //如果北京写字楼资讯栏目集合不为空，就删除这些栏目
@@ -234,12 +235,12 @@ public class NewsController {
 
             if (isJtyy) {//说明是集团资讯
                 //获取集团资讯栏目下的文章
-                JSONObject jtResult = newsService.newsList("jtyy", typeid, 1, 15, null, null);
+                JSONObject jtResult = newsService.newsList(AttributeKeyHelper.CENTANET, typeid, 1, 15, null, null);
                 if (!ObjectUtils.isEmpty(jtResult.get(NEWS_LIST))) {
                     List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get(NEWS_LIST)), Map.class);
                     news.addAll(jtNews);
                 }
-                model.addAttribute("flag", 1);
+                model.addAttribute(AttributeKeyHelper.FLAG, 1);
             }
 
         if (!isJtyy) {
@@ -248,26 +249,26 @@ public class NewsController {
             JSONObject result = newsService.newsList(cityen, typeid, 1, 15, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
 
-            model.addAttribute("flag", 0);
+            model.addAttribute(AttributeKeyHelper.FLAG, 0);
         }
-        model.addAttribute("types", dss.contains(cityen) ? dssType : types);
-        model.addAttribute("tabtype", type);
-        model.addAttribute("news", news);
-        model.addAttribute("key", key);
+        model.addAttribute(AttributeKeyHelper.TYPES, dss.contains(cityen) ? dssType : types);
+        model.addAttribute(AttributeKeyHelper.TAB_TYPE, type);
+        model.addAttribute(AttributeKeyHelper.NEWS, news);
+        model.addAttribute(AttributeKeyHelper.SEARCH_KEY, key);
         for (NewsType t : types) {
             if (type.equals(t.getId())) {
                 String colName = t.getColumnsName();
                 //不是武汉的城市，是否为热门专题栏目
                 if (!Objects.equals(cityen , WH_CITY_EN) && HOT_SUB.equals(colName)) {
-                    return "hot_list";
+                    return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
                 //武汉城市，是否为武汉热门专题栏目
                 if (Objects.equals(cityen , WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
-                    return "hot_list";
+                    return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
             }
         }
-        return "index";
+        return AttributeKeyHelper.INDEX_PAGE;
     }
 
     /**
@@ -279,7 +280,7 @@ public class NewsController {
      */
     private void setCommon(Model model, String cityen) {
         model.addAttribute(CITYEN, cityen);
-        model.addAttribute("staticurl", staticurl);
+        model.addAttribute(AttributeKeyHelper.STATIC_URL, staticurl);
     }
 
     /**
@@ -308,10 +309,10 @@ public class NewsController {
                 String newsRelatedData = JSON.toJSONString(detailByProp.get(NEWS_RELATED));
                 List<NewsRelated> types = JSON.parseArray(newsRelatedData, NewsRelated.class);
                 //将新房和二手房进行过滤
-                List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals("xinfang")).collect(Collectors.toList());
-                List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals("ershoufang")).collect(Collectors.toList());
+                List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XINFANG_KEY)).collect(Collectors.toList());
+                List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.ERSHOUFANG_KEY)).collect(Collectors.toList());
 
-                List<NewsRelated> xiaoquTypes = types.stream().filter(l -> l.getOtype().equals("xiaoqu")).collect(Collectors.toList());
+                List<NewsRelated> xiaoquTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XIAOQU_KEY)).collect(Collectors.toList());
                 //创建一个公共的对象，用于返回房源数据
                 List<CommonHouseResult> commonHouseResult = new ArrayList<>();
                 //判断新房是否有数据
@@ -347,7 +348,7 @@ public class NewsController {
                 //判断总的房源是否为空，如果不为空就返回到页面
                 if(!CollectionUtils.isEmpty(commonHouseResult)){
 
-                    model.addAttribute("commonHouseResult" , commonHouseResult);
+                    model.addAttribute(AttributeKeyHelper.COMMON_HOUSE_RESULT , commonHouseResult);
                 }
             }
         }
@@ -359,8 +360,8 @@ public class NewsController {
         JSONObject newsList = newsService.newsList(cityen, 1, 10, 0);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
 
-        if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
-            return "redirect:" + detail.get("Url");
+        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG) , AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
+            return String.format(AttributeKeyHelper.REDIRECT_LINK , detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
         }
         //获取所有参数
         String queryString = request.getQueryString();
@@ -371,16 +372,16 @@ public class NewsController {
             model.addAttribute(StringResource.JINGJIREN_SHARE_KEY , String.format(StringResource.JINGJIREN_SHARE_VALUE , queryString));
         }
 
-        model.addAttribute("news", news);
+        model.addAttribute(AttributeKeyHelper.NEWS, news);
         //将文章内容进行格式化
-        String content = (String) detail.get("Content");
+        String content = (String) detail.get(AttributeKeyHelper.CONTENT);
         if (!StringUtils.isEmpty(content)) {
-            model.addAttribute("detailContent", content.replace("crossorigin=\"anonymous\"", ""));
+            model.addAttribute(AttributeKeyHelper.DETAIL_CONTENT, content.replace("crossorigin=\"anonymous\"", ""));
         }
-        model.addAttribute("detail", detail);
-        model.addAttribute("newsDetailClickAddress", apiurl);
-        model.addAttribute("newsId", id);
-        return "news_detail";
+        model.addAttribute(AttributeKeyHelper.DETAIL, detail);
+        model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
+        model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
+        return AttributeKeyHelper.NEWS_DETAIL_PAGE;
     }
 
     /**
@@ -405,7 +406,7 @@ public class NewsController {
         List<Integer> typeid = new ArrayList<>(Arrays.asList(type));
 
         //栏目编号获取文章列表
-        List<NewsType> jtyyTypes = newsService.typeList("jtyy", null);
+        List<NewsType> jtyyTypes = newsService.typeList(AttributeKeyHelper.CENTANET, null);
         List<NewsType> childTypes = new ArrayList<>();
         if (!ObjectUtils.isEmpty(jtyyTypes)) {
             for (NewsType t : jtyyTypes) {
@@ -464,20 +465,20 @@ public class NewsController {
             if(page >= pageTotal){
                 //判断typeid是否等于childTypes
                 if(childTypes.get(0).getId().equals(typeid.get(0))){
-                    JSONObject tempResult = newsService.newsList("jtyy", Arrays.asList(childTypes.get(0).getId()), page, pagesize, null, null);
+                    JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(0).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
-                    obj.put("flag", 1);
+                    obj.put(AttributeKeyHelper.FLAG, 1);
                 }else if(childTypes.get(1).getId().equals(typeid.get(0))){
-                    JSONObject tempResult = newsService.newsList("jtyy", Arrays.asList(childTypes.get(1).getId()), page, pagesize, null, null);
+                    JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(1).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
-                    obj.put("flag", 2);
+                    obj.put(AttributeKeyHelper.FLAG, 2);
                 }else if(childTypes.get(2).getId().equals(typeid.get(0))){
-                    JSONObject tempResult = newsService.newsList("jtyy", Arrays.asList(childTypes.get(2).getId()), page, pagesize, null, null);
+                    JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(2).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
-                    obj.put("flag", 3);
+                    obj.put(AttributeKeyHelper.FLAG, 3);
                 }
             }else {
-                obj.put("flag", 1);
+                obj.put(AttributeKeyHelper.FLAG, 1);
             }
 
         }
@@ -488,9 +489,9 @@ public class NewsController {
             pageTotal = result.getInteger(PAGE_TOTAL);
         }
         obj.put(RESULT, news);
-        obj.put("TotalPage", pageTotal);
-        obj.put("ResultNo", 0);
-        obj.put("CurrentPage", page);
+        obj.put(AttributeKeyHelper.TOTAL_PAGE, pageTotal);
+        obj.put(AttributeKeyHelper.RESULT_NO, 0);
+        obj.put(AttributeKeyHelper.CURRENT_PAGE, page);
         return obj;
     }
 
@@ -539,12 +540,12 @@ public class NewsController {
         if(ObjectUtils.isEmpty(channel)){
            channel = types.get(0).getChildList().get(0).getChildList().get(0).getId();
         }
-        model.addAttribute("types", baikeTypes);
-        model.addAttribute("tabtype", channel);
-        model.addAttribute("news", news);
+        model.addAttribute(AttributeKeyHelper.TYPES, baikeTypes);
+        model.addAttribute(AttributeKeyHelper.TAB_TYPE, channel);
+        model.addAttribute(AttributeKeyHelper.NEWS, news);
         Integer pageCount = result.getInteger(PAGE_TOTAL);
         PageUtil p = new PageUtil(pageCount, page, pagesize);
-        model.addAttribute("p", p);
+        model.addAttribute(AttributeKeyHelper.PAGE_UTIL_BY_P, p);
         return BAIKE;
     }
 
@@ -567,7 +568,7 @@ public class NewsController {
 
         List<Integer> typeid = null;
         //如果是北京，那么typeid设置为659
-        if(Objects.equals(cityen , "bj")){
+        if(Objects.equals(cityen , AttributeKeyHelper.BJ_CITY_EN)){
             typeid = Arrays.asList(659);
         }
         //若typeid不为空，那么查询对应城市写字楼的数据
@@ -584,9 +585,9 @@ public class NewsController {
 
         //若news不为空，那么将数据传递到前台页面
         if(!CollectionUtils.isEmpty(news)) {
-            model.addAttribute("news", news);
+            model.addAttribute(AttributeKeyHelper.NEWS, news);
         }
-        return "business_headline_list";
+        return AttributeKeyHelper.BUSINESS_HEADLINE_LIST_PAGE;
     }
 
     /**
@@ -611,22 +612,22 @@ public class NewsController {
         JSONObject newsList = newsService.newsList(cityen, 1, 5, 0);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
 
-        if (Objects.equals(detail.get("flag") , "url")) {//若flag的值为url,将文章跳转到此url指向的地址
-            return "redirect:" + detail.get("Url");
+        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG) , AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
+            return String.format(AttributeKeyHelper.REDIRECT_LINK , detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
         }
 
-        model.addAttribute("news", news);
+        model.addAttribute(AttributeKeyHelper.NEWS, news);
         //将文章内容进行格式化
-        String content = (String) detail.get("Content");
+        String content = (String) detail.get(AttributeKeyHelper.CONTENT);
         if (!StringUtils.isEmpty(content)) {
-            model.addAttribute("detailContent", content.replace("crossorigin=\"anonymous\"", ""));
+            model.addAttribute(AttributeKeyHelper.DETAIL_CONTENT, content.replace("crossorigin=\"anonymous\"", ""));
         }
 
 
-        model.addAttribute("news", news);
-        model.addAttribute("detail", detail);
-        model.addAttribute("newsId", id);
-        return "business_headline_detail";
+        model.addAttribute(AttributeKeyHelper.NEWS, news);
+        model.addAttribute(AttributeKeyHelper.DETAIL, detail);
+        model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
+        return AttributeKeyHelper.BUSINESS_HEADLINE_DETAIL_PAGE;
     }
 
 
