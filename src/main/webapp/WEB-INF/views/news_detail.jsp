@@ -134,10 +134,10 @@
                     </c:if>
                     <c:if test="${n.esfResult != null}">
                         <c:if test="${fn:contains(citys, cityen)}">
-                            <a href="//m.${cityen}.centanet.com/ershoufang/${n.esfResult.oid}.html/" >
+                            <a href="//m.${cityen}.centanet.com/ershoufang/${n.esfResult.oid}.html" >
                         </c:if>
                         <c:if test="${!fn:contains(citys, cityen)}">
-                            <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html/" >
+                            <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html" >
                         </c:if>
                             <img  class="lazy"
                                   src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
