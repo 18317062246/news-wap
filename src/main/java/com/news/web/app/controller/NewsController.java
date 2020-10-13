@@ -162,14 +162,33 @@ public class NewsController {
                 types.removeAll(jtNewsTypesRemove);
             }
 
-            //如果是北京，删除北京写字楼资讯栏目
+            //如果是北京，隐藏北京写字楼资讯栏目
             if(Objects.equals(cityen , AttributeKeyHelper.BJ_CITY_EN)){
                 //筛选出北京写字楼栏目对象，栏目id为659
                 List<NewsType> xzlDelList = types.stream().filter(l -> Objects.equals(659, l.getId())).collect(Collectors.toList());
-                //如果北京写字楼资讯栏目集合不为空，就删除这些栏目
+                //如果北京写字楼资讯栏目集合不为空，就隐藏这些栏目
                 if(!CollectionUtils.isEmpty(xzlDelList)){
-                    //删除写字楼相关的所有栏目
+                    //隐藏写字楼相关的所有栏目
                     types.removeAll(xzlDelList);
+                }
+            }
+
+            //如果是东莞，隐藏东莞政策法规和东莞成交走势资讯栏目
+            if(Objects.equals(cityen , AttributeKeyHelper.DG_CITY_EN)){
+                //筛选出东莞成交走势栏目对象，栏目id为89
+                List<NewsType> dgcjzsList = types.stream().filter(l -> Objects.equals(89, l.getId())).collect(Collectors.toList());
+                //如果东莞成交走势资讯栏目集合不为空，就隐藏这些栏目
+                if(!CollectionUtils.isEmpty(dgcjzsList)){
+                    //隐藏东莞成交走势相关的栏目
+                    types.removeAll(dgcjzsList);
+                }
+
+                //筛选出东莞政策法规栏目对象，栏目id为87
+                List<NewsType> dgzcfgList = types.stream().filter(l -> Objects.equals(87, l.getId())).collect(Collectors.toList());
+                //如果东莞政策法规资讯栏目集合不为空，就隐藏这些栏目
+                if(!CollectionUtils.isEmpty(dgzcfgList)){
+                    //隐藏政策法规相关的栏目
+                    types.removeAll(dgzcfgList);
                 }
             }
 
