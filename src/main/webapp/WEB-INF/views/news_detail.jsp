@@ -58,7 +58,7 @@
 
 <body>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
-<img  src="https://static.centanet.com/wap/img/m-logo.png"  style="display: none;">
+<img  src="https://static.centanet.com/wap/main/img/download.png"  style="display: none;">
 
 <div class="header-down">
     <div class="download-app" id="downloadApp" style="display: none;">
