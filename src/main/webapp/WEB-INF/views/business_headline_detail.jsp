@@ -31,17 +31,52 @@
 <header class="page-topnav">
     <nav>
         <div class="nav-wrapper">
-            <a href="#!" class="button-collapse" data-activates="nav-mobile" onclick="Materialize.showStaggeredList('#nav-mobile')"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right side-nav">
+                <li class="user-details">
+                    <div class="container row">
+                        <div class="col s4 ">
+                            <a href="https://passport.centanet.com/login?route=%2F" class="btn-floating btn-large btn-user "><i class="material-icons">perm_identity</i></a>
+                        </div>
+                        <div class="col s8 no-padding">
+                            <a href="" class="white-text">登录</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/" class="waves-effect "><i class="material-icons">account_balance</i>首页</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/ershoufang" class="waves-effect "><i class="material-icons">domain</i>二手房</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/zufang/" class="waves-effect "><i class="material-icons">store_mall_directory</i>租房</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/xingfang/" class="waves-effect "><i class="material-icons">location_city</i>新房</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/xuexiao/"><i class="material-icons">school</i>学校找房</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/bj/xiaoqu/"><i class="material-icons">home</i>找小区</a>
+                </li>
+                <li class="bold">
+                    <a href="https://wap.centanet.com/applink/?fwap"><i class="material-icons">file_download</i>下载APP</a>
+                </li>
+            </ul>
+            <a href="#!" class="button-collapse" data-activates="nav-mobile" onclick="Materialize.showStaggeredList('#nav-mobile')"><i class="material-icons" >menu</i></a>
+
             <c:choose>
-                <c:when test="${cityen == 'sz' || cityen == 'gz'}">
-                    <a href="//m.${cityen}.centanet.com/search?type=7" class="right right-icon">
+            <c:when test="${cityen == 'sz' || cityen == 'gz'}">
+            <a href="//m.${cityen}.centanet.com/search?type=7" class="right right-icon">
                 </c:when>
                 <c:otherwise>
-                    <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="right right-icon">
-                </c:otherwise>
-            </c:choose>
-                <i class="material-icons" >search</i></a>
-            <p class="topTitletxt" style="background-color: red;">商业头条详情</p>
+                <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="right right-icon">
+                    </c:otherwise>
+                    </c:choose>
+
+                    <i class="material-icons" >search</i></a>
+                <p class="topTitletxt" style="background-color: red;">商业头条详情</p>
         </div>
     </nav>
 </header>
