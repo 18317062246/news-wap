@@ -112,6 +112,7 @@
 <%--<p class="new-disclaimer">
     免责声明：本文仅代表作者个人观点，与环球网无关。其原创性以及文中陈述文字和内容未经本站证实，对本文以及其中全部或者部分内容、文字的真实性、完整性、及时性本站不作任何保证或承诺，请读者仅作参考，并请自行核实相关内容。
 </p>--%>
+<c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
 <div class="room-container">
 
     <c:forEach items="${commonHouseResult}" varStatus="status" var="n">
@@ -127,7 +128,7 @@
                             <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
                         </c:if>
                             <img class="lazy"
-                                 src="${n.xinfangResult.defaultImage}"
+                                 src="${defaultpic}"
                                  data-original="${n.xinfangResult.defaultImage}"
                                  alt="" />
                         </a>
@@ -140,7 +141,7 @@
                             <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html" >
                         </c:if>
                             <img  class="lazy"
-                                  src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  src="${defaultpic}"
                                   data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
                                   alt="" />
                         </a>
@@ -154,7 +155,7 @@
                        </c:if>
 
                             <img  class="lazy"
-                                  src="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                  src="${defaultpic}"
                                   data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
                                     alt="" />
                         </a>
@@ -276,13 +277,10 @@
                         </div>
                     </div>
                     <div class="new-img">
-
-                        <c:set var="defaultpic"
-                               value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
                         <c:choose>
                             <c:when test="${n.LitPic != null && n.LitPic.length() >= 10}">
                                 <img class="lazy"
-                                     src="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                                     src="${defaultpic}"
                                      data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
                                      alt="${item.Title}"/>
                             </c:when>

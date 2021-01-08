@@ -105,7 +105,7 @@
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
                        <c:choose>
                            <c:when test="${item.LitPic != null && item.LitPic.length() >= 10}">
-                               <img class="lazy" src="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
+                               <img class="lazy" src="${defaultpic}"
                                     data-original="${fn:substring(item.LitPic, 0 , mfn:lastIndexOf(item.LitPic, "."))}_180x130_c${fn:substring(item.LitPic,mfn:lastIndexOf(item.LitPic, ".") , fn:length(item.LitPic))}"
                                     alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
                            </c:when>
@@ -263,11 +263,9 @@
                         temp += '  <div class="new-img">';
                         let litPic = content.LitPic;
                         if(litPic != null && litPic.length >= 10){
-                            temp += ' <img class="lazy" src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"' +
-                                'data-original="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length) +'">';
+                            temp += ' <img src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"/>';
                         }else {
-                            temp += ' <img class="lazy" src="${staticurl}/images/load_photo.jpg"' +
-                                'data-original="${staticurl}/images/load_photo.jpg">';
+                            temp += ' <img  src="${staticurl}/images/load_photo.jpg" data-original="${staticurl}/images/load_photo.jpg">';
                         }
 
                         temp += '  </div>';
