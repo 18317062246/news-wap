@@ -35,6 +35,11 @@ public interface AttributeKeyHelper extends Serializable {
     String BJ_CITY_EN = "bj";
 
     /**
+     * 南京，城市简称
+     */
+    String NJ_CITY_EN = "nj";
+
+    /**
      * 东莞，城市简称
      */
     String DG_CITY_EN = "dg";

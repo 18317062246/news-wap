@@ -173,6 +173,25 @@ public class NewsController {
                 }
             }
 
+            //如果是南京，隐藏南京楼市和政策法规栏目
+            if(Objects.equals(cityen , AttributeKeyHelper.NJ_CITY_EN)){
+                //筛选出南京楼市栏目对象，栏目id为65
+                List<NewsType> njlsDelList = types.stream().filter(l -> Objects.equals(65, l.getId())).collect(Collectors.toList());
+                //如果南京楼市栏目集合不为空，就隐藏这些栏目
+                if(!CollectionUtils.isEmpty(njlsDelList)){
+                    //隐藏南京楼市相关的所有栏目
+                    types.removeAll(njlsDelList);
+                }
+
+                //筛选出政策法规栏目对象，栏目id为67
+                List<NewsType> zcfgDelList = types.stream().filter(l -> Objects.equals(67, l.getId())).collect(Collectors.toList());
+                //如果政策法规栏目集合不为空，就隐藏这些栏目
+                if(!CollectionUtils.isEmpty(zcfgDelList)){
+                    //隐藏政策法规相关的所有栏目
+                    types.removeAll(zcfgDelList);
+                }
+            }
+
             //如果是东莞，隐藏东莞政策法规和东莞成交走势资讯栏目
             if(Objects.equals(cityen , AttributeKeyHelper.DG_CITY_EN)){
                 //筛选出东莞成交走势栏目对象，栏目id为89
