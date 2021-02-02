@@ -345,6 +345,8 @@ public class NewsController {
 
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
+        //获取引用
+        String referer = request.getHeader(AttributeKeyHelper.REFERER);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
         //判断是否存在房源
@@ -427,6 +429,7 @@ public class NewsController {
         model.addAttribute(AttributeKeyHelper.DETAIL, detail);
         model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
         model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
+        model.addAttribute(AttributeKeyHelper.REFERER, referer);
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
     }
 

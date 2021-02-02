@@ -407,7 +407,7 @@
     if(!flag){
         let locationAddress = window.location;
         $.get(
-            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+locationAddress+"&platform=pc",
+            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+locationAddress+"&platform=wap&Referer=${referer}",
             function (data) {
             });
     }

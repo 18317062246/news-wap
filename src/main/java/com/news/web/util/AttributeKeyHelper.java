@@ -15,6 +15,11 @@ public interface AttributeKeyHelper extends Serializable {
     String HIDE_TAB = "hidetab";
 
     /**
+     * referer引用
+     */
+    String REFERER = "referer";
+
+    /**
      * open，隐藏顶部菜单
      */
     String OPEN = "open";
