@@ -20,6 +20,11 @@ public interface AttributeKeyHelper extends Serializable {
     String REFERER = "referer";
 
     /**
+     * Upper是否上架标识
+     */
+    String UPPER = "Upper";
+
+    /**
      * open，隐藏顶部菜单
      */
     String OPEN = "open";
@@ -183,4 +188,9 @@ public interface AttributeKeyHelper extends Serializable {
      * 写字楼商铺详情页面
      */
     String BUSINESS_HEADLINE_DETAIL_PAGE = "business_headline_detail";
+
+    /**
+     * 资讯下架页面
+     */
+    String OFF_SHELF_NEWS = "off_shelf_news";
 }

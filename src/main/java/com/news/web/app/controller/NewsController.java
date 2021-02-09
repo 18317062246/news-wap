@@ -352,6 +352,14 @@ public class NewsController {
         //判断是否存在房源
         if(result.get(RESULT) != null){
             JSONObject detailByProp = result.getJSONObject(RESULT);
+
+            //获取是否上架的标识
+            Integer upper = (Integer)detailByProp.get(AttributeKeyHelper.UPPER);
+            //如果upper为0代表是下架,返回到资讯下架提示页面
+            if(Objects.equals(0 , upper)){
+                return AttributeKeyHelper.OFF_SHELF_NEWS;
+            }
+
             if(detailByProp != null) {
                 //将房源对象进行转换
                 String newsRelatedData = JSON.toJSONString(detailByProp.get(NEWS_RELATED));
