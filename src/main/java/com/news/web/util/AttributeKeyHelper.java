@@ -25,6 +25,16 @@ public interface AttributeKeyHelper extends Serializable {
     String UPPER = "Upper";
 
     /**
+     * 资讯分享小标题
+     */
+    String SHARE_TITLE = "ShareTitle";
+
+    /**
+     * 资讯分享小标题KEY
+     */
+    String SHARE_TITLE_KEY = "shareTitle";
+
+    /**
      * open，隐藏顶部菜单
      */
     String OPEN = "open";

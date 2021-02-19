@@ -2,6 +2,7 @@ package com.news.web.app.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.news.web.app.common.Cityen;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
@@ -59,11 +60,6 @@ public class NewsController {
     private static final String HOT_SUB = "热门专题";
     private static final String WH_HOT_SUB = "武汉热门专题";
 
-    /**
-     * 武汉城市
-     */
-    private static final String WH_CITY_EN = "wh";
-
     private static final String NEWS_LIST = "NewsList";
     private static final String RESULT = "Result";
     /**
@@ -74,7 +70,6 @@ public class NewsController {
     private static final String CITYEN = "cityen";
     private static final String PAGE_TOTAL = "PageTotal";
     private static final String BAIKE = "baike";
-    private static final String SZWORLD_CITYEN = "szworld";
 
     /**
      * @param: null
@@ -137,7 +132,7 @@ public class NewsController {
                 //41为中原资讯，如果是41，则进行跳过，深圳海外城市，其他的城市保留
                 if(Objects.equals(newsType.getId() , 41)){
                     //深圳海外城市，移除中原资讯
-                    if(Objects.equals(SZWORLD_CITYEN , cityen)){
+                    if(Objects.equals(Cityen.SZWORLD_CITYEN , cityen)){
                         jtNewsTypesRemove.add(newsType);
                     }
                     continue;
@@ -305,11 +300,11 @@ public class NewsController {
             if (type.equals(t.getId())) {
                 String colName = t.getColumnsName();
                 //不是武汉的城市，是否为热门专题栏目
-                if (!Objects.equals(cityen , WH_CITY_EN) && HOT_SUB.equals(colName)) {
+                if (!Objects.equals(cityen , Cityen.WH_CITY_EN) && HOT_SUB.equals(colName)) {
                     return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
                 //武汉城市，是否为武汉热门专题栏目
-                if (Objects.equals(cityen , WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
+                if (Objects.equals(cityen , Cityen.WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
                     return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
             }
@@ -349,6 +344,8 @@ public class NewsController {
         String referer = request.getHeader(AttributeKeyHelper.REFERER);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
+        //小标题,字段定义
+        String shareTitle = null;
         //判断是否存在房源
         if(result.get(RESULT) != null){
             JSONObject detailByProp = result.getJSONObject(RESULT);
@@ -359,6 +356,8 @@ public class NewsController {
             if(Objects.equals(0 , upper)){
                 return AttributeKeyHelper.OFF_SHELF_NEWS;
             }
+            //获取资讯分享小标题
+            shareTitle = (String) detailByProp.get(AttributeKeyHelper.SHARE_TITLE);
 
             if(detailByProp != null) {
                 //将房源对象进行转换
@@ -433,6 +432,12 @@ public class NewsController {
         String content = (String) detail.get(AttributeKeyHelper.CONTENT);
         if (!StringUtils.isEmpty(content)) {
             model.addAttribute(AttributeKeyHelper.DETAIL_CONTENT, content.replace("crossorigin=\"anonymous\"", ""));
+        }
+       //如果是深圳，分享的标题是安全中介,选中原,其他城市是啥就是啥
+        if(Objects.equals(Cityen.SZ_CITY_EN , cityen)){
+            model.addAttribute(AttributeKeyHelper.SHARE_TITLE_KEY , StringResource.SHARE_TITLE_TEXT);
+        }else {
+            model.addAttribute(AttributeKeyHelper.SHARE_TITLE_KEY , shareTitle);
         }
         model.addAttribute(AttributeKeyHelper.DETAIL, detail);
         model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
