@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width,  maximum-scale=1.0, minimum-scale=1.0"/>
     <title>${detail.Title}</title>
     <!-- 默认meta标签中的content作为描述 -->
-    <meta name="description" content="${fn:substring(detail.Description , 0 , 30)}">
+    <meta name="description" content="${fn:substring(detail.ShareTitle , 0 , 30)}">
     <meta name="keywords" content="">
     <meta name="referrer" content="no-referrer" />
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>

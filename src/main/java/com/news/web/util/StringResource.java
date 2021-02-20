@@ -21,11 +21,6 @@ public class StringResource implements Serializable {
     public static String JINGJIREN_SHARE_KEY = "jingJiRenShareKey";
 
     /**
-     * 安全中介选中原
-     */
-    public static String SHARE_TITLE_TEXT = "安全中介选中原";
-
-    /**
      *
      * @param input 需要处理的字符串
      * @param substring 通过什么字符进行分割

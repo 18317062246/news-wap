@@ -344,8 +344,6 @@ public class NewsController {
         String referer = request.getHeader(AttributeKeyHelper.REFERER);
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
-        //小标题,字段定义
-        String shareTitle = null;
         //判断是否存在房源
         if(result.get(RESULT) != null){
             JSONObject detailByProp = result.getJSONObject(RESULT);
@@ -356,8 +354,6 @@ public class NewsController {
             if(Objects.equals(0 , upper)){
                 return AttributeKeyHelper.OFF_SHELF_NEWS;
             }
-            //获取资讯分享小标题
-            shareTitle = (String) detailByProp.get(AttributeKeyHelper.SHARE_TITLE);
 
             if(detailByProp != null) {
                 //将房源对象进行转换
@@ -432,12 +428,6 @@ public class NewsController {
         String content = (String) detail.get(AttributeKeyHelper.CONTENT);
         if (!StringUtils.isEmpty(content)) {
             model.addAttribute(AttributeKeyHelper.DETAIL_CONTENT, content.replace("crossorigin=\"anonymous\"", ""));
-        }
-       //如果是深圳，分享的标题是安全中介,选中原,其他城市是啥就是啥
-        if(Objects.equals(Cityen.SZ_CITY_EN , cityen)){
-            model.addAttribute(AttributeKeyHelper.SHARE_TITLE_KEY , StringResource.SHARE_TITLE_TEXT);
-        }else {
-            model.addAttribute(AttributeKeyHelper.SHARE_TITLE_KEY , shareTitle);
         }
         model.addAttribute(AttributeKeyHelper.DETAIL, detail);
         model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
