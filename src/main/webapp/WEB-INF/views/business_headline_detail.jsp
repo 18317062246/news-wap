@@ -60,9 +60,6 @@
                 <li class="bold">
                     <a href="https://wap.centanet.com/bj/xiaoqu/"><i class="material-icons">home</i>找小区</a>
                 </li>
-                <li class="bold">
-                    <a href="https://wap.centanet.com/applink/?fwap"><i class="material-icons">file_download</i>下载APP</a>
-                </li>
             </ul>
             <a href="#!" class="button-collapse" data-activates="nav-mobile" onclick="Materialize.showStaggeredList('#nav-mobile')"><i class="material-icons" >menu</i></a>
 
