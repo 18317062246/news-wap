@@ -381,35 +381,29 @@
 
         <%-- 哈尔滨城市百度和piwik统计代码 --%>
         <c:when test="${cityen == 'hrb'}">
-            <div style="display: none">
-                <script>
-                    var _hmt = _hmt || [];
-                    (function () {
-                        var hm = document.createElement("script");
-                        hm.src = "//hm.baidu.com/hm.js?9b3fcfcc3867810b024107e15ec07060";
-                        var s = document.getElementsByTagName("script")[0];
-                        s.parentNode.insertBefore(hm, s);
-                    })();
-                </script>
-            </div>
-            <script type="text/javascript">
-                var pkBaseURL = (("https:" == document.location.protocol) ? "https://statistics.centanet.com/stat/" : "//statistics.centanet.com/stat/");
-                document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-            </script>
-
-            <script type="text/javascript">
-                try {
-                    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 16);
-                    piwikTracker.trackPageView();
-                    piwikTracker.enableLinkTracking();
-                }
-                catch (err) { }
-            </script>
-            <noscript>
-                <p>
-                    <img src="//statistics.centanet.com/stat/piwik.php?idsite=16" style="border:0" alt="" />
-                </p>
-            </noscript><!-- End Piwik Tracking Code -->
+            <script src="//static.centanet.com/public/chat/chat-2.0.js?v7.5.21" async defer></script><script type="text/javascript">var _hmt = _hmt || [];
+            var pkBaseURL = "//statistics.centanet.com/stat/";
+            (function(){
+                /* 百度统计代码 */
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?46d70d1b009c27274ef4c7bf70a1a581";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+                /*piwik*/
+                var piwikScript = window["document"]["createElement"]("script");
+                piwikScript["type"] = "text/javascript";
+                piwikScript["charset"] = "utf-8";
+                piwikScript["defer"] = "defer";
+                piwikScript["onload"] = function(){
+                    try {
+                        var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 39);
+                        piwikTracker.trackPageView();piwikTracker.enableLinkTracking();
+                    } catch( err ) {}
+                };
+                piwikScript["src"] = pkBaseURL + "piwik.js";
+                var head = document.head || document.getElementsByTagName('head')[0];
+                head.appendChild(piwikScript);
+            })();</script><noscript><p><img src="//statistics.centanet.com/stat/piwik.php?idsite=39" style="border:0" alt="" /></p></noscript>
         </c:when>
 
 
