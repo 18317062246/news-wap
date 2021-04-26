@@ -23,7 +23,7 @@
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection"/>
     <link rel="stylesheet" href="${staticurl}/css/font.css">
     <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
-    <link rel="stylesheet" href="${staticurl}/css/common_1.css">
+    <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
 
