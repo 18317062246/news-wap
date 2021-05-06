@@ -98,8 +98,8 @@
         <span>${detail.Sources}</span>
         <span class="time"><%--${detail.PublishDate}--%>
             <jsp:useBean id="detailDate" class="java.util.Date"/>
-            <c:set target="${detailDate}" property="time" value="${detail.PublishDate*1000}"/>
-            <fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${detailDate}" type="both"/>
+            <c:set target="${detailDate}" property="time" value="${detail.SenddateTime*1000}"/>
+            <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${detailDate}" type="both"/>
         </span>
     </div>
     <div>
