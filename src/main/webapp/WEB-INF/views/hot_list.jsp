@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/jquery.lazyload.min.js" language="javascript"></script>
+    <script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
 </head>
 
 <body>

@@ -20,6 +20,7 @@
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection" />
     <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/waphouse_detail.css">
+    <script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
     <style type="text/css">
         .row img ,body {
             width :100% !important;

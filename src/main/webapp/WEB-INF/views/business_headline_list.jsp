@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="${staticurl}/css/animsition.min.css">
     <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/waphouse_list.css">
+    <script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
     <!-- <script src="http://10.58.1.96:5580/target/target-script-min.js#anonymous"></script> -->
 </head>
 <body>

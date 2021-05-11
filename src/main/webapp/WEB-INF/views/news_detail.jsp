@@ -33,7 +33,7 @@
 
     <!-- 调用微信分享插件 -->
    <script src="${staticurl}/js/wx-share.js"></script>
-
+    <script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
     <style>
         .newdetail-wrapper img {
              width:  100%   !important;

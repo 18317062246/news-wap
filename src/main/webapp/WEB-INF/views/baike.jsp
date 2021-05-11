@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="${staticurl}/css/style1.css" />
 		<script type="text/javascript" src="${staticurl}/js/jquery.min.js"></script>
 		<script type="text/javascript" src="${staticurl}/js/comemt.js"></script>
+		<script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
 	</head>
 
 	<body>
