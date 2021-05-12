@@ -19,3 +19,5 @@ api:
       city: http://10.4.18.227:8080/deer/json/reply/GetEstateRequest
     sz:
       city: http://10.6.252.37:8081/deer/json/reply/GetEstateRequest
+logapi:
+  url: http://api-testpassport.centaline.com.cn/json/reply/

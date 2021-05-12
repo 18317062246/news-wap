@@ -8,15 +8,19 @@ package com.news.web.app.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.news.web.app.config.ApiConfig;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.AopResult;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.model.esf.ESFResult;
+import com.news.web.app.model.param.InsertLogParam;
 import com.news.web.app.model.xiaoqu.XiaoQuResult;
 import com.news.web.app.model.xinfang.XinfangResult;
 import com.news.web.app.service.NewsService;
 import com.news.web.util.HttpUtil;
+import com.news.web.util.StringResource;
+import com.news.web.util.parser.NewsParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +30,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -38,6 +44,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ApiConfig apiConfig;
 
     @Autowired
     private HttpUtil httpUtil;
@@ -324,6 +333,64 @@ public class NewsServiceImpl implements NewsService {
         //将结果集进行过滤
         List<CommonHouseResult> results = resultList.stream().filter(Objects::nonNull).collect(Collectors.toList());
         return CollectionUtils.isEmpty(results) ? Collections.emptyList() : results;
+    }
+
+    @Override
+    public void insertLog(HttpServletRequest request , String cityShort, Integer newsId) {
+        //获取请求头
+        String ua = request.getHeader(StringResource.USER_AGENT);
+        String cityCode = "";
+        String appName = "";
+        String userId = "";
+        String jPushId = "";
+        String postId = "";
+        String sourceChild = " ";
+        String trackId = "";
+        Integer begin = 0;
+        Integer end = 0;
+        String oringUri = request.getRequestURI();
+        cityCode = StringResource.getCityCode(cityShort);
+        //获取用户ip
+        String ClientIP = request.getRemoteAddr();
+        //那cookie中的信息
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies
+            ) {
+                //获取UserID
+                if (c.getName().equals(StringResource.CK_USER) || c.getName().equals(StringResource.CK_USER_WAP)) {
+                    String value = c.getValue();
+                    begin = value.indexOf(StringResource.BIG_U);
+                    end = value.indexOf(StringResource.AND);
+                    userId = value.substring(begin, end);
+                }
+                //获取trackID
+                if (c.getName().equals(StringResource.COOKIE_NAME)) {
+                    trackId = c.getValue();
+                }
+            }
+        }
+        //获取AppName
+        if (ua.contains(StringResource.WINDOWS) || ua.contains(StringResource.INTEL_MAC_OS)) {
+            appName = StringResource.PC;
+        } else if (ua.contains(StringResource.LIKE_MAC_OS) || ua.contains(StringResource.ANDROID)) {
+            if (ua.contains(StringResource.SALE_HOUSE) && ua.contains(StringResource.LIKE_MAC_OS)) {
+                appName =StringResource.APP_IOS;
+            } else if (ua.contains(StringResource.SALE_HOUSE) && ua.contains(StringResource.ANDROID)) {
+                appName = StringResource.APP_ANDROID;
+            } else if (ua.contains(StringResource.MICRO_MESSENGER)) {
+                appName = StringResource.WE_CHAT;
+            } else {
+                appName = StringResource.WAP;
+            }
+        }
+        //封装对象
+        InsertLogParam param = NewsParser.build(appName , cityCode , ClientIP , jPushId , String.valueOf(newsId) , postId , sourceChild , trackId , userId);
+        try{
+            String abc=httpUtil.post(String.format(StringResource.INSERT_VIEW_HISTORY_REQUEST_BY_RABBIT , apiConfig.getUrl()) , param);
+        } catch (IOException e) {
+
+        }
     }
 
 }

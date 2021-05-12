@@ -55,7 +55,7 @@
     </style>
 </head>
 
-<body>
+<body onload="loadNewsViewHistory()">
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
 <img  src="https://static.centanet.com/wap/main/img/download.png"  style="display: none;">
 
@@ -501,6 +501,15 @@
             //无设备标识的跳转到wap下载引导页
             location.href='//wap.centanet.com/applink/?fwx';
         }
+    }
+
+    //页面加载完之后进行加载
+    function loadNewsViewHistory() {
+        $.get(
+            "/m/${cityen}/detail/loadNewsViewHistory?newsId=${newsId}",
+            function (resp) {
+            }
+        );
     }
 </script>
 </body>

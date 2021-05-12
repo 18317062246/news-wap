@@ -437,6 +437,19 @@ public class NewsController {
     }
 
     /**
+     * 记录日志
+     */
+    @ResponseBody
+    @GetMapping("/m/{cityen}/detail/loadNewsViewHistory")
+    public void insertLog(HttpServletRequest request , @PathVariable(name = "cityen") String cityen
+            ,@RequestParam(name = "newsId") Integer newsId){
+        //记录log
+        newsService.insertLog(request , cityen , newsId);
+    }
+
+
+
+    /**
      * @param model  异步滚动分页
      * @param cityen 城市编号
      * @param type   栏目类型编号
