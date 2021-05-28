@@ -86,7 +86,7 @@
 </div>
 <section class="new-houseblock new-houseblock-list">
     <ul class="new-list">
-        <c:forEach items="${news}" var="item">
+        <c:forEach items="${news}" var="item" varStatus="i">
             <li class="item type${item.TypeID}">
                 <a href="/m/${cityen}/detail/${item.ID}.html" class="item-a">
                     <div class="new-main">
@@ -102,7 +102,6 @@
                         </div>
                     </div>
                     <div class="new-img">
-
                         <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
                        <c:choose>
                            <c:when test="${item.LitPic != null && item.LitPic.length() >= 10}">
@@ -116,10 +115,19 @@
                                     alt="${item.Title}"/>
                            </c:otherwise>
                        </c:choose>
-
                     </div>
                 </a>
             </li>
+<%--           广告业按要求：正文每五条显示一条广告--%>
+<%--           当前的广告序号不能超过广告最大条数--%>
+<%--           如果广告列表为空则不显示--%>
+                <c:if test="${(i.index+1) % 5 == 0 && i.index!=0 && (i.index + 1) / 5 - 1<adList.size() && adList.size() > 0}">
+                    <li class="item type${item.TypeID}">
+                        <a href="#" class="item-a">
+                            <img style="width:347px;height: 88px;margin: 0 auto;" src="${adList[(i.index+1)/5-1].icon}"/>
+                        </a>
+                    </li>
+                </c:if>
         </c:forEach>
     </ul>
     <c:if test="${news == null}">
