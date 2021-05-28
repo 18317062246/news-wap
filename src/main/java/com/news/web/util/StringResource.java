@@ -43,6 +43,7 @@ public class StringResource implements Serializable {
     public static final String INSERT_VIEW_HISTORY_REQUEST_BY_RABBIT = "%sInsertViewHistoryRequestByRabbit";
 
 
+
     /**
      * 根据城市缩写获取城市代码
      * @param ：城市拼音缩写
