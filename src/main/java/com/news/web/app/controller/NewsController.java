@@ -1,13 +1,16 @@
 package com.news.web.app.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.news.web.app.common.Cityen;
+import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
 import com.news.web.util.AttributeKeyHelper;
+import com.news.web.util.HttpUtil;
 import com.news.web.util.PageUtil;
 import com.news.web.util.StringResource;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,6 +74,14 @@ public class NewsController {
     private static final String CITYEN = "cityen";
     private static final String PAGE_TOTAL = "PageTotal";
     private static final String BAIKE = "baike";
+
+    /**
+     * 广告业测试
+     *
+     */
+    private static final String AD_NAMES="资讯列表页";
+    private static final String APP_NAME="scrm_loupan";
+    private static final String AD_LIST="adList";
 
     /**
      * @param: null
@@ -308,6 +320,20 @@ public class NewsController {
                     return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
             }
+        }
+
+    /**
+     *
+     * @param: cityen
+     * @description: 如果是成都，加上成都的逢五加一的广告
+     * @author: 蔡如林
+     * @date: 2021-5-27开始
+     */
+        if(cityen.equals("cd")){
+            System.out.println("this is chengdu ");
+            List<AdType> adTypeList=newsService.adList(cityen,AD_NAMES,APP_NAME);
+            //System.out.println(adTypeList.toString());
+            model.addAttribute(AD_LIST,adTypeList);
         }
         return AttributeKeyHelper.INDEX_PAGE;
     }
