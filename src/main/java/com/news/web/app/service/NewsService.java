@@ -6,6 +6,7 @@
 package com.news.web.app.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
@@ -42,7 +43,7 @@ public interface NewsService extends Serializable {
      * @return 取最新的资讯列表信息
      */
     JSONObject newsList(String cityen, Integer page, Integer pagesize, Integer desc);
-
+    
     /**
      * @param cityen 城市简称
      * @param typeId 百科栏目id
@@ -82,4 +83,5 @@ public interface NewsService extends Serializable {
     void insertLog(HttpServletRequest request , String cityShort , Integer newsId);
 
 
+    List<AdType> adList(String cityen, String ad_name, String app_name);
 }

@@ -6,9 +6,11 @@
 package com.news.web.app.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.news.web.app.config.ApiConfig;
+import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.AopResult;
@@ -73,7 +75,10 @@ public class NewsServiceImpl implements NewsService {
     private static final String CITYEN = "cityen";
     private static final String TYPEID = "typeid";
     private static final String ARTICLE_IS_NULL_TEXT = "请求文章列表为空=>{}";
-
+    /**
+     * 广告相关
+     */
+    private static final String AD_BASE_API_URL="http://api-testweb.centaline.com.cn/bizcom/json/reply/SearchRankItemRequest";
     /**
      * @param cityen 城市简称
      * @param location 位置信息
@@ -390,6 +395,33 @@ public class NewsServiceImpl implements NewsService {
             String abc=httpUtil.post(String.format(StringResource.INSERT_VIEW_HISTORY_REQUEST_BY_RABBIT , apiConfig.getUrl()) , param);
         } catch (IOException e) {
 
+        }
+    }
+
+    @Override
+    public List<AdType> adList(String cityen, String ad_name, String app_name) {
+        String adUrl=AD_BASE_API_URL+"?adNames="
+                +ad_name+"&appName="
+                +app_name+"&cityen=tj";
+        //cityen拼接如url
+        //String adUrl="http://api-testweb.centaline.com.cn/bizcom/json/reply/SearchRankItemRequest?adNames="
+        // +AD_NAMES
+        // +"&appName="
+        // +APP_NAME
+        // +"&cityen="
+        // +cityen;
+        System.out.println(adUrl);
+        try {
+            String json = httpUtil.get(adUrl);
+            if(!json.contains("ModuleItem")){
+                return Collections.EMPTY_LIST;
+            }
+            String jsonModuleItem = JSON.parseObject(json).get("Result").toString();
+            jsonModuleItem=jsonModuleItem.substring(1,jsonModuleItem.length()-1);
+            String data = JSON.toJSONString(JSON.parseObject(jsonModuleItem).get("ModuleItem"));
+            return JSON.parseArray(data, AdType.class);
+        } catch (IOException e) {
+            return Collections.EMPTY_LIST;
         }
     }
 
