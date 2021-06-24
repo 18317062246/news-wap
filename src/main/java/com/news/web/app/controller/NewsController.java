@@ -1,7 +1,6 @@
 package com.news.web.app.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.news.web.app.common.Cityen;
 import com.news.web.app.model.AdType;
@@ -9,10 +8,7 @@ import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
-import com.news.web.util.AttributeKeyHelper;
-import com.news.web.util.HttpUtil;
-import com.news.web.util.PageUtil;
-import com.news.web.util.StringResource;
+import com.news.web.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,9 +90,13 @@ public class NewsController {
     public String index(Model model, @PathVariable(name = "cityen") String cityen,
                         @PathVariable(value = "type", required = false) Integer type,
                         @PathVariable(value = "page", required = false) Integer page,
+                        @RequestParam(value = "openid", required = false) String openId,
+                        @RequestParam(value = "unionid", required = false) String unionId,
+                        @RequestParam(value = "userid", required = false) String userId,
                         @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize,
                         @RequestParam(value = "key", required = false) String key ,
                         @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab) {
+
         setCommon(model, cityen);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
         if(org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN , hidetab)){
@@ -326,15 +325,27 @@ public class NewsController {
      *
      * @param: cityen
      * @description: 如果是成都，加上成都的逢五加一的广告
-     * @author: 蔡如林
+     * @author: 蔡瑞林
      * @date: 2021-5-27开始
      */
-        if(cityen.equals("cd")){
-            System.out.println("this is chengdu ");
+        if(Objects.equals(cityen , AttributeKeyHelper.CD_CITY_EN)){
             List<AdType> adTypeList=newsService.adList(cityen,AD_NAMES,APP_NAME);
             //System.out.println(adTypeList.toString());
             model.addAttribute(AD_LIST,adTypeList);
         }
+        /**
+         *
+         * @param: 小程序传过来的unionId，openId，userId，放到前端
+         * @description: 埋点相关，util.Triggle里面有开关
+         * @author: 蔡瑞林
+         * @date: 2021-6-17开始
+         */
+        //把微信来的各种ID放在model里
+        if(CentaioUtil.IS_CENTIO_ON){
+            CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
+            return CentaioUtil.INDEX_PAGE_CENTAIO;
+        }
+
         return AttributeKeyHelper.INDEX_PAGE;
     }
 
@@ -362,8 +373,10 @@ public class NewsController {
     public String index(Model model
             , @PathVariable(name = "cityen") String cityen
             , @PathVariable(name = "id") String id
+            , @RequestParam(value = "openid", required = false) String openId
+            ,@RequestParam(value = "unionid", required = false) String unionId
+            ,@RequestParam(value = "userid", required = false) String userId
             ,HttpServletRequest request) {
-
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
         //获取引用
@@ -459,6 +472,21 @@ public class NewsController {
         model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
         model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
         model.addAttribute(AttributeKeyHelper.REFERER, referer);
+        //System.out.println(cityen);
+        /**
+         *
+         * @param: 小程序传过来的unionId，openId，userId，放到前端
+         * @description: 埋点相关，util.Triggle里面有开关
+         * @author: 蔡瑞林
+         * @date: 2021-6-17开始
+         */
+        //把微信来的各种ID放在model里
+        if(cityen.equals(AttributeKeyHelper.CD_CITY_EN)){
+            if(CentaioUtil.IS_CENTIO_ON){
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
+                return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
+            }
+        }
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
     }
 
@@ -495,7 +523,6 @@ public class NewsController {
         JSONObject obj = new JSONObject();
         //文章列表
         List<Integer> typeid = new ArrayList<>(Arrays.asList(type));
-
         //栏目编号获取文章列表
         List<NewsType> jtyyTypes = newsService.typeList(AttributeKeyHelper.CENTANET, null);
         List<NewsType> childTypes = new ArrayList<>();
