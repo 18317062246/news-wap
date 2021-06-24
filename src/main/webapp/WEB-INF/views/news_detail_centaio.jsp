@@ -56,6 +56,171 @@
 </head>
 
 <body onload="loadNewsViewHistory()">
+<%--埋点相关--%>
+<input type="hidden" id="wechat_open_id" value="${wechat_open_id}"/>
+<input type="hidden" id="wechat_union_id" value="${wechat_union_id}"/>
+<input type="hidden" id="wechat_user_id" value="${wechat_user_id}"/>
+<input type="hidden" id="centIO_citycode" value="${centio_citycode}"/>
+<input type="hidden" id="srcm_init_log" value="${is_log_on}"/>
+<input type="hidden" id="srcm_init_dev" value="${is_dev_on}"/>
+<input type="hidden" id="srcm_init_monitor" value="${is_monitor_on}"/>
+<%--<script type="text/javascript">document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + new Date().getTime() + '"><\/script>')</script>--%>
+<%--测试环境加cookie--%>
+<script type="text/javascript">
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    var nowDate=new Date().format("yyyy-MM-dd");
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +nowDate+ '"><\/script>')
+</script>
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<%--埋点相关 begin--%>
+<script>
+    $(document).ready(function() {
+        $.sendCentaIOData("1","zx_detail_view");
+    });
+    $.extend({
+        getBaseInfo: function () {
+            localStorage.setItem('monitorProjectId', 'c84630e6-e878-4e6f-9812-bba9db5c2ab2');
+            localStorage.setItem('monitorDeptId', 'till now it is empty');
+        },
+        getTestCookie: function () {
+            var e=32;
+            var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
+            var a = t.length;
+            var n='';
+            for (i = 0; i < e; i++) {
+                n += t.charAt(Math.floor(Math.random() * a))
+            }
+            $.cookie('Y190cmFja2lk',n.replace('-',''),{ expires: 365 });
+            return n.replace('-','');
+        },
+        getCurrentPageNum:function(){
+            var currentUrl=window.location.href;
+            var urlTempArray=currentUrl.split("/");
+            return  urlTempArray[urlTempArray.length-1].split(".")[0];
+        },
+        getCurrentSendObj:function(obj){
+            var wechat_union_id=$("#wechat_union_id").val();
+            var wechat_open_id=$("#wechat_open_id").val();
+            var wechat_user_id=$("#wechat_user_id").val();
+            if(wechat_user_id==null||wechat_user_id==""){
+                if(GetCookie('Y190cmFja2lk') == null||GetCookie('Y190cmFja2lk') == ""){
+                    obj.cookies=$.getTestCookie();
+                    $.cookie('Y190cmFja2lk',obj.cookies,{ expires: 7 });
+                }else {
+                    obj.cookies=GetCookie('Y190cmFja2lk');
+                }
+                obj.userId="";
+            }else {
+                obj.userId=wechat_user_id;
+                obj.cookies="";
+            }
+            obj.unionId=wechat_union_id;
+            obj.openId=wechat_open_id;
+            return obj;
+        },
+        /**
+         * 用于设置当前的pageBuriedData，用于埋点SDK采集页面停留时间和下拉到底事件的自动手机
+         * param1：频道缩写一般为zx
+         * param2：页面类型目前只有detail和list两种
+         * param3：事件类型，目前两个值①stay表示页面停留②scroll表示页面滚动到底
+         * 备注：方便SDK自动采集
+         */
+        setPageBuriedData:function (channalShort,pageType,eventType){
+            if(!($.paramNotNull(channalShort)&&$.paramNotNull(pageType)&&$.paramNotNull(eventType))){
+                console.log("参数一个也不能为空");
+                return;
+            }
+            if(eventType=="stay"){
+                pageBuriedData = new Object();
+                pageBuriedData.evenStayId = channalShort+"_"+pageType+"_stay";
+                window.pageBuriedData = pageBuriedData;
+            }else if(eventType=="scroll"){
+                pageBuriedData = new Object();
+                pageBuriedData.evenScrollDownId = channalShort+"_"+pageType+"_scroll_down";
+                console.log(pageBuriedData);
+                window.pageBuriedData = pageBuriedData;
+            }else {
+                console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
+            }
+        },
+        paramNotNull:function(param){
+            return param!=null&&param!="";
+        },
+        /**
+         * 用于封装当前的centaIO发送对象
+         * param1：action 事件类型// action// 1-进入// 2-停留// 3-底部// 4-点击// 5-搜索
+         * param2：eventId 事件Id看蓝湖上产品怎么写
+         */
+        sendCentaIOData:function (action,eventId) {
+            if(!($.paramNotNull(action)&&$.paramNotNull(eventId))){
+                console.log("参数一个也不能为空");
+                return;
+            }
+            $.getBaseInfo();
+            //封装页面信息对象
+            $.setPageBuriedData("zx","detail","stay")
+            //封装行为对象
+            var userBehavior=new Object();
+            var source=new Object();
+            var centaId=new Object();
+            var cityCode =$('#centIO_citycode').val();
+            userBehavior.action=action;//解析url获取当前tab标题
+            userBehavior.cityCode=cityCode;
+            source.eventId=eventId;
+            source.channel="资讯";
+            source.sourceId=$.getCurrentPageNum();
+            source.sourceObject={};
+            userBehavior.source=source;
+            centaId=$.getCurrentSendObj(centaId);
+            userBehavior.centaId=centaId;
+            var srcm_init_log=JSON.parse($('#srcm_init_log').val());
+            var srcm_init_dev=JSON.parse($('#srcm_init_dev').val());
+            var srcm_init_monitor=JSON.parse($('#srcm_init_monitor').val());
+            //console.log(userBehavior);
+            var cent=new centaLabSdk();
+            cent.init({
+                "from":"002-资讯",
+                "cityCode":cityCode,
+                "isMonitor":srcm_init_monitor, //是否开启监控 || 默认开启
+                "isLog":srcm_init_log, //是否开启⽇志 || 默认开启
+                "isDev":srcm_init_dev, //应⽤环境 || 默认测试
+            })
+            cent.trigger(userBehavior);
+        }
+    })
+    $(window).scroll(function () {
+        //滑动到最底部才触发事件不合理，应该是文章差不多看完就触发
+        //$(window).scrollTop()是向下滚的距离，通过可以通过finalPossition的大小来调节向下滑动多少触发事件
+        var finalPossition=1200;
+        if ($(window).scrollTop() > $(document).height() -$('.new-houseblock').height()-finalPossition) {
+           //封装sourceId
+            //封装cityCode
+            $.sendCentaIOData("3","zx_detail_scroll_down");
+            $(window).unbind("scroll");
+         }
+    });
+
+</script>
+<%--埋点相关 end--%>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
 <img  src="https://static.centanet.com/wap/main/img/download.png"  style="display: none;">
 
@@ -113,7 +278,6 @@
 </p>--%>
 <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
 <div class="room-container">
-
     <c:forEach items="${commonHouseResult}" varStatus="status" var="n">
         <div class="roomlists">
             <div class="room-item" >
