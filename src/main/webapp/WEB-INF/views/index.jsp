@@ -139,6 +139,7 @@
             </div>
         </div>
     </c:if>
+    <%@include file="/WEB-INF/views/common_footer.jsp" %>
 </section>
 
 

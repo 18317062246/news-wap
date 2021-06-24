@@ -117,6 +117,7 @@
         $(".button-collapse").sideNav();
     });
 </script>
+<%@include file="/WEB-INF/views/common_footer.jsp" %>
 <script type="text/javascript">
     /**
      * 以下代码是判断是人还是蜘蛛

@@ -96,6 +96,7 @@
                 </a>
             </li>
         </c:forEach>
+        <%@include file="/WEB-INF/views/common_footer.jsp" %>
     </ul>
 </div>
 <div class="news-project-list">

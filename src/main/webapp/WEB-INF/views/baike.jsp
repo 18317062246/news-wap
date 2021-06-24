@@ -55,7 +55,7 @@
 				</ul>
 			</article>
 			</c:forEach>
-
+			<%@include file="/WEB-INF/views/common_footer.jsp" %>
 		</div>
 		<script>
 			$(function () {

@@ -332,6 +332,7 @@
             </div>
         </div>
     </c:if>
+    <%@include file="/WEB-INF/views/common_footer.jsp" %>
 </section>
 
 <%--<script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>--%>

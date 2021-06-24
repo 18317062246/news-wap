@@ -460,6 +460,7 @@
             </li>
         </c:forEach>
     </ul>
+    <%@include file="/WEB-INF/views/common_footer.jsp" %>
 </section>
 <div class="referBroker" id="jingjirenInfo" style="display: none;">
     <div class="referImg left">

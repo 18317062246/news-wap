@@ -14,6 +14,7 @@ public class Cityen implements Serializable {
      * 武汉城市
      */
     public static final String WH_CITY_EN = "wh";
+    public static final String CD_CITY_EN = "cd";
     /**
      * 深圳城市
      */

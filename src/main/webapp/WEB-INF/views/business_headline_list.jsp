@@ -130,5 +130,6 @@
 </script>
 <%--统计代码--%>
 <%@include file="/WEB-INF/views/statistics_code.jsp" %>
+<%@include file="/WEB-INF/views/common_footer.jsp" %>
 </body>
 </html>
