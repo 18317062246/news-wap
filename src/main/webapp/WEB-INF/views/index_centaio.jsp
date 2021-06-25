@@ -114,7 +114,7 @@
             <input type="hidden" id="srcm_init_dev" value="${is_dev_on}"/>
             <input type="hidden" id="srcm_init_monitor" value="${is_monitor_on}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
-                <li class="tab" ref="${type.id}" onclick="clickTab(this)">
+                <li class="tab" ref="${type.id}">
                     <a id="tab${type.id}" href="/m/${cityen}/list/c${type.id}/">
                             ${type.columnsName}
                     </a>
@@ -136,11 +136,11 @@
             }
         }
     })
-
-    function clickTab(_this) {
-        $.sendCentaIOData("4", "zx_list_ml_click");
-    }
-
+    $('.tab').click(function () {
+        var title=$('.tab a').text().replace(/\s+/g, "");
+        $.sendCentaIOData("4","zx_list_ml_click",title)
+        $('.tab').unbind('click');
+    })
 </script>
 <script>
     //centaio埋点发送请求的 全局 方法 ，用$.方法名()调用
@@ -203,7 +203,7 @@
         //获取当前的tabname
         getCurrentTabName: function (obj) {
             var currentTabId = '#tab' + $('#tabtype').val();
-            obj.zx_currentTabName = $(currentTabId).text().replace("\n", "").replace(/\s+/g, "");
+            obj.title = $(currentTabId).text().replace("\n", "").replace(/\s+/g, "");
             return obj;
         },
         /**
@@ -212,19 +212,20 @@
          * param2：事件类型，目前两个值①stay表示页面停留②scroll表示页面滚动到底
          * 备注：方便SDK自动采集
          */
-        setPageBuriedData: function (channalShort, pageType, eventType) {
+        setPageBuriedData: function (channalShort, pageType, eventType,sourceObject) {
             if (!($.paramNotNull(channalShort) && $.paramNotNull(pageType) && $.paramNotNull(eventType))) {
                 console.log("参数一个也不能为空");
                 return;
             }
+            pageBuriedData = new Object();
+
             if (eventType == "stay") {
-                pageBuriedData = new Object();
                 pageBuriedData.evenStayId = channalShort + "_" + pageType + "_stay";
+                pageBuriedData.sourceObject=sourceObject;
                 window.pageBuriedData = pageBuriedData;
             } else if (eventType == "scroll") {
                 pageBuriedData = new Object();
                 pageBuriedData.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
-                console.log(pageBuriedData);
                 window.pageBuriedData = pageBuriedData;
             } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
@@ -238,14 +239,19 @@
          * param1：action 事件类型// action// 1-进入// 2-停留// 3-底部// 4-点击// 5-搜索
          * param2：eventId 事件Id看蓝湖上产品怎么写
          */
-        sendCentaIOData: function (action, eventId) {
+        sendCentaIOData: function (action, eventId,_this) {
             if (!($.paramNotNull(action) && $.paramNotNull(eventId))) {
                 console.log("参数一个也不能为空");
                 return;
             }
+            var sourceObject=new Object();
+            sourceObject.completeUrl=window.location.href;
+            if(eventId=="zx_list_ml_click"){
+                sourceObject.title=_this;
+            }
             $.getBaseInfo();
             //封装页面信息对象
-            $.setPageBuriedData("zx", "list", "stay")
+
             //封装行为对象
             var userBehavior = new Object();
             var source = new Object();
@@ -256,10 +262,12 @@
             source.eventId = eventId;
             source.channel = "资讯";
             source.sourceId = "c" + $('#tabtype').val();
-            source.sourceObject = {};
+            source.sourceObject = sourceObject;
             userBehavior.source = source;
             centaId = $.getCurrentSendObj(centaId);
             userBehavior.centaId = centaId;
+            sourceObject=$.getCurrentTabName(sourceObject);
+            $.setPageBuriedData("zx", "list", "stay",sourceObject);
             var srcm_init_log = JSON.parse($('#srcm_init_log').val());
             var srcm_init_dev = JSON.parse($('#srcm_init_dev').val());
             var srcm_init_monitor = JSON.parse($('#srcm_init_monitor').val());
