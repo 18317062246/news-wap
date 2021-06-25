@@ -332,6 +332,10 @@ public class NewsController {
             List<AdType> adTypeList=newsService.adList(cityen,AD_NAMES,APP_NAME);
             //System.out.println(adTypeList.toString());
             model.addAttribute(AD_LIST,adTypeList);
+            if(CentaioUtil.IS_CENTIO_ON){
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
+                return CentaioUtil.INDEX_PAGE_CENTAIO;
+            }
         }
         /**
          *
@@ -341,10 +345,6 @@ public class NewsController {
          * @date: 2021-6-17开始
          */
         //把微信来的各种ID放在model里
-        if(CentaioUtil.IS_CENTIO_ON){
-            CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
-            return CentaioUtil.INDEX_PAGE_CENTAIO;
-        }
 
         return AttributeKeyHelper.INDEX_PAGE;
     }
