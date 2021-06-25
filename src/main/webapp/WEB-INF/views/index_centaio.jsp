@@ -50,7 +50,7 @@
         return fmt;
     }
     var nowDate = new Date().format("yyyy-MM-dd");
-    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + new Date().getTime() + '"><\/script>')
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + nowDate + '"><\/script>')
 </script>
 <%--&lt;%&ndash;测试环境加cookie&ndash;%&gt;--%>
 <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -137,8 +137,8 @@
         }
     })
     $('.tab').click(function () {
-        var title=$('.tab a').text().replace(/\s+/g, "");
-        $.sendCentaIOData("4","zx_list_ml_click",title)
+        var title = $('.tab a').text().replace(/\s+/g, "");
+        $.sendCentaIOData("4", "zx_list_ml_click", title)
         $('.tab').unbind('click');
     })
 </script>
@@ -212,24 +212,24 @@
          * param2：事件类型，目前两个值①stay表示页面停留②scroll表示页面滚动到底
          * 备注：方便SDK自动采集
          */
-        setPageBuriedData: function (channalShort, pageType, eventType,sourceObject) {
+        setPageBuriedData: function (channalShort, pageType, eventType, sourceObject) {
             if (!($.paramNotNull(channalShort) && $.paramNotNull(pageType) && $.paramNotNull(eventType))) {
                 console.log("参数一个也不能为空");
                 return;
             }
-           var pageBuriedData = new Object();
-           var source = new Object();
+            var pageBuriedData = new Object();
+            var source = new Object();
             if (eventType == "stay") {
-                source.evenStayId= channalShort + "_" + pageType + "_stay";
+                source.evenStayId = channalShort + "_" + pageType + "_stay";
             } else if (eventType == "scroll") {
                 source.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
             } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
             }
-            source.sourceObject=sourceObject;
-            source.channel='资讯'
-            pageBuriedData.source=source;
-            window.pageBuriedData=pageBuriedData;
+            source.sourceObject = sourceObject;
+            source.channel = '资讯'
+            pageBuriedData.source = source;
+            window.pageBuriedData = pageBuriedData;
         },
         paramNotNull: function (param) {
             return param != null && param != "";
@@ -239,15 +239,15 @@
          * param1：action 事件类型// action// 1-进入// 2-停留// 3-底部// 4-点击// 5-搜索
          * param2：eventId 事件Id看蓝湖上产品怎么写
          */
-        sendCentaIOData: function (action, eventId,_this) {
+        sendCentaIOData: function (action, eventId, _this) {
             if (!($.paramNotNull(action) && $.paramNotNull(eventId))) {
                 console.log("参数一个也不能为空");
                 return;
             }
-            var sourceObject=new Object();
-            sourceObject.completeUrl=window.location.href;
-            if(eventId=="zx_list_ml_click"){
-                sourceObject.title=_this;
+            var sourceObject = new Object();
+            sourceObject.completeUrl = window.location.href;
+            if (eventId == "zx_list_ml_click") {
+                sourceObject.title = _this;
             }
             $.getBaseInfo();
             //封装页面信息对象
@@ -266,8 +266,8 @@
             userBehavior.source = source;
             centaId = $.getCurrentSendObj(centaId);
             userBehavior.centaId = centaId;
-            sourceObject=$.getCurrentTabName(sourceObject);
-            $.setPageBuriedData("zx", "list", "stay",sourceObject);
+            sourceObject = $.getCurrentTabName(sourceObject);
+            $.setPageBuriedData("zx", "list", "stay", sourceObject);
             var srcm_init_log = JSON.parse($('#srcm_init_log').val());
             var srcm_init_dev = JSON.parse($('#srcm_init_dev').val());
             var srcm_init_monitor = JSON.parse($('#srcm_init_monitor').val());
