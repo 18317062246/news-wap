@@ -182,13 +182,16 @@
             var userBehavior=new Object();
             var source=new Object();
             var centaId=new Object();
+            var sourceObject=new Object();
             var cityCode =$('#centIO_citycode').val();
             userBehavior.action=action;//解析url获取当前tab标题
             userBehavior.cityCode=cityCode;
+            sourceObject.newsId=$.getCurrentPageNum();
+            sourceObject.newsTitle=$('.new-title').text();
             source.eventId=eventId;
             source.channel="资讯";
             source.sourceId=$.getCurrentPageNum();
-            source.sourceObject={};
+            source.sourceObject=sourceObject;
             userBehavior.source=source;
             centaId=$.getCurrentSendObj(centaId);
             userBehavior.centaId=centaId;
