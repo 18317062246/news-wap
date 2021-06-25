@@ -144,23 +144,24 @@
          * param3：事件类型，目前两个值①stay表示页面停留②scroll表示页面滚动到底
          * 备注：方便SDK自动采集
          */
-        setPageBuriedData:function (channalShort,pageType,eventType){
-            if(!($.paramNotNull(channalShort)&&$.paramNotNull(pageType)&&$.paramNotNull(eventType))){
+        setPageBuriedData: function (channalShort, pageType, eventType,sourceObject) {
+            if (!($.paramNotNull(channalShort) && $.paramNotNull(pageType) && $.paramNotNull(eventType))) {
                 console.log("参数一个也不能为空");
                 return;
             }
-            if(eventType=="stay"){
-                pageBuriedData = new Object();
-                pageBuriedData.evenStayId = channalShort+"_"+pageType+"_stay";
-                window.pageBuriedData = pageBuriedData;
-            }else if(eventType=="scroll"){
-                pageBuriedData = new Object();
-                pageBuriedData.evenScrollDownId = channalShort+"_"+pageType+"_scroll_down";
-                console.log(pageBuriedData);
-                window.pageBuriedData = pageBuriedData;
-            }else {
+            var pageBuriedData = new Object();
+            var source = new Object();
+            if (eventType == "stay") {
+                source.evenStayId= channalShort + "_" + pageType + "_stay";
+            } else if (eventType == "scroll") {
+                source.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
+            } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
             }
+            source.sourceObject=sourceObject;
+            source.channel='资讯'
+            pageBuriedData.source=source;
+            window.pageBuriedData=pageBuriedData;
         },
         paramNotNull:function(param){
             return param!=null&&param!="";
@@ -177,7 +178,7 @@
             }
             $.getBaseInfo();
             //封装页面信息对象
-            $.setPageBuriedData("zx","detail","stay")
+
             //封装行为对象
             var userBehavior=new Object();
             var source=new Object();
@@ -188,6 +189,7 @@
             userBehavior.cityCode=cityCode;
             sourceObject.newsId=$.getCurrentPageNum();
             sourceObject.newsTitle=$('.new-title').text();
+            $.setPageBuriedData("zx","detail","stay",sourceObject)
             source.eventId=eventId;
             source.channel="资讯";
             source.sourceId=$.getCurrentPageNum();

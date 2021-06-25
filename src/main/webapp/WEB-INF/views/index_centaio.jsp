@@ -50,7 +50,7 @@
         return fmt;
     }
     var nowDate = new Date().format("yyyy-MM-dd");
-    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + nowDate + '"><\/script>')
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + new Date().getTime() + '"><\/script>')
 </script>
 <%--&lt;%&ndash;测试环境加cookie&ndash;%&gt;--%>
 <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -217,19 +217,19 @@
                 console.log("参数一个也不能为空");
                 return;
             }
-            pageBuriedData = new Object();
-
+           var pageBuriedData = new Object();
+           var source = new Object();
             if (eventType == "stay") {
-                pageBuriedData.evenStayId = channalShort + "_" + pageType + "_stay";
-                pageBuriedData.sourceObject=sourceObject;
-                window.pageBuriedData = pageBuriedData;
+                source.evenStayId= channalShort + "_" + pageType + "_stay";
             } else if (eventType == "scroll") {
-                pageBuriedData = new Object();
-                pageBuriedData.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
-                window.pageBuriedData = pageBuriedData;
+                source.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
             } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
             }
+            source.sourceObject=sourceObject;
+            source.channel='资讯'
+            pageBuriedData.source=source;
+            window.pageBuriedData=pageBuriedData;
         },
         paramNotNull: function (param) {
             return param != null && param != "";
