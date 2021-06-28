@@ -158,6 +158,12 @@
             } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
             }
+            var img=localStorage.getItem("currentClickPicUrl");
+            if(img==null||img==""){
+                sourceObject.thumbnailImage="";
+            }else {
+                sourceObject.thumbnailImage=img;
+            }
             source.sourceObject=sourceObject;
             source.channel='资讯'
             pageBuriedData.source=source;

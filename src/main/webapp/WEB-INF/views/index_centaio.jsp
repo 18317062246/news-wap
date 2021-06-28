@@ -353,7 +353,9 @@
     $('.item').click(function () {
         var imgs = $(this).find('img.lazy');
         for(var i=0;i<imgs.length;i++){
-            localStorage.setItem("currentClickPicUrl",imgs.get(i).src)
+            if(imgs.get(i).src!=null||imgs.get(i).src!=""){
+                localStorage.setItem("currentClickPicUrl",imgs.get(i).src)
+            }
             break;
         }
     })
