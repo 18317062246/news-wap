@@ -146,8 +146,8 @@
     //centaio埋点发送请求的 全局 方法 ，用$.方法名()调用
     $.extend({
         getBaseInfo: function () {
-            localStorage.setItem('monitorProjectId', 'c84630e6-e878-4e6f-9812-bba9db5c2ab2');
-            localStorage.setItem('monitorDeptId', 'till now it is empty');
+            // localStorage.setItem('monitorProjectId', 'c84630e6-e878-4e6f-9812-bba9db5c2ab2');
+            // localStorage.setItem('monitorDeptId', 'till now it is empty');
         },
         getCurrentSendObj: function (obj) {
             var wechat_union_id = $("#wechat_union_id").val();
@@ -349,6 +349,15 @@
 <%--<script type="text/javascript" src="${staticurl}/js/jquery.lazyload.js" language="javascript"></script>--%>
 <%--<script src="https://unpkg.com/better-scroll/dist/bscroll.min.js"></script>--%>
 <script src="${staticurl}/js/bscroll.min.js"></script>
+<script type="text/javascript">
+    $('.item').click(function () {
+        var imgs = $(this).find('img.lazy');
+        for(var i=0;i<imgs.length;i++){
+            localStorage.setItem("currentClickPicUrl",imgs.get(i).src)
+            break;
+        }
+    })
+</script>
 <script>
     $(function () {
         let sumWidth = 0;
