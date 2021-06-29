@@ -88,7 +88,7 @@
         return fmt;
     }
     var nowDate=new Date().format("yyyy-MM-dd");
-    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +nowDate+ '"><\/script>')
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +new Date().getTime()+ '"><\/script>')
 </script>
 <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <%--埋点相关 begin--%>
@@ -117,24 +117,45 @@
             var urlTempArray=currentUrl.split("/");
             return  urlTempArray[urlTempArray.length-1].split(".")[0];
         },
-        getCurrentSendObj:function(obj){
-            var wechat_union_id=$("#wechat_union_id").val();
-            var wechat_open_id=$("#wechat_open_id").val();
-            var wechat_user_id=$("#wechat_user_id").val();
-            if(wechat_user_id==null||wechat_user_id==""){
-                if(GetCookie('Y190cmFja2lk') == null||GetCookie('Y190cmFja2lk') == ""){
-                    obj.cookies=$.getTestCookie();
-                    $.cookie('Y190cmFja2lk',obj.cookies,{ expires: 7 });
-                }else {
-                    obj.cookies=GetCookie('Y190cmFja2lk');
-                }
-                obj.userId="";
-            }else {
-                obj.userId=wechat_user_id;
-                obj.cookies="";
+        getCurrentSendObj: function (obj) {
+            var wechat_union_id = $("#wechat_union_id").val();
+            var wechat_open_id = $("#wechat_open_id").val();
+            var wechat_user_id = $("#wechat_user_id").val();
+            var wechat_union_id_cookie = GetCookie('Y190cmFunion3Idja2lk');
+            var wechat_open_id_cookie = GetCookie('Y190open2Idcmja2lk');
+            var wechat_user_id_cookie = GetCookie('Y1usedrId90cmFunion3Idja2lk');
+            if ($.paramNotNull(wechat_user_id)) {
+                obj.userId = wechat_user_id;
+                $.cookie('Y1usedrId90cmFunion3Idja2lk', wechat_user_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_user_id_cookie)) {
+                obj.userId = wechat_user_id_cookie;
+            } else {
+                obj.userId = "";
             }
-            obj.unionId=wechat_union_id;
-            obj.openId=wechat_open_id;
+
+            if ($.paramNotNull(wechat_union_id)) {
+                obj.unionId = wechat_union_id;
+                $.cookie('Y190cmFunion3Idja2lk', wechat_union_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_union_id_cookie)) {
+                obj.unionId = wechat_union_id_cookie;
+            } else {
+                obj.unionId = "";
+            }
+
+            if ($.paramNotNull(wechat_open_id)) {
+                obj.openId = wechat_open_id;
+                $.cookie('Y190open2Idcmja2lk', wechat_open_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_open_id_cookie)) {
+                obj.openId = wechat_open_id_cookie;
+            } else {
+                obj.openId = "";
+            }
+            if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
+                obj.cookies = GetCookie('Y190cmFja2lk');
+            }else {
+                obj.cookies = $.getTestCookie();
+                $.cookie('Y190cmFja2lk', obj.cookies, {expires: 365});
+            }
             return obj;
         },
         /**

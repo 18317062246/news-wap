@@ -153,20 +153,41 @@
             var wechat_union_id = $("#wechat_union_id").val();
             var wechat_open_id = $("#wechat_open_id").val();
             var wechat_user_id = $("#wechat_user_id").val();
-            if (wechat_user_id == null || wechat_user_id == "") {
-                if (GetCookie('Y190cmFja2lk') == null || GetCookie('Y190cmFja2lk') == "") {
-                    obj.cookies = $.getTestCookie();
-                    $.cookie('Y190cmFja2lk', obj.cookies, {expires: 365});
-                } else {
-                    obj.cookies = GetCookie('Y190cmFja2lk');
-                }
-                obj.userId = "";
-            } else {
+            var wechat_union_id_cookie = GetCookie('Y190cmFunion3Idja2lk');
+            var wechat_open_id_cookie = GetCookie('Y190open2Idcmja2lk');
+            var wechat_user_id_cookie = GetCookie('Y1usedrId90cmFunion3Idja2lk');
+            if ($.paramNotNull(wechat_user_id)) {
                 obj.userId = wechat_user_id;
-                obj.cookies = "";
+                $.cookie('Y1usedrId90cmFunion3Idja2lk', wechat_user_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_user_id_cookie)) {
+                obj.userId = wechat_user_id_cookie;
+            } else {
+                obj.userId = "";
             }
-            obj.unionId = wechat_union_id;
-            obj.openId = wechat_open_id;
+
+            if ($.paramNotNull(wechat_union_id)) {
+                obj.unionId = wechat_union_id;
+                $.cookie('Y190cmFunion3Idja2lk', wechat_union_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_union_id_cookie)) {
+                obj.unionId = wechat_union_id_cookie;
+            } else {
+                obj.unionId = "";
+            }
+
+            if ($.paramNotNull(wechat_open_id)) {
+                obj.openId = wechat_open_id;
+                $.cookie('Y190open2Idcmja2lk', wechat_open_id, {expires: 365});
+            } else if ($.paramNotNull(wechat_open_id_cookie)) {
+                obj.openId = wechat_open_id_cookie;
+            } else {
+                obj.openId = "";
+            }
+            if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
+                obj.cookies = GetCookie('Y190cmFja2lk');
+            }else {
+                obj.cookies = $.getTestCookie();
+                $.cookie('Y190cmFja2lk', obj.cookies, {expires: 365});
+            }
             return obj;
         },
         getTestCookie: function () {
@@ -352,9 +373,9 @@
 <script type="text/javascript">
     $('.item').click(function () {
         var imgs = $(this).find('img.lazy');
-        for(var i=0;i<imgs.length;i++){
-            if(imgs.get(i).src!=null||imgs.get(i).src!=""){
-                localStorage.setItem("currentClickPicUrl",imgs.get(i).src)
+        for (var i = 0; i < imgs.length; i++) {
+            if (imgs.get(i).src != null || imgs.get(i).src != "") {
+                localStorage.setItem("currentClickPicUrl", imgs.get(i).src)
             }
             break;
         }

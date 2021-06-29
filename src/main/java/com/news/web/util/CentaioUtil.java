@@ -13,17 +13,20 @@ public class CentaioUtil {
      * */
     public static final boolean IS_CENTIO_ON=true;
     //埋点日志是否打开
-    public static final boolean IS_CENTIO_LOG_ON=false;
+    public static final boolean IS_CENTIO_LOG_ON=true;
     //是否是测试环境
-    public static final boolean IS_CENTIO_DEV_ON=false;
+    public static final boolean IS_CENTIO_DEV_ON=true;
     //跳转自动触发的功能是否开启，需开启
     public static final boolean IS_CENTIO_MONITOR_ON=true;
     /**
      * 埋点和微信相关的各种信息
      *
      * */
+    //cookie名字Y190cmFunion3Idja2lk
     public static final String WECHAT_UNION_ID_KEY="wechat_union_id";
+    //cookie名字Y190open2Idcmja2lk
     public static final String WECHAT_OPEN_ID_KEY="wechat_open_id";
+    //cookie名字Y1usedrId90cmFunion3Idja2lk
     public static final String WECHAT_USER_ID_KEY="wechat_user_id";
     public static final String CENTAIO_CITYCODE_KEY="centio_citycode";
     /**
