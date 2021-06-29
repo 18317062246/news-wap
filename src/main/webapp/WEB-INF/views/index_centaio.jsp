@@ -238,6 +238,9 @@
                 console.log("参数一个也不能为空");
                 return;
             }
+            var centaId=new Object();
+            centaId = $.getCurrentSendObj(centaId);
+            //console.log(centaId);
             var pageBuriedData = new Object();
             var source = new Object();
             if (eventType == "stay") {
@@ -250,7 +253,9 @@
             source.sourceObject = sourceObject;
             source.channel = '资讯'
             pageBuriedData.source = source;
+            pageBuriedData.centaId=centaId;
             window.pageBuriedData = pageBuriedData;
+            //console.log(window.pageBuriedData);
         },
         paramNotNull: function (param) {
             return param != null && param != "";

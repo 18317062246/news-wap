@@ -88,7 +88,7 @@
         return fmt;
     }
     var nowDate=new Date().format("yyyy-MM-dd");
-    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +new Date().getTime()+ '"><\/script>')
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +nowDate+ '"><\/script>')
 </script>
 <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <%--埋点相关 begin--%>
@@ -165,30 +165,29 @@
          * param3：事件类型，目前两个值①stay表示页面停留②scroll表示页面滚动到底
          * 备注：方便SDK自动采集
          */
-        setPageBuriedData: function (channalShort, pageType, eventType,sourceObject) {
+        setPageBuriedData: function (channalShort, pageType, eventType, sourceObject) {
             if (!($.paramNotNull(channalShort) && $.paramNotNull(pageType) && $.paramNotNull(eventType))) {
                 console.log("参数一个也不能为空");
                 return;
             }
+            var centaId=new Object();
+            centaId = $.getCurrentSendObj(centaId);
+            //console.log(centaId);
             var pageBuriedData = new Object();
             var source = new Object();
             if (eventType == "stay") {
-                source.evenStayId= channalShort + "_" + pageType + "_stay";
+                source.evenStayId = channalShort + "_" + pageType + "_stay";
             } else if (eventType == "scroll") {
                 source.evenScrollDownId = channalShort + "_" + pageType + "_scroll_down";
             } else {
                 console.log("第三个参数eventType参数输入错误，目前只能为scroll或stay");
             }
-            var img=localStorage.getItem("currentClickPicUrl");
-            if(img==null||img==""){
-                sourceObject.thumbnailImage="";
-            }else {
-                sourceObject.thumbnailImage=img;
-            }
-            source.sourceObject=sourceObject;
-            source.channel='资讯'
-            pageBuriedData.source=source;
-            window.pageBuriedData=pageBuriedData;
+            source.sourceObject = sourceObject;
+            source.channel = '资讯'
+            pageBuriedData.source = source;
+            pageBuriedData.centaId=centaId;
+            window.pageBuriedData = pageBuriedData;
+            //console.log(window.pageBuriedData);
         },
         paramNotNull:function(param){
             return param!=null&&param!="";
@@ -227,7 +226,7 @@
             var srcm_init_log=JSON.parse($('#srcm_init_log').val());
             var srcm_init_dev=JSON.parse($('#srcm_init_dev').val());
             var srcm_init_monitor=JSON.parse($('#srcm_init_monitor').val());
-            //console.log(userBehavior);
+            console.log(userBehavior);
             var cent=new centaLabSdk();
             cent.init({
                 "from":"002-资讯",
