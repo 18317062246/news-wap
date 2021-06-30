@@ -95,7 +95,8 @@ public class NewsController {
                         @RequestParam(value = "userid", required = false) String userId,
                         @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize,
                         @RequestParam(value = "key", required = false) String key ,
-                        @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab) {
+                        @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab,
+                        HttpServletRequest request) {
 
         setCommon(model, cityen);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
@@ -333,8 +334,10 @@ public class NewsController {
             //System.out.println(adTypeList.toString());
             model.addAttribute(AD_LIST,adTypeList);
             if(CentaioUtil.IS_CENTIO_ON){
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
-                return CentaioUtil.INDEX_PAGE_CENTAIO;
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,request);
+                if(CentaioUtil.IS_FROM_WECHAT){
+                    return CentaioUtil.INDEX_PAGE_CENTAIO;
+                }
             }
         }
         /**
@@ -483,8 +486,10 @@ public class NewsController {
         //把微信来的各种ID放在model里
         if(cityen.equals(Cityen.CD_CITY_EN)){
             if(CentaioUtil.IS_CENTIO_ON){
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen);
-                return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,request);
+                if(CentaioUtil.IS_FROM_WECHAT){
+                    return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
+                }
             }
         }
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
