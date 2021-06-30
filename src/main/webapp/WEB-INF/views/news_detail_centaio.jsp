@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="mfn" uri="/WEB-INF/mfn.tld"%>
+<%@ taglib prefix="mfn" uri="/WEB-INF/mfn.tld" %>
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +15,7 @@
     <!-- 默认meta标签中的content作为描述 -->
     <meta name="description" content="${fn:substring(detail.ShareTitle , 0 , 30)}">
     <meta name="keywords" content="">
-    <meta name="referrer" content="no-referrer" />
+    <meta name="referrer" content="no-referrer"/>
     <link rel="apple-touch-icon" href="images/touch-icon-iphone.png"/>
     <link rel="apple-touch-icon" sizes="114x114" href="images/touch-icon-iphone-retina.png"/>
     <link rel="apple-touch-icon" sizes="144x144" href="images/touch-icon-ipad-retina.png"/>
@@ -32,7 +32,7 @@
     <script src="${staticurl}/js/jquery.lazyload.min.js" type="text/javascript" language="javascript"></script>
 
     <!-- 调用微信分享插件 -->
-   <script src="${staticurl}/js/wx-share.js"></script>
+    <script src="${staticurl}/js/wx-share.js"></script>
     <script type="text/javascript" src="${staticurl}/js/sale_house_cookie.js" language="javascript"></script>
     <style>
         .newdetail-wrapper img {
@@ -40,16 +40,20 @@
              height:  auto  !important;
              display:  block  !important;
         }
-        .newdetail-wrapper section{
+
+        .newdetail-wrapper section {
             width:  100%   !important;
             height:  auto  !important;
              display:  block  !important;
         }
+
         img {
-            max-width :100% !important;
+            max-width: 100% !important;
         }
 
-        *{max-width:100%!important;}
+        * {
+            max-width: 100% !important;
+        }
 
 
     </style>
@@ -67,34 +71,34 @@
 <%--<script type="text/javascript">document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + new Date().getTime() + '"><\/script>')</script>--%>
 <%--测试环境加cookie--%>
 <script type="text/javascript">
-    Date.prototype.format = function(fmt) {
+    Date.prototype.format = function (fmt) {
         var o = {
-            "M+" : this.getMonth()+1,                 //月份
-            "d+" : this.getDate(),                    //日
-            "h+" : this.getHours(),                   //小时
-            "m+" : this.getMinutes(),                 //分
-            "s+" : this.getSeconds(),                 //秒
-            "q+" : Math.floor((this.getMonth()+3)/3), //季度
-            "S"  : this.getMilliseconds()             //毫秒
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
         };
-        if(/(y+)/.test(fmt)) {
-            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
-        for(var k in o) {
-            if(new RegExp("("+ k +")").test(fmt)){
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             }
         }
         return fmt;
     }
-    var nowDate=new Date().format("yyyy-MM-dd");
-    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' +nowDate+ '"><\/script>')
+    var nowDate = new Date().format("yyyy-MM-dd");
+    document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + nowDate + '"><\/script>')
 </script>
 <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <%--埋点相关 begin--%>
 <script>
-    $(document).ready(function() {
-        $.sendCentaIOData("1","zx_detail_view");
+    $(document).ready(function () {
+        $.sendCentaIOData("1", "zx_detail_view");
     });
     $.extend({
         getBaseInfo: function () {
@@ -102,20 +106,20 @@
             localStorage.setItem('monitorDeptId', 'till now it is empty');
         },
         getTestCookie: function () {
-            var e=32;
+            var e = 32;
             var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
             var a = t.length;
-            var n='';
+            var n = '';
             for (i = 0; i < e; i++) {
                 n += t.charAt(Math.floor(Math.random() * a))
             }
-            $.cookie('Y190cmFja2lk',n.replace('-',''),{ expires: 365 });
-            return n.replace('-','');
+            $.cookie('Y190cmFja2lk', n.replace('-', ''), {expires: 365});
+            return n.replace('-', '');
         },
-        getCurrentPageNum:function(){
-            var currentUrl=window.location.href;
-            var urlTempArray=currentUrl.split("/");
-            return  urlTempArray[urlTempArray.length-1].split(".")[0];
+        getCurrentPageNum: function () {
+            var currentUrl = window.location.href;
+            var urlTempArray = currentUrl.split("/");
+            return urlTempArray[urlTempArray.length - 1].split(".")[0];
         },
         getCurrentSendObj: function (obj) {
             var wechat_union_id = $("#wechat_union_id").val();
@@ -129,8 +133,6 @@
                 $.cookie('Y1usedrId90cmFunion3Idja2lk', wechat_user_id, {expires: 365});
             } else if ($.paramNotNull(wechat_user_id_cookie)) {
                 obj.userId = wechat_user_id_cookie;
-            } else {
-                obj.userId = "";
             }
 
             if ($.paramNotNull(wechat_union_id)) {
@@ -138,8 +140,6 @@
                 $.cookie('Y190cmFunion3Idja2lk', wechat_union_id, {expires: 365});
             } else if ($.paramNotNull(wechat_union_id_cookie)) {
                 obj.unionId = wechat_union_id_cookie;
-            } else {
-                obj.unionId = "";
             }
 
             if ($.paramNotNull(wechat_open_id)) {
@@ -147,12 +147,10 @@
                 $.cookie('Y190open2Idcmja2lk', wechat_open_id, {expires: 365});
             } else if ($.paramNotNull(wechat_open_id_cookie)) {
                 obj.openId = wechat_open_id_cookie;
-            } else {
-                obj.openId = "";
             }
             if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
                 obj.cookies = GetCookie('Y190cmFja2lk');
-            }else {
+            } else {
                 obj.cookies = $.getTestCookie();
                 $.cookie('Y190cmFja2lk', obj.cookies, {expires: 365});
             }
@@ -170,7 +168,7 @@
                 console.log("参数一个也不能为空");
                 return;
             }
-            var centaId=new Object();
+            var centaId = new Object();
             centaId = $.getCurrentSendObj(centaId);
             //console.log(centaId);
             var pageBuriedData = new Object();
@@ -185,20 +183,20 @@
             source.sourceObject = sourceObject;
             source.channel = '资讯'
             pageBuriedData.source = source;
-            pageBuriedData.centaId=centaId;
+            pageBuriedData.centaId = centaId;
             window.pageBuriedData = pageBuriedData;
             //console.log(window.pageBuriedData);
         },
-        paramNotNull:function(param){
-            return param!=null&&param!="";
+        paramNotNull: function (param) {
+            return param != null && param != "";
         },
         /**
          * 用于封装当前的centaIO发送对象
          * param1：action 事件类型// action// 1-进入// 2-停留// 3-底部// 4-点击// 5-搜索
          * param2：eventId 事件Id看蓝湖上产品怎么写
          */
-        sendCentaIOData:function (action,eventId) {
-            if(!($.paramNotNull(action)&&$.paramNotNull(eventId))){
+        sendCentaIOData: function (action, eventId) {
+            if (!($.paramNotNull(action) && $.paramNotNull(eventId))) {
                 console.log("参数一个也不能为空");
                 return;
             }
@@ -206,34 +204,34 @@
             //封装页面信息对象
 
             //封装行为对象
-            var userBehavior=new Object();
-            var source=new Object();
-            var centaId=new Object();
-            var sourceObject=new Object();
-            var cityCode =$('#centIO_citycode').val();
-            userBehavior.action=action;//解析url获取当前tab标题
-            userBehavior.cityCode=cityCode;
-            sourceObject.newsId=$.getCurrentPageNum();
-            sourceObject.newsTitle=$('.new-title').text();
-            $.setPageBuriedData("zx","detail","stay",sourceObject)
-            source.eventId=eventId;
-            source.channel="资讯";
-            source.sourceId=$.getCurrentPageNum();
-            source.sourceObject=sourceObject;
-            userBehavior.source=source;
-            centaId=$.getCurrentSendObj(centaId);
-            userBehavior.centaId=centaId;
-            var srcm_init_log=JSON.parse($('#srcm_init_log').val());
-            var srcm_init_dev=JSON.parse($('#srcm_init_dev').val());
-            var srcm_init_monitor=JSON.parse($('#srcm_init_monitor').val());
+            var userBehavior = new Object();
+            var source = new Object();
+            var centaId = new Object();
+            var sourceObject = new Object();
+            var cityCode = $('#centIO_citycode').val();
+            userBehavior.action = action;//解析url获取当前tab标题
+            userBehavior.cityCode = cityCode;
+            sourceObject.newsId = $.getCurrentPageNum();
+            sourceObject.newsTitle = $('.new-title').text();
+            $.setPageBuriedData("zx", "detail", "stay", sourceObject)
+            source.eventId = eventId;
+            source.channel = "资讯";
+            source.sourceId = $.getCurrentPageNum();
+            source.sourceObject = sourceObject;
+            userBehavior.source = source;
+            centaId = $.getCurrentSendObj(centaId);
+            userBehavior.centaId = centaId;
+            var srcm_init_log = JSON.parse($('#srcm_init_log').val());
+            var srcm_init_dev = JSON.parse($('#srcm_init_dev').val());
+            var srcm_init_monitor = JSON.parse($('#srcm_init_monitor').val());
             console.log(userBehavior);
-            var cent=new centaLabSdk();
+            var cent = new centaLabSdk();
             cent.init({
-                "from":"002-资讯",
-                "cityCode":cityCode,
-                "isMonitor":srcm_init_monitor, //是否开启监控 || 默认开启
-                "isLog":srcm_init_log, //是否开启⽇志 || 默认开启
-                "isDev":srcm_init_dev, //应⽤环境 || 默认测试
+                "from": "002-资讯",
+                "cityCode": cityCode,
+                "isMonitor": srcm_init_monitor, //是否开启监控 || 默认开启
+                "isLog": srcm_init_log, //是否开启⽇志 || 默认开启
+                "isDev": srcm_init_dev, //应⽤环境 || 默认测试
             })
             cent.trigger(userBehavior);
         }
@@ -241,19 +239,19 @@
     $(window).scroll(function () {
         //滑动到最底部才触发事件不合理，应该是文章差不多看完就触发
         //$(window).scrollTop()是向下滚的距离，通过可以通过finalPossition的大小来调节向下滑动多少触发事件
-        var finalPossition=1200;
-        if ($(window).scrollTop() > $(document).height() -$('.new-houseblock').height()-finalPossition) {
-           //封装sourceId
+        var finalPossition = 1200;
+        if ($(window).scrollTop() > $(document).height() - $('.new-houseblock').height() - finalPossition) {
+            //封装sourceId
             //封装cityCode
-            $.sendCentaIOData("3","zx_detail_scroll_down");
+            $.sendCentaIOData("3", "zx_detail_scroll_down");
             $(window).unbind("scroll");
-         }
+        }
     });
 
 </script>
 <%--埋点相关 end--%>
 <!-- 默认读取网页中的第一张图 可以在body标签顶部放一张图 style设置为display：none  -->
-<img  src="https://static.centanet.com/wap/main/img/download.png"  style="display: none;">
+<img src="https://static.centanet.com/wap/main/img/download.png" style="display: none;">
 
 <div class="header-down">
     <div class="download-app" id="downloadApp" style="display: none;">
@@ -307,53 +305,54 @@
 <%--<p class="new-disclaimer">
     免责声明：本文仅代表作者个人观点，与环球网无关。其原创性以及文中陈述文字和内容未经本站证实，对本文以及其中全部或者部分内容、文字的真实性、完整性、及时性本站不作任何保证或承诺，请读者仅作参考，并请自行核实相关内容。
 </p>--%>
-<c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
+<c:set var="defaultpic"
+       value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
 <div class="room-container">
     <c:forEach items="${commonHouseResult}" varStatus="status" var="n">
         <div class="roomlists">
-            <div class="room-item" >
+            <div class="room-item">
                 <div class="room-img">
                     <c:set var="citys" value="sz,gz"></c:set>
                     <c:if test="${n.xinfangResult != null}">
-                        <c:if test="${fn:contains(citys, cityen)}">
-                            <a href="//m.${cityen}.centanet.com/xinfang/lp-${n.xinfangResult.oid}/">
+                    <c:if test="${fn:contains(citys, cityen)}">
+                    <a href="//m.${cityen}.centanet.com/xinfang/lp-${n.xinfangResult.oid}/">
                         </c:if>
                         <c:if test="${!fn:contains(citys, cityen)}">
-                            <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
-                        </c:if>
+                        <a href="//wap.centanet.com/${cityen}/xinfang/lp-${n.xinfangResult.oid}/">
+                            </c:if>
                             <img class="lazy"
                                  src="${defaultpic}"
                                  data-original="${n.xinfangResult.defaultImage}"
-                                 alt="" />
+                                 alt=""/>
                         </a>
-                    </c:if>
-                    <c:if test="${n.esfResult != null}">
+                        </c:if>
+                        <c:if test="${n.esfResult != null}">
                         <c:if test="${fn:contains(citys, cityen)}">
-                            <a href="//m.${cityen}.centanet.com/ershoufang/${n.esfResult.oid}.html" >
-                        </c:if>
-                        <c:if test="${!fn:contains(citys, cityen)}">
-                            <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html" >
-                        </c:if>
-                            <img  class="lazy"
-                                  src="${defaultpic}"
-                                  data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                  alt="" />
-                        </a>
-                    </c:if>
-                    <c:if test="${n.xiaoQuResult != null}">
-                      <c:if test="${fn:contains(citys, cityen)}">
-                            <a href="//m.${cityen}.centanet.com/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
-                       </c:if>
-                       <c:if test="${!fn:contains(citys, cityen)}">
-                           <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/" >
-                       </c:if>
+                        <a href="//m.${cityen}.centanet.com/ershoufang/${n.esfResult.oid}.html">
+                            </c:if>
+                            <c:if test="${!fn:contains(citys, cityen)}">
+                            <a href="//wap.centanet.com/${cityen}/ershoufang/${n.esfResult.oid}.html">
+                                </c:if>
+                                <img class="lazy"
+                                     src="${defaultpic}"
+                                     data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                     alt=""/>
+                            </a>
+                            </c:if>
+                            <c:if test="${n.xiaoQuResult != null}">
+                            <c:if test="${fn:contains(citys, cityen)}">
+                            <a href="//m.${cityen}.centanet.com/xiaoqu/xq-${n.xiaoQuResult.oid}/">
+                                </c:if>
+                                <c:if test="${!fn:contains(citys, cityen)}">
+                                <a href="//wap.centanet.com/${cityen}/xiaoqu/xq-${n.xiaoQuResult.oid}/">
+                                    </c:if>
 
-                            <img  class="lazy"
-                                  src="${defaultpic}"
-                                  data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                    alt="" />
-                        </a>
-                    </c:if>
+                                    <img class="lazy"
+                                         src="${defaultpic}"
+                                         data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                         alt=""/>
+                                </a>
+                                </c:if>
 
                 </div>
                 <div class="room-mid">
@@ -380,7 +379,7 @@
                     </c:if>
                     <c:if test="${n.xiaoQuResult != null}">
                         <h5>${n.xiaoQuResult.estateName}</h5>
-                       <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
+                        <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
                         <p class="room-address" style="white-space: nowrap;">${n.xiaoQuResult.address}</p>
                         <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
                             <div style=" white-space: nowrap;display: inline-block;">
@@ -451,43 +450,43 @@
         <c:forEach items="${news}" var="n">
             <li class="item">
                 <c:choose>
-                    <c:when test="${jingJiRenShareKey != null}">
-                        <a href="/m/${cityen}/detail/${n.ID}.html${jingJiRenShareKey}" class="item-a">
+                <c:when test="${jingJiRenShareKey != null}">
+                <a href="/m/${cityen}/detail/${n.ID}.html${jingJiRenShareKey}" class="item-a">
                     </c:when>
                     <c:otherwise>
-                        <a href="/m/${cityen}/detail/${n.ID}.html" class="item-a">
-                    </c:otherwise>
-                </c:choose>
+                    <a href="/m/${cityen}/detail/${n.ID}.html" class="item-a">
+                        </c:otherwise>
+                        </c:choose>
 
-                    <div class="new-main">
-                        <h4 class="title">${n.Title}</h4>
-                        <div class="desc">
-                            <span>${n.TypeName}</span>
-                            <span class="time">
+                        <div class="new-main">
+                            <h4 class="title">${n.Title}</h4>
+                            <div class="desc">
+                                <span>${n.TypeName}</span>
+                                <span class="time">
                                 <jsp:useBean id="myDate" class="java.util.Date"/>
                                 <c:set target="${myDate}" property="time" value="${n.PublishDate*1000}"/>
                                 <fmt:formatDate pattern="yyyy-MM-dd" value="${myDate}" type="both"/>
                             </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="new-img">
-                        <c:choose>
-                            <c:when test="${n.LitPic != null && n.LitPic.length() >= 10}">
-                                <img class="lazy"
-                                     src="${defaultpic}"
-                                     data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
-                                     alt="${item.Title}"/>
-                            </c:when>
-                            <c:otherwise>
-                                <img class="lazy"
-                                     src="${defaultpic}"
-                                     data-original="${defaultpic}"
-                                     alt="${item.Title}"/>
-                            </c:otherwise>
-                        </c:choose>
+                        <div class="new-img">
+                            <c:choose>
+                                <c:when test="${n.LitPic != null && n.LitPic.length() >= 10}">
+                                    <img class="lazy"
+                                         src="${defaultpic}"
+                                         data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                                         alt="${item.Title}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="lazy"
+                                         src="${defaultpic}"
+                                         data-original="${defaultpic}"
+                                         alt="${item.Title}"/>
+                                </c:otherwise>
+                            </c:choose>
 
-                    </div>
-                </a>
+                        </div>
+                    </a>
             </li>
         </c:forEach>
     </ul>
@@ -527,10 +526,10 @@
         let serviceUrl;
 
         //判断是否为深圳,深圳独有获取经纪人地址
-        if(${cityen == 'sz'}){
-            serviceUrl = 'https://apisz.centanet.com/v6/json/reply/StaffRequest?staffNo='+ searchStr +'&cityen=${cityen}&platform=wap';
-        }else {//其他城市公用获取经纪人地址
-            serviceUrl = 'https://mobileapi.centanet.com/v6/json/reply/StaffRequest?StaffNo='+ searchStr +'&cityen=${cityen}&platform=wap';
+        if (${cityen == 'sz'}) {
+            serviceUrl = 'https://apisz.centanet.com/v6/json/reply/StaffRequest?staffNo=' + searchStr + '&cityen=${cityen}&platform=wap';
+        } else {//其他城市公用获取经纪人地址
+            serviceUrl = 'https://mobileapi.centanet.com/v6/json/reply/StaffRequest?StaffNo=' + searchStr + '&cityen=${cityen}&platform=wap';
         }
         $.ajax({
             type: "GET",
@@ -588,10 +587,10 @@
         //获取当前进入页面的地址
     let r = document.referrer;
     r = r.toLowerCase(); //转为小写
-    let aSites = new Array('google.','baidu.','soso.','so.','360.','yahoo.','youdao.','sogou.','gougou.');
+    let aSites = new Array('google.', 'baidu.', 'soso.', 'so.', '360.', 'yahoo.', 'youdao.', 'sogou.', 'gougou.');
     let flag = false;
-    for (i in aSites){
-        if (r.indexOf(aSites[i]) > 0){
+    for (i in aSites) {
+        if (r.indexOf(aSites[i]) > 0) {
             flag = true;
             break;
         }
@@ -599,10 +598,10 @@
 
 
     //如果flag为false，证明是人，需要给页面加入访问量
-    if(!flag){
+    if (!flag) {
         let locationAddress = window.location;
         $.get(
-            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+locationAddress+"&platform=wap&Referer=${referer}",
+            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url=" + locationAddress + "&platform=wap&Referer=${referer}",
             function (data) {
             });
     }
@@ -675,27 +674,30 @@
         //$(".button-collapse").sideNav();
     });
 
-    function downApp() {
-        var u = navigator.userAgent;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-        var isWechat = u.toLowerCase().match(/MicroMessenger/i) == 'micromessenger';
-        var iosUrl="https://itunes.apple.com/cn/app/zhong-yuan-zhao-fang/id880575384?mt=8";
-        var adrUrl="https://static.centanet.com/apk/salehouse.apk";
-        var tenUrl="https://a.app.qq.com/o/simple.jsp?pkgname=com.centaline.androidsalesblog";
-        var iosSchema="SaleHouse://static.centanet.com/salehouseuniversallink";
-        var adrSchema="salehouse://static.centanet.com/salehouseuniversallink";
+    function downApp() {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        var isWechat = u.toLowerCase().match(/MicroMessenger/i) == 'micromessenger';
+        var iosUrl = "https://itunes.apple.com/cn/app/zhong-yuan-zhao-fang/id880575384?mt=8";
+        var adrUrl = "https://static.centanet.com/apk/salehouse.apk";
+        var tenUrl = "https://a.app.qq.com/o/simple.jsp?pkgname=com.centaline.androidsalesblog";
+        var iosSchema = "SaleHouse://static.centanet.com/salehouseuniversallink";
+        var adrSchema = "salehouse://static.centanet.com/salehouseuniversallink";
         //由于webview无法检测用户是否安装app,schema协议执行后,2s后不管用户是否跳转至app,都跳下载页
-        if (isiOS) {
-            location.href = isWechat?tenUrl:iosSchema;
-            !isWechat&&setTimeout(function () {location.href = iosUrl;}, 2000);
-        }
-        else if (isAndroid) {
-            location.href = isWechat?tenUrl:adrSchema;
-            !isWechat&&setTimeout(function () {location.href = adrUrl;}, 2000);
-        }else {
+        if (isiOS) {
+            location.href = isWechat ? tenUrl : iosSchema;
+            !isWechat && setTimeout(function () {
+                location.href = iosUrl;
+            }, 2000);
+        } else if (isAndroid) {
+            location.href = isWechat ? tenUrl : adrSchema;
+            !isWechat && setTimeout(function () {
+                location.href = adrUrl;
+            }, 2000);
+        } else {
             //无设备标识的跳转到wap下载引导页
-            location.href='//wap.centanet.com/applink/?fwx';
+            location.href = '//wap.centanet.com/applink/?fwx';
         }
     }
 
