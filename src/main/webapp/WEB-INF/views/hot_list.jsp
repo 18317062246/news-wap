@@ -50,7 +50,7 @@
     </div>
 </div>
 <div>
-    <div class="wrapper">
+    <div class="wrapper" style="overflow: scroll !important;">
         <ul class="news-tab" style="width: 593px;
             <c:if test="${hidetab}">
                     display: none;
@@ -141,7 +141,7 @@
             scrollLeft: scrollL + (liLeft - widths) + liWidth
         })
     });
-    let wrapper = document.querySelector('.wrapper')
+    let wrapper = document.querySelector('.tab')
     let scroll = new BScroll(wrapper, {
         scrollX: true,
         click: true,
