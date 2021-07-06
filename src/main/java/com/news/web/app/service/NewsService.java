@@ -26,6 +26,13 @@ public interface NewsService extends Serializable {
 
     /**
      * @param cityen 城市简称
+     * @param location 位置信息
+     * @return 获取栏目列表
+     */
+    List<NewsType> typeList(String cityen, String location , Integer id);
+
+    /**
+     * @param cityen 城市简称
      * @param typeId 栏目id
      * @param page 当前页
      * @param pagesize 行数据

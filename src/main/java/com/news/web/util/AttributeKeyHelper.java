@@ -80,6 +80,21 @@ public interface AttributeKeyHelper extends Serializable {
     String TAB_TYPE = "tabtype";
 
     /**
+     * 二级栏目
+     */
+    String CHILDREN_TYPE_LIST = "childrenTypeList";
+
+    /**
+     * 二级栏目id
+     */
+    String CHILDREN_TYPE_ID = "childrenTypeId";
+
+    /**
+     * 二级栏目id
+     */
+    String CHILDREN_ID = "childrenId";
+
+    /**
      * tab栏目
      */
     String TYPES = "types";

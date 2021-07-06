@@ -98,6 +98,25 @@ public class NewsServiceImpl implements NewsService {
 
     /**
      * @param cityen 城市简称
+     * @param location 位置信息
+     * @param id 栏目id
+     * @return 获取栏目列表
+     */
+    @Override
+    public List<NewsType> typeList(String cityen, String location , Integer id ) {
+        Map map = new HashMap();
+        map.put(CITYEN, cityen);
+        map.put("platform", "wap");
+        map.put("location", location);
+        map.put("id", id);
+        JSONObject jSONObject = restTemplate.getForObject(apiurl
+                + "GetColumnList?cityen={cityen}&platform={platform}&location={location}&id={id}", JSONObject.class, map);
+        String data = JSON.toJSONString(jSONObject.get(RESULT));
+        return JSON.parseArray(data, NewsType.class);
+    }
+
+    /**
+     * @param cityen 城市简称
      * @param typeId 栏目id
      * @param page 当前页
      * @param pagesize 行数据

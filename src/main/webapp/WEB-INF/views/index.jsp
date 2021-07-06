@@ -78,12 +78,29 @@
             </c:if>
         ">
             <input type="hidden" id="tabtype" value="${tabtype}"/>
+            <input type="hidden" id="tabChildrenType" value="${childrenId}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
-                    <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id}/">${type.columnsName}</a></li>
+                    <li class="tab" ref="${type.id}"><a href="/m/${cityen}/list/c${type.id == 41 ? type.id : fn:length(type.childList) > 0 ? type.childList[0].id : type.id}/">${type.columnsName}</a></li>
             </c:forEach>
         </ul>
     </div>
 </div>
+<c:if test="${fn:length(childrenTypeList) > 0}">
+    <section class="secondary-tabtype-list">
+        <ul class="secondary-tabtype-ul-list">
+            <c:forEach items="${types}" var="type" >
+                <c:if test="${type.id == childrenId}">
+                    <c:forEach items="${type.childList}" var="child" >
+                        <li class="${child.id == childrenTypeId ? 'curr' : ''}" >
+                            <a href="/m/${cityen}/list/c${child.id}/" class="${child.id == childrenTypeId ? 'curr' : ''}">${child.columnsName}
+                            </a>
+                        </li>
+                    </c:forEach>
+                </c:if>
+            </c:forEach>
+        </ul>
+    </section>
+</c:if>
 <section class="new-houseblock new-houseblock-list">
     <ul class="new-list">
         <c:forEach items="${news}" var="item" varStatus="i">
@@ -176,7 +193,7 @@
         });
         $(".news-tab").width(sumWidth + 18);
         //上一次点击的tab加红色样式
-        let index = $("#tabtype").val();
+        let index = $("#tabChildrenType").val();
         $(".news-tab  li[ref=" + index + "]").find('a').addClass("active").parent().siblings().children("a").removeClass("active");
         //图片延迟加载
         $("img.lazy").lazyload({effect: "fadeIn"});
@@ -189,8 +206,9 @@
         let widths = $(window).width()/2;
         let scrollL = $('.wrapper').scrollLeft();
         $('.wrapper').animate({
-            scrollLeft: scrollL + (liLeft - widths) + liWidth
+           scrollLeft: scrollL + (liLeft - widths) + liWidth
         })
+
     });
     let wrapper = document.querySelector('.tab')
     let scroll = new BScroll(wrapper, {
@@ -275,7 +293,7 @@
                         if(litPic != null && litPic.length >= 10){
                             temp += ' <img src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"/>';
                         }else {
-                            temp += ' <img  src="${staticurl}/images/load_photo.jpg" data-original="${staticurl}/images/load_photo.jpg">';
+                            temp += ' <img  src="${staticurl}images/load_photo.jpg" data-original="${staticurl}/images/load_photo.jpg">';
                         }
 
                         temp += '  </div>';
@@ -284,6 +302,7 @@
                         sum += temp;
                     }
                     $(".new-list").append(sum);
+                    $(".secondary-tabtype-list").height($(".new-list").height() + 284);
 
                     //如果现在的页数大于等于最大页码数，不再翻页
                     if (currentPage >= pCount) {

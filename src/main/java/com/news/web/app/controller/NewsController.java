@@ -99,6 +99,7 @@ public class NewsController {
                         HttpServletRequest request) {
 
         setCommon(model, cityen);
+        model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID , type);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
         if(org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN , hidetab)){
             model.addAttribute(AttributeKeyHelper.HIDE_TAB, true);
@@ -298,14 +299,31 @@ public class NewsController {
 
         if (!isJtyy) {
             //栏目非集团栏目编号获取文章列表
-
             JSONObject result = newsService.newsList(cityen, typeid, 1, 15, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
-
             model.addAttribute(AttributeKeyHelper.FLAG, 0);
         }
+
+        //子级id
+        Integer childrenTypeId = type;
+        //获取types的id
+        List<Integer> collect = types.stream().map(NewsType::getId).collect(Collectors.toList());
+        if(!collect.contains(type)){
+            //如果是二级栏目,取出对应的父栏目赋值给type
+            for(NewsType n : types){
+                List<Integer> children = n.getChildList().stream().map(NewsType::getId).collect(Collectors.toList());
+                if(children.contains(type)){
+                    childrenTypeId = n.getId();
+                    break;
+                }
+            }
+        }
+        //获取二级栏目
+        List<NewsType> childrenTypeList = newsService.typeList(cityen, null , childrenTypeId);
         model.addAttribute(AttributeKeyHelper.TYPES, dss.contains(cityen) ? dssType : types);
         model.addAttribute(AttributeKeyHelper.TAB_TYPE, type);
+        model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_LIST, childrenTypeList);
+        model.addAttribute(AttributeKeyHelper.CHILDREN_ID, childrenTypeId);
         model.addAttribute(AttributeKeyHelper.NEWS, news);
         model.addAttribute(AttributeKeyHelper.SEARCH_KEY, key);
         for (NewsType t : types) {

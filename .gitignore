@@ -8,4 +8,5 @@
 *.jpg
 /target
 /src/main/resource/static
+/static
 
