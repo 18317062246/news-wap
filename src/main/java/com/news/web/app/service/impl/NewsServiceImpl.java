@@ -20,6 +20,7 @@ import com.news.web.app.model.param.InsertLogParam;
 import com.news.web.app.model.xiaoqu.XiaoQuResult;
 import com.news.web.app.model.xinfang.XinfangResult;
 import com.news.web.app.service.NewsService;
+import com.news.web.util.CommonUtil;
 import com.news.web.util.HttpUtil;
 import com.news.web.util.StringResource;
 import com.news.web.util.parser.NewsParser;
@@ -139,8 +140,9 @@ public class NewsServiceImpl implements NewsService {
         map.put("order", order);
         map.put("title", key);
         map.put("description", key);
+        map.put("pubdate", CommonUtil.getCurrentMills());
         JSONObject jSONObject = restTemplate.getForObject(apiurl +
-                        "GetNewsList?cityen={cityen}&platform=wap&typeid={typeid}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}"
+                        "GetNewsList?cityen={cityen}&platform=wap&typeid={typeid}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}&pubdate={pubdate}"
                 , JSONObject.class, map);
         return jSONObject.getJSONObject(RESULT);
     }
@@ -155,7 +157,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     @SuppressWarnings("all")
     public JSONObject newsList(String cityen, Integer page, Integer pagesize, Integer desc) {
-        String serviceUrl = String.format(apiurl + "GetNewsList?cityen=%s&platform=wap&page=%s&pagesize=%s&isDesc=%s" , cityen , page , pagesize  , desc);
+        String serviceUrl = String.format(apiurl + "GetNewsList?cityen=%s&platform=wap&page=%s&pagesize=%s&isDesc=%s&pubdate=%s" , cityen , page , pagesize  , desc , CommonUtil.getCurrentMills());
         //发出http请求
         try {
             String json = httpUtil.get(serviceUrl);
@@ -190,11 +192,12 @@ public class NewsServiceImpl implements NewsService {
         map.put("order", order);
         map.put("title", key);
         map.put("description", key);
+        map.put("pubdate", CommonUtil.getCurrentMills());
         if(!ObjectUtils.isEmpty(typeId)){
             map.put(TYPEID, typeId);
         }
 
-        StringBuilder sql = new StringBuilder("GetNewsList?cityen={cityen}&platform=wap&location={location}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}");
+        StringBuilder sql = new StringBuilder("GetNewsList?cityen={cityen}&platform=wap&location={location}&page={page}&pagesize={pagesize}&order={order}&title={title}&description={description}&pubdate={pubdate}");
         if(!ObjectUtils.isEmpty(typeId)){
             sql.append("&typeid={typeid}");
         }

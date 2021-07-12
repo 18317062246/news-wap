@@ -135,9 +135,19 @@ public interface AttributeKeyHelper extends Serializable {
     String XIAOQU_KEY = "xiaoqu";
 
     /**
-     * 绑定的房源数据信息
+     * 绑定新房房源数据信息
      */
-    String COMMON_HOUSE_RESULT = "commonHouseResult";
+    String XF_INFO_RESULT = "xfInfoResult";
+
+    /**
+     * 绑定二手房房源数据信息
+     */
+    String ESF_INFO_RESULT = "esfInfoResult";
+
+    /**
+     * 绑定小区房源数据信息
+     */
+    String XQ_INFO_RESULT = "xqInfoResult";
 
     /**
      * url
