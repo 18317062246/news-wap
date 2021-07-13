@@ -23,7 +23,6 @@ public class CentaioUtil {
     //跳转自动触发的功能是否开启，需开启
     public static final boolean IS_CENTIO_MONITOR_ON = true;
     //是否来自小程序
-    public static boolean IS_FROM_WECHAT = true;
     /**
      * 埋点和微信相关的各种信息
      */
@@ -97,7 +96,6 @@ public class CentaioUtil {
      */
 
     public static void setWechatAppInfo(Model model, String openId, String unionId, String userId, String cityShort,String UnionParentId, String ShareTime) {
-        System.out.println(IS_FROM_WECHAT);
         if (openId != null) {
             model.addAttribute(WECHAT_OPEN_ID_KEY, openId);
         } else {

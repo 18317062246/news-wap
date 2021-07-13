@@ -402,8 +402,8 @@ public class NewsController {
             , @RequestParam(value = "openid", required = false) String openId
             ,@RequestParam(value = "unionid", required = false) String unionId
             ,@RequestParam(value = "userid", required = false) String userId
-            ,@RequestParam(value = "UnionParentId", required = false) String UnionParentId
-            ,@RequestParam(value = "ShareTime", required = false) String ShareTime
+            ,@RequestParam(value = "parentid", required = false) String UnionParentId
+            ,@RequestParam(value = "sharetime", required = false) String ShareTime
             ,HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
