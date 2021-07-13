@@ -351,9 +351,14 @@ public class NewsController {
             List<AdType> adTypeList=newsService.adList(cityen,AD_NAMES,APP_NAME);
             //System.out.println(adTypeList.toString());
             model.addAttribute(AD_LIST,adTypeList);
+        }
+        //是否是成都
+        if(Objects.equals(cityen,Cityen.CD_CITY_EN)){
+            //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,request);
-                if(CentaioUtil.IS_FROM_WECHAT){
+                //请求是否来自小程序
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,"","");
+                if(request.getHeader("user-agent").contains("MicroMessenger")){
                     return CentaioUtil.INDEX_PAGE_CENTAIO;
                 }
             }
@@ -397,6 +402,8 @@ public class NewsController {
             , @RequestParam(value = "openid", required = false) String openId
             ,@RequestParam(value = "unionid", required = false) String unionId
             ,@RequestParam(value = "userid", required = false) String userId
+            ,@RequestParam(value = "UnionParentId", required = false) String UnionParentId
+            ,@RequestParam(value = "ShareTime", required = false) String ShareTime
             ,HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
@@ -511,10 +518,13 @@ public class NewsController {
          * @date: 2021-6-17开始
          */
         //把微信来的各种ID放在model里
-        if(cityen.equals(Cityen.CD_CITY_EN)){
+        //是否是成都
+        if(Objects.equals(cityen,Cityen.CD_CITY_EN)){
+            //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,request);
-                if(CentaioUtil.IS_FROM_WECHAT){
+                //请求是否来自小程序
+                if(request.getHeader("user-agent").contains("MicroMessenger")){
+                    CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime);
                     return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
                 }
             }

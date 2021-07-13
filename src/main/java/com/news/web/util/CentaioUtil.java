@@ -17,13 +17,13 @@ public class CentaioUtil {
 //    m/cd/?platform=wechat&sem=wechat&hmpl=&openid=oc7gI0bVkg8ZYu2hK2ebUZXEtAUE&unionid=odCF9jgI75oB3Kf_YTbqyCMOsQTU&userid=123432
     public static final boolean IS_CENTIO_ON = true;
     //埋点日志是否打开
-    public static final boolean IS_CENTIO_LOG_ON = true;
+    public static final boolean IS_CENTIO_LOG_ON = false;
     //是否是测试环境
-    public static final boolean IS_CENTIO_DEV_ON = true;
+    public static final boolean IS_CENTIO_DEV_ON = false;
     //跳转自动触发的功能是否开启，需开启
     public static final boolean IS_CENTIO_MONITOR_ON = true;
     //是否来自小程序
-    public static boolean IS_FROM_WECHAT = false;
+    public static boolean IS_FROM_WECHAT = true;
     /**
      * 埋点和微信相关的各种信息
      */
@@ -34,6 +34,8 @@ public class CentaioUtil {
     //cookie名字Y1usedrId90cmFunion3Idja2lk
     public static final String WECHAT_USER_ID_KEY = "wechat_user_id";
     public static final String CENTAIO_CITYCODE_KEY = "centio_citycode";
+    public static final String CENTAIO_UNION_PARENT_ID = "UnionParentId";
+    public static final String CENTAIO_SHARE_TIME = "ShareTime";
     /**
      * 根据城市缩写获取城市代码
      * @param ：城市拼音缩写
@@ -94,12 +96,8 @@ public class CentaioUtil {
      * citycode：接受的城市缩写cityshort，返回的是城市区号 citycode
      */
 
-    public static void setWechatAppInfo(Model model, String openId, String unionId, String userId, String cityShort, HttpServletRequest request) {
-        if(request.getHeader("user-agent").contains("MicroMessenger")){
-            IS_FROM_WECHAT=true;
-        }else {
-            IS_FROM_WECHAT=false;
-        }
+    public static void setWechatAppInfo(Model model, String openId, String unionId, String userId, String cityShort,String UnionParentId, String ShareTime) {
+        System.out.println(IS_FROM_WECHAT);
         if (openId != null) {
             model.addAttribute(WECHAT_OPEN_ID_KEY, openId);
         } else {
@@ -123,8 +121,19 @@ public class CentaioUtil {
         } else {
             model.addAttribute(CENTAIO_CITYCODE_KEY, "");
         }
+        if (UnionParentId !=null) {
+            model.addAttribute(CENTAIO_UNION_PARENT_ID, UnionParentId);
+        } else {
+            model.addAttribute(CENTAIO_UNION_PARENT_ID, "");
+        }
+        if (ShareTime!=null) {
+            model.addAttribute(CENTAIO_SHARE_TIME, ShareTime);
+        } else {
+            model.addAttribute(CENTAIO_SHARE_TIME, "");
+        }
         model.addAttribute("is_log_on", IS_CENTIO_LOG_ON);
         model.addAttribute("is_dev_on", IS_CENTIO_DEV_ON);
         model.addAttribute("is_monitor_on", IS_CENTIO_MONITOR_ON);
+
     }
 }

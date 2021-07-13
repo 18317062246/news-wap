@@ -65,6 +65,8 @@
 <input type="hidden" id="wechat_union_id" value="${wechat_union_id}"/>
 <input type="hidden" id="wechat_user_id" value="${wechat_user_id}"/>
 <input type="hidden" id="centIO_citycode" value="${centio_citycode}"/>
+<input type="hidden" id="UnionParentId" value="${UnionParentId}"/>
+<input type="hidden" id="ShareTime" value="${ShareTime}"/>
 <input type="hidden" id="srcm_init_log" value="${is_log_on}"/>
 <input type="hidden" id="srcm_init_dev" value="${is_dev_on}"/>
 <input type="hidden" id="srcm_init_monitor" value="${is_monitor_on}"/>
@@ -99,8 +101,34 @@
 <script>
     $(document).ready(function () {
         $.sendCentaIOData("1", "zx_detail_view");
+        $.sendFissionDate("分享资讯文章");
     });
     $.extend({
+        sendFissionDate:function(ShareType){
+
+            var data=new Object();
+
+            if($.paramNotNull($('#wechat_union_id').val())){
+                data.UnionId=$('#wechat_union_id').val();
+            }
+
+            if($.paramNotNull($('#ShareTime').val())){
+                data.ShareTime=$('#ShareTime').val();
+            }
+            if($.paramNotNull($('#UnionParentId').val())){
+                data.UnionParentId =$('#UnionParentId').val();
+            }
+            data.ShareType=ShareType;
+            //console.log(data);
+
+
+            $.post("https://trace.centanet.com/api/Fission/CreateFission",
+                data,
+                function(result){
+                //console.log(result);
+            });
+        }
+        ,
         getBaseInfo: function () {
             localStorage.setItem('monitorProjectId', 'c84630e6-e878-4e6f-9812-bba9db5c2ab2');
             localStorage.setItem('monitorDeptId', 'till now it is empty');
