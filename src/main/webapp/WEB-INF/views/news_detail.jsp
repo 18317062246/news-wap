@@ -100,52 +100,49 @@
             <c:if test="${xfInfoResult[0].xinfangResult != null && status.index == 0}">
                 <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐新房</h3>
             </c:if>
-
-            <div class="room-item" >
-                <div class="room-img">
-                    <c:if test="${n.xinfangResult != null}">
-                        <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
-                            <img class="lazy"
-                                 src="${defaultpic}"
-                                 data-original="${n.xinfangResult.defaultImage}"
-                                 alt="" />
-                        </a>
-                        </c:if>
-                </div>
-                <div class="room-mid">
-                    <c:if test="${n.xinfangResult != null}">
-                        <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
-                            <h5>${n.xinfangResult.adName}</h5>
-                        <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
-                        <p class="room-address" style="white-space: nowrap;color: #666;">${n.xinfangResult.baseNewProp.address}</p>
-                        <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
-                            <div style=" white-space: nowrap;display: inline-block;">
-                                <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
-                            </div>
-                        </c:if>
-                        </a>
-                    </c:if>
-                </div>
-                <div class="room-side">
-                    <c:set var="apartmentStr" value="公寓"></c:set>
-                    <c:set var="residenceStr" value="住宅"></c:set>
-                    <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                    <c:set var="villaStr" value="别墅"></c:set>
-                    <p class="onsale"><%--${n.estType}--%>
+            <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
+                <div class="room-item" >
+                    <div class="room-img">
                         <c:if test="${n.xinfangResult != null}">
-                            <c:if test="${fn:contains(apartmentStr, n.xinfangResult.estType)}">
-                                ${apartmentStr}
+                                <img class="lazy"
+                                     src="${defaultpic}"
+                                     data-original="${n.xinfangResult.defaultImage}"
+                                     alt="" />
                             </c:if>
-                            <c:if test="${fn:contains(residenceStr, n.xinfangResult.estType)}">
-                                ${residenceStr}
-                            </c:if>
-                            <c:if test="${fn:contains(villaStr, n.xinfangResult.estType)}">
-                                ${villaStr}
+                    </div>
+                    <div class="room-mid">
+                        <c:if test="${n.xinfangResult != null}">
+                            <h5>${n.xinfangResult.adName}</h5>
+                            <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
+                            <p class="room-address" style="white-space: nowrap;color: #666;">${n.xinfangResult.baseNewProp.address}</p>
+                            <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
+                                </div>
                             </c:if>
                         </c:if>
-                    </p>
+                    </div>
+                    <div class="room-side">
+                        <c:set var="apartmentStr" value="公寓"></c:set>
+                        <c:set var="residenceStr" value="住宅"></c:set>
+                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
+                        <c:set var="villaStr" value="别墅"></c:set>
+                        <p class="onsale"><%--${n.estType}--%>
+                            <c:if test="${n.xinfangResult != null}">
+                                <c:if test="${fn:contains(apartmentStr, n.xinfangResult.estType)}">
+                                    ${apartmentStr}
+                                </c:if>
+                                <c:if test="${fn:contains(residenceStr, n.xinfangResult.estType)}">
+                                    ${residenceStr}
+                                </c:if>
+                                <c:if test="${fn:contains(villaStr, n.xinfangResult.estType)}">
+                                    ${villaStr}
+                                </c:if>
+                            </c:if>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </c:forEach>
 
@@ -154,55 +151,54 @@
             <c:if test="${esfInfoResult[0].esfResult != null && status.index == 0}">
                 <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐二手房</h3>
             </c:if>
-            <div class="room-item" >
-                <div class="room-img">
-                    <c:if test="${n.esfResult != null}">
-                        <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
-                            <img  class="lazy"
-                                  src="${defaultpic}"
-                                  data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                  alt="" />
-                        </a>
-                    </c:if>
-                </div>
-                <div class="room-mid">
-                    <c:if test="${n.esfResult != null}">
-                        <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
-                            <h5>${n.esfResult.estateName}</h5>
-                        <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
-                        <p class="room-address" style="white-space: nowrap; color: #666;">${n.esfResult.address}</p>
-                        <c:if test="${n.esfResult.salePriceString != null}">
-                            <div style=" white-space: nowrap;display: inline-block;">
-                                <p class="room-price">
-                                        ${n.esfResult.salePriceString}万</p>
-                            </div>
-                        </c:if>
-                        </a>
-                    </c:if>
-                </div>
-                <div class="room-side">
-                    <c:set var="apartmentStr" value="公寓"></c:set>
-                    <c:set var="residenceStr" value="住宅"></c:set>
-                    <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                    <c:set var="villaStr" value="别墅"></c:set>
-                    <p class="onsale"><%--${n.estType}--%>
+            <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
+                <div class="room-item" >
+                    <div class="room-img">
                         <c:if test="${n.esfResult != null}">
-                            <c:if test="${fn:contains(apartmentStr, n.esfResult.propertyType)}">
-                                ${apartmentStr}
-                            </c:if>
-                            <c:if test="${fn:contains(residenceStr, n.esfResult.propertyType)}">
-                                ${residenceStr}
-                            </c:if>
-                            <c:if test="${fn:contains(villaStr, n.esfResult.propertyType)}">
-                                ${villaStr}
-                            </c:if>
-                            <c:if test="${fn:contains(vilaResidenceStr, n.esfResult.propertyType)}">
-                                ${residenceStr}
+                                <img  class="lazy"
+                                      src="${defaultpic}"
+                                      data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                      alt="" />
+
+                        </c:if>
+                    </div>
+                    <div class="room-mid">
+                        <c:if test="${n.esfResult != null}">
+                                <h5>${n.esfResult.estateName}</h5>
+                            <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
+                            <p class="room-address" style="white-space: nowrap; color: #666;">${n.esfResult.address}</p>
+                            <c:if test="${n.esfResult.salePriceString != null}">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">
+                                            ${n.esfResult.salePriceString}万</p>
+                                </div>
                             </c:if>
                         </c:if>
-                    </p>
+                    </div>
+                    <div class="room-side">
+                        <c:set var="apartmentStr" value="公寓"></c:set>
+                        <c:set var="residenceStr" value="住宅"></c:set>
+                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
+                        <c:set var="villaStr" value="别墅"></c:set>
+                        <p class="onsale"><%--${n.estType}--%>
+                            <c:if test="${n.esfResult != null}">
+                                <c:if test="${fn:contains(apartmentStr, n.esfResult.propertyType)}">
+                                    ${apartmentStr}
+                                </c:if>
+                                <c:if test="${fn:contains(residenceStr, n.esfResult.propertyType)}">
+                                    ${residenceStr}
+                                </c:if>
+                                <c:if test="${fn:contains(villaStr, n.esfResult.propertyType)}">
+                                    ${villaStr}
+                                </c:if>
+                                <c:if test="${fn:contains(vilaResidenceStr, n.esfResult.propertyType)}">
+                                    ${residenceStr}
+                                </c:if>
+                            </c:if>
+                        </p>
+                    </div>
                 </div>
-            </div>
+             </a>
         </div>
     </c:forEach>
 
@@ -211,57 +207,54 @@
             <c:if test="${commonHouseResult[0].xiaoQuResult != null && status.index == 0}">
                 <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐小区</h3>
             </c:if>
-
-            <div class="room-item" >
-                <div class="room-img">
-                    <c:if test="${n.xiaoQuResult != null}">
-                        <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')" >
-                            <img  class="lazy"
-                                  src="${defaultpic}"
-                                  data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                  alt="" />
-                        </a>
-                    </c:if>
-
-                </div>
-                <div class="room-mid">
-                    <c:if test="${n.xiaoQuResult != null}">
-                        <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')" >
-                            <h5>${n.xiaoQuResult.estateName}</h5>
-                        <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
-                        <p class="room-address" style="white-space: nowrap;color: #666;">${n.xiaoQuResult.address}</p>
-                        <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
-                            <div style=" white-space: nowrap;display: inline-block;">
-                                <p class="room-price">
-                                        ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
-                            </div>
-                        </c:if>
-                        </a>
-                    </c:if>
-                </div>
-                <div class="room-side">
-                    <c:set var="apartmentStr" value="公寓"></c:set>
-                    <c:set var="residenceStr" value="住宅"></c:set>
-                    <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                    <c:set var="villaStr" value="别墅"></c:set>
-                    <p class="onsale"><%--${n.estType}--%>
+            <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')" >
+                <div class="room-item" >
+                    <div class="room-img">
                         <c:if test="${n.xiaoQuResult != null}">
-                            <c:if test="${fn:contains(apartmentStr, n.xiaoQuResult.propertyType)}">
-                                ${apartmentStr}
-                            </c:if>
-                            <c:if test="${fn:contains(residenceStr, n.xiaoQuResult.propertyType)}">
-                                ${residenceStr}
-                            </c:if>
-                            <c:if test="${fn:contains(vilaResidenceStr, n.xiaoQuResult.propertyType)}">
-                                ${residenceStr}
-                            </c:if>
-                            <c:if test="${fn:contains(villaStr, n.xiaoQuResult.propertyType)}">
-                                ${villaStr}
+                                <img  class="lazy"
+                                      src="${defaultpic}"
+                                      data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                      alt="" />
+                        </c:if>
+
+                    </div>
+                    <div class="room-mid">
+                        <c:if test="${n.xiaoQuResult != null}">
+                                <h5>${n.xiaoQuResult.estateName}</h5>
+                            <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
+                            <p class="room-address" style="white-space: nowrap;color: #666;">${n.xiaoQuResult.address}</p>
+                            <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">
+                                            ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
+                                </div>
                             </c:if>
                         </c:if>
-                    </p>
+                    </div>
+                    <div class="room-side">
+                        <c:set var="apartmentStr" value="公寓"></c:set>
+                        <c:set var="residenceStr" value="住宅"></c:set>
+                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
+                        <c:set var="villaStr" value="别墅"></c:set>
+                        <p class="onsale"><%--${n.estType}--%>
+                            <c:if test="${n.xiaoQuResult != null}">
+                                <c:if test="${fn:contains(apartmentStr, n.xiaoQuResult.propertyType)}">
+                                    ${apartmentStr}
+                                </c:if>
+                                <c:if test="${fn:contains(residenceStr, n.xiaoQuResult.propertyType)}">
+                                    ${residenceStr}
+                                </c:if>
+                                <c:if test="${fn:contains(vilaResidenceStr, n.xiaoQuResult.propertyType)}">
+                                    ${residenceStr}
+                                </c:if>
+                                <c:if test="${fn:contains(villaStr, n.xiaoQuResult.propertyType)}">
+                                    ${villaStr}
+                                </c:if>
+                            </c:if>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </c:forEach>
 
