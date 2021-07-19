@@ -70,6 +70,7 @@
 <input type="hidden" id="srcm_init_log" value="${is_log_on}"/>
 <input type="hidden" id="srcm_init_dev" value="${is_dev_on}"/>
 <input type="hidden" id="srcm_init_monitor" value="${is_monitor_on}"/>
+<input type="hidden" id="mobile" value="${mobile}"/>
 <%--<script type="text/javascript">document.write('<script src="https://imonitor.centaline.com.cn/sdk/centalab-sdk.js?v=' + new Date().getTime() + '"><\/script>')</script>--%>
 <%--测试环境加cookie--%>
 <script type="text/javascript">
@@ -153,9 +154,11 @@
             var wechat_union_id = $("#wechat_union_id").val();
             var wechat_open_id = $("#wechat_open_id").val();
             var wechat_user_id = $("#wechat_user_id").val();
+            var wechat_mobile = $("#mobile").val();
             var wechat_union_id_cookie = GetCookie('Y190cmFunion3Idja2lk');
             var wechat_open_id_cookie = GetCookie('Y190open2Idcmja2lk');
             var wechat_user_id_cookie = GetCookie('Y1usedrId90cmFunion3Idja2lk');
+            var wechat_mobile_cookie = GetCookie('Y190cmFja2lkMobi');
             if ($.paramNotNull(wechat_user_id)) {
                 obj.userId = wechat_user_id;
                 $.cookie('Y1usedrId90cmFunion3Idja2lk', wechat_user_id, {expires: 365});
@@ -169,13 +172,20 @@
             } else if ($.paramNotNull(wechat_union_id_cookie)) {
                 obj.unionId = wechat_union_id_cookie;
             }
-
             if ($.paramNotNull(wechat_open_id)) {
                 obj.openId = wechat_open_id;
                 $.cookie('Y190open2Idcmja2lk', wechat_open_id, {expires: 365});
             } else if ($.paramNotNull(wechat_open_id_cookie)) {
                 obj.openId = wechat_open_id_cookie;
             }
+
+            if ($.paramNotNull(wechat_mobile)) {
+                obj.mobile = wechat_mobile;
+                $.cookie('Y190cmFja2lkMobi', obj.mobile, {expires: 365});
+            } else if($.paramNotNull(wechat_mobile_cookie)){
+                obj.mobile =wechat_mobile_cookie;
+            }
+
             if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
                 obj.cookies = GetCookie('Y190cmFja2lk');
             } else {
@@ -241,6 +251,10 @@
             userBehavior.cityCode = cityCode;
             sourceObject.newsId = $.getCurrentPageNum();
             sourceObject.newsTitle = $('.new-title').text();
+            if($.paramNotNull(localStorage.getItem("currentClickPicUrl"))){
+                var thumbnailImage=localStorage.getItem("currentClickPicUrl");
+                sourceObject.thumbnailImage=thumbnailImage;
+            }
             $.setPageBuriedData("zx", "detail", "stay", sourceObject)
             source.eventId = eventId;
             source.channel = "资讯";
@@ -252,7 +266,6 @@
             var srcm_init_log = JSON.parse($('#srcm_init_log').val());
             var srcm_init_dev = JSON.parse($('#srcm_init_dev').val());
             var srcm_init_monitor = JSON.parse($('#srcm_init_monitor').val());
-            console.log(userBehavior);
             var cent = new centaLabSdk();
             cent.init({
                 "from": "002-资讯",

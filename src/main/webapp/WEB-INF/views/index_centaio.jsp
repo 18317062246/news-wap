@@ -113,6 +113,7 @@
             <input type="hidden" id="srcm_init_log" value="${is_log_on}"/>
             <input type="hidden" id="srcm_init_dev" value="${is_dev_on}"/>
             <input type="hidden" id="srcm_init_monitor" value="${is_monitor_on}"/>
+            <input type="hidden" id="mobile" value="${mobile}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
                 <li class="tab" ref="${type.id}">
                     <a id="tab${type.id}" href="/m/${cityen}/list/c${type.id}/">
@@ -153,9 +154,11 @@
             var wechat_union_id = $("#wechat_union_id").val();
             var wechat_open_id = $("#wechat_open_id").val();
             var wechat_user_id = $("#wechat_user_id").val();
+            var wechat_mobile = $("#mobile").val();
             var wechat_union_id_cookie = GetCookie('Y190cmFunion3Idja2lk');
             var wechat_open_id_cookie = GetCookie('Y190open2Idcmja2lk');
             var wechat_user_id_cookie = GetCookie('Y1usedrId90cmFunion3Idja2lk');
+            var wechat_mobile_cookie = GetCookie('Y190cmFja2lkMobi');
             if ($.paramNotNull(wechat_user_id)) {
                 obj.userId = wechat_user_id;
                 $.cookie('Y1usedrId90cmFunion3Idja2lk', wechat_user_id, {expires: 365});
@@ -176,13 +179,21 @@
             } else if ($.paramNotNull(wechat_open_id_cookie)) {
                 obj.openId = wechat_open_id_cookie;
             }
+            if ($.paramNotNull(wechat_mobile)) {
+                obj.mobile = wechat_mobile;
+                $.cookie('Y190cmFja2lkMobi', obj.mobile, {expires: 365});
+            } else if($.paramNotNull(wechat_mobile_cookie)){
+                obj.mobile =wechat_mobile_cookie;
+            }
             if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
                 obj.cookies = GetCookie('Y190cmFja2lk');
-                console.log(obj.cookies+"   not null");
-            }else {
+            } else {
                 obj.cookies = $.getTestCookie();
                 $.cookie('Y190cmFja2lk', obj.cookies, {expires: 365});
             }
+
+
+            console.log(obj);
             return obj;
         },
         getTestCookie: function () {
