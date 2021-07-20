@@ -274,6 +274,21 @@ public class NewsController {
             }
         }
 
+        //移除中原资讯
+        if(Objects.equals(Cityen.HZ_CITY_EN , cityen)) {
+            List<NewsType> jtNewsTypesRemove = new ArrayList<>();
+            for (NewsType newsType : types) {
+                //41为中原资讯，移除当前栏目
+                if(Objects.equals(newsType.getId() , 41)){
+                    jtNewsTypesRemove.add(newsType);
+                }
+            }
+
+            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)){
+                types.removeAll(jtNewsTypesRemove);
+            }
+        }
+
         List<Integer> typeid = Arrays.asList(type);
         List<Map> news = new ArrayList<>();
         //当前栏目ID是否集团资讯下的栏目
