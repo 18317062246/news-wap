@@ -426,57 +426,60 @@ public class NewsController {
                 //将房源对象进行转换
                 String newsRelatedData = JSON.toJSONString(detailByProp.get(NEWS_RELATED));
                 List<NewsRelated> types = JSON.parseArray(newsRelatedData, NewsRelated.class);
-                //将新房和二手房进行过滤
-                List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XINFANG_KEY)).collect(Collectors.toList());
-                List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.ERSHOUFANG_KEY)).collect(Collectors.toList());
+                if(!CollectionUtils.isEmpty(types)){
+                    //将新房和二手房进行过滤
+                    List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XINFANG_KEY)).collect(Collectors.toList());
+                    List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.ERSHOUFANG_KEY)).collect(Collectors.toList());
 
-                List<NewsRelated> xiaoquTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XIAOQU_KEY)).collect(Collectors.toList());
-                //创建新房、二手房、小区公共的对象，用于返回房源数据
-                List<CommonHouseResult> xfInfoResult = new ArrayList<>();
-                List<CommonHouseResult> esfInfoResult = new ArrayList<>();
-                List<CommonHouseResult> xqInfoResult = new ArrayList<>();
-                //判断新房是否有数据
-                if (!CollectionUtils.isEmpty(xinfangTypes)) {
-                    //获取新房信息
-                    List<CommonHouseResult> xinFangInfo = newsService.getXinFangInfo(xinfangTypes, cityen);
-                    //如果新房集合不为空，就添加到总的房源集合
-                    if (!CollectionUtils.isEmpty(xinFangInfo)) {
-                        xfInfoResult.addAll(xinFangInfo.stream().limit(3).collect(Collectors.toList()));
+                    List<NewsRelated> xiaoquTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XIAOQU_KEY)).collect(Collectors.toList());
+                    //创建新房、二手房、小区公共的对象，用于返回房源数据
+                    List<CommonHouseResult> xfInfoResult = new ArrayList<>();
+                    List<CommonHouseResult> esfInfoResult = new ArrayList<>();
+                    List<CommonHouseResult> xqInfoResult = new ArrayList<>();
+                    //判断新房是否有数据
+                    if (!CollectionUtils.isEmpty(xinfangTypes)) {
+                        //获取新房信息
+                        List<CommonHouseResult> xinFangInfo = newsService.getXinFangInfo(xinfangTypes, cityen);
+                        //如果新房集合不为空，就添加到总的房源集合
+                        if (!CollectionUtils.isEmpty(xinFangInfo)) {
+                            xfInfoResult.addAll(xinFangInfo.stream().limit(3).collect(Collectors.toList()));
+                        }
+                    }
+
+                    //判断二手房是否有数据
+                    if (!CollectionUtils.isEmpty(esfTypes)) {
+                        //获取二手房信息
+                        List<CommonHouseResult> esfInfo = newsService.getErshouFangInfo(esfTypes, cityen);
+                        //如果二手房集合不为空，就添加到总的房源集合
+                        if (!CollectionUtils.isEmpty(esfInfo)) {
+                            esfInfoResult.addAll(esfInfo.stream().limit(3).collect(Collectors.toList()));
+                        }
+                    }
+
+                    //判断小区是否有数据
+                    if (!CollectionUtils.isEmpty(xiaoquTypes)) {
+                        //获取小区信息
+                        List<CommonHouseResult> xiaoquInfos = newsService.getXiaoQuInfo(xiaoquTypes, cityen);
+                        //如果小区集合不为空，就添加到总的房源集合
+                        if (!CollectionUtils.isEmpty(xiaoquInfos)) {
+                            xqInfoResult.addAll(xiaoquInfos.stream().limit(3).collect(Collectors.toList()));
+                        }
+                    }
+
+                    //判断新房房源是否为空，如果不为空就返回到页面
+                    if(!CollectionUtils.isEmpty(xfInfoResult)){
+                        model.addAttribute(AttributeKeyHelper.XF_INFO_RESULT , xfInfoResult);
+                    }
+                    //判二手房房源是否为空，如果不为空就返回到页面
+                    if(!CollectionUtils.isEmpty(esfInfoResult)){
+                        model.addAttribute(AttributeKeyHelper.ESF_INFO_RESULT , esfInfoResult);
+                    }
+                    //判断小区房源是否为空，如果不为空就返回到页面
+                    if(!CollectionUtils.isEmpty(xqInfoResult)){
+                        model.addAttribute(AttributeKeyHelper.XQ_INFO_RESULT , xqInfoResult);
                     }
                 }
 
-                //判断二手房是否有数据
-                if (!CollectionUtils.isEmpty(esfTypes)) {
-                    //获取二手房信息
-                    List<CommonHouseResult> esfInfo = newsService.getErshouFangInfo(esfTypes, cityen);
-                    //如果二手房集合不为空，就添加到总的房源集合
-                    if (!CollectionUtils.isEmpty(esfInfo)) {
-                        esfInfoResult.addAll(esfInfo.stream().limit(3).collect(Collectors.toList()));
-                    }
-                }
-
-                //判断小区是否有数据
-                if (!CollectionUtils.isEmpty(xiaoquTypes)) {
-                    //获取小区信息
-                    List<CommonHouseResult> xiaoquInfos = newsService.getXiaoQuInfo(xiaoquTypes, cityen);
-                    //如果小区集合不为空，就添加到总的房源集合
-                    if (!CollectionUtils.isEmpty(xiaoquInfos)) {
-                        xqInfoResult.addAll(xiaoquInfos.stream().limit(3).collect(Collectors.toList()));
-                    }
-                }
-
-                //判断新房房源是否为空，如果不为空就返回到页面
-                if(!CollectionUtils.isEmpty(xfInfoResult)){
-                    model.addAttribute(AttributeKeyHelper.XF_INFO_RESULT , xfInfoResult);
-                }
-                //判二手房房源是否为空，如果不为空就返回到页面
-                if(!CollectionUtils.isEmpty(esfInfoResult)){
-                    model.addAttribute(AttributeKeyHelper.ESF_INFO_RESULT , esfInfoResult);
-                }
-                //判断小区房源是否为空，如果不为空就返回到页面
-                if(!CollectionUtils.isEmpty(xqInfoResult)){
-                    model.addAttribute(AttributeKeyHelper.XQ_INFO_RESULT , xqInfoResult);
-                }
             }
         }
 
