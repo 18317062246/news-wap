@@ -102,34 +102,38 @@
 <script>
     $(document).ready(function () {
         $.sendCentaIOData("1", "zx_detail_view");
-        $.sendFissionDate("分享资讯文章");
+        if ($.paramNotNull($('#ShareTime').val())) {
+            $.sendFissionDate("分享资讯文章");
+        }
     });
     $.extend({
-        sendFissionDate:function(ShareType){
+        sendFissionDate: function (ShareType) {
 
-            var data=new Object();
+            var dataObj = new Object();
 
-            if($.paramNotNull($('#wechat_union_id').val())){
-                data.UnionId=$('#wechat_union_id').val();
+            if ($.paramNotNull($('#wechat_union_id').val())) {
+                dataObj.UnionId = $('#wechat_union_id').val();
             }
 
-            if($.paramNotNull($('#ShareTime').val())){
-                data.ShareTime=$('#ShareTime').val();
+            if ($.paramNotNull($('#ShareTime').val())) {
+                dataObj.ShareTime = $('#ShareTime').val();
             }
-            if($.paramNotNull($('#UnionParentId').val())){
-                data.UnionParentId =$('#UnionParentId').val();
+            if ($.paramNotNull($('#UnionParentId').val())) {
+                dataObj.UnionParentId = $('#UnionParentId').val();
             }
-            data.ShareType=ShareType;
+            dataObj.ShareType = ShareType;
             //console.log(data);
-
-
-            $.post("https://trace.centanet.com/api/Fission/CreateFission",
-                data,
-                function(result){
-                //console.log(result);
-            });
-        }
-        ,
+            $.ajax({
+                url: "https://trace.centanet.com/api/Fission/CreateFission",
+                type: 'post',
+                dataType: 'JSON',
+                //data: JSON.stringify({data:{status: "start"}}),
+                data:JSON.stringify(dataObj),
+                headers:{//***关键******
+                    'Content-Type': 'application/json;charset=UTF-8',
+                }
+            })
+        },
         getBaseInfo: function () {
             localStorage.setItem('monitorProjectId', 'c84630e6-e878-4e6f-9812-bba9db5c2ab2');
             localStorage.setItem('monitorDeptId', 'till now it is empty');
@@ -182,8 +186,8 @@
             if ($.paramNotNull(wechat_mobile)) {
                 obj.mobile = wechat_mobile;
                 $.cookie('Y190cmFja2lkMobi', obj.mobile, {expires: 365});
-            } else if($.paramNotNull(wechat_mobile_cookie)){
-                obj.mobile =wechat_mobile_cookie;
+            } else if ($.paramNotNull(wechat_mobile_cookie)) {
+                obj.mobile = wechat_mobile_cookie;
             }
 
             if ($.paramNotNull(GetCookie('Y190cmFja2lk'))) {
@@ -251,9 +255,9 @@
             userBehavior.cityCode = cityCode;
             sourceObject.newsId = $.getCurrentPageNum();
             sourceObject.newsTitle = $('.new-title').text();
-            if($.paramNotNull(localStorage.getItem("currentClickPicUrl"))){
-                var thumbnailImage=localStorage.getItem("currentClickPicUrl");
-                sourceObject.thumbnailImage=thumbnailImage;
+            if ($.paramNotNull(localStorage.getItem("currentClickPicUrl"))) {
+                var thumbnailImage = localStorage.getItem("currentClickPicUrl");
+                sourceObject.thumbnailImage = thumbnailImage;
             }
             $.setPageBuriedData("zx", "detail", "stay", sourceObject)
             source.eventId = eventId;
@@ -352,28 +356,30 @@
     <c:forEach items="${xfInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
             <c:if test="${xfInfoResult[0].xinfangResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐新房</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;">
+                    推荐新房</h3>
             </c:if>
             <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
-                <div class="room-item" >
+                <div class="room-item">
                     <div class="room-img">
                         <c:if test="${n.xinfangResult != null}">
-                                <img class="lazy"
-                                     src="${defaultpic}"
-                                     data-original="${n.xinfangResult.defaultImage}"
-                                     alt="" />
+                            <img class="lazy"
+                                 src="${defaultpic}"
+                                 data-original="${n.xinfangResult.defaultImage}"
+                                 alt=""/>
                         </c:if>
                     </div>
                     <div class="room-mid">
                         <c:if test="${n.xinfangResult != null}">
-                                <h5>${n.xinfangResult.adName}</h5>
-                                <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
-                                <p class="room-address" style="white-space: nowrap;color: #666;">${n.xinfangResult.baseNewProp.address}</p>
-                                <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
-                                    <div style=" white-space: nowrap;display: inline-block;">
-                                        <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
-                                    </div>
-                                </c:if>
+                            <h5>${n.xinfangResult.adName}</h5>
+                            <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
+                            <p class="room-address"
+                               style="white-space: nowrap;color: #666;">${n.xinfangResult.baseNewProp.address}</p>
+                            <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
+                                </div>
+                            </c:if>
                         </c:if>
                     </div>
                     <div class="room-side">
@@ -403,29 +409,30 @@
     <c:forEach items="${esfInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
             <c:if test="${esfInfoResult[0].esfResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐二手房</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;">
+                    推荐二手房</h3>
             </c:if>
-            <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
-                <div class="room-item" >
+            <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')">
+                <div class="room-item">
                     <div class="room-img">
                         <c:if test="${n.esfResult != null}">
-                                <img  class="lazy"
-                                      src="${defaultpic}"
-                                      data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                      alt="" />
+                            <img class="lazy"
+                                 src="${defaultpic}"
+                                 data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                 alt=""/>
                         </c:if>
                     </div>
                     <div class="room-mid">
                         <c:if test="${n.esfResult != null}">
-                                <h5>${n.esfResult.estateName}</h5>
-                                <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
-                                <p class="room-address" style="white-space: nowrap; color: #666;">${n.esfResult.address}</p>
-                                <c:if test="${n.esfResult.salePriceString != null}">
-                                    <div style=" white-space: nowrap;display: inline-block;">
-                                        <p class="room-price">
-                                                ${n.esfResult.salePriceString}万</p>
-                                    </div>
-                                </c:if>
+                            <h5>${n.esfResult.estateName}</h5>
+                            <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
+                            <p class="room-address" style="white-space: nowrap; color: #666;">${n.esfResult.address}</p>
+                            <c:if test="${n.esfResult.salePriceString != null}">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">
+                                            ${n.esfResult.salePriceString}万</p>
+                                </div>
+                            </c:if>
                         </c:if>
                     </div>
                     <div class="room-side">
@@ -458,30 +465,32 @@
     <c:forEach items="${xqInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
             <c:if test="${commonHouseResult[0].xiaoQuResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐小区</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;">
+                    推荐小区</h3>
             </c:if>
-            <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')" >
-                <div class="room-item" >
+            <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')">
+                <div class="room-item">
                     <div class="room-img">
                         <c:if test="${n.xiaoQuResult != null}">
-                                <img  class="lazy"
-                                      src="${defaultpic}"
-                                      data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                      alt="" />
+                            <img class="lazy"
+                                 src="${defaultpic}"
+                                 data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                 alt=""/>
                         </c:if>
 
                     </div>
                     <div class="room-mid">
                         <c:if test="${n.xiaoQuResult != null}">
-                                <h5>${n.xiaoQuResult.estateName}</h5>
-                                    <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
-                                <p class="room-address" style="white-space: nowrap;color: #666;">${n.xiaoQuResult.address}</p>
-                                <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
-                                    <div style=" white-space: nowrap;display: inline-block;">
-                                        <p class="room-price">
-                                                ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
-                                    </div>
-                                </c:if>
+                            <h5>${n.xiaoQuResult.estateName}</h5>
+                            <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
+                            <p class="room-address"
+                               style="white-space: nowrap;color: #666;">${n.xiaoQuResult.address}</p>
+                            <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
+                                <div style=" white-space: nowrap;display: inline-block;">
+                                    <p class="room-price">
+                                            ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
+                                </div>
+                            </c:if>
                         </c:if>
                     </div>
                     <div class="room-side">
@@ -783,53 +792,53 @@
     /**
      * 跳转到房源详情
      */
-    function loadPropertyDetail(type , targetId , cityen) {
+    function loadPropertyDetail(type, targetId, cityen) {
         let u = navigator.userAgent;
-        let Agents = ['Android','iPhone','SymbianOS','Windows Phone','iPod'];
+        let Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod'];
         let flag = true;
-        for(let i = 0;i < Agents.length;i++){
-            if(u.indexOf(Agents[i])>0){
+        for (let i = 0; i < Agents.length; i++) {
+            if (u.indexOf(Agents[i]) > 0) {
                 flag = false;
                 break;
             }
         }
-        if(window.screen.width>=768){
+        if (window.screen.width >= 768) {
             flag = true;
         }
-        if(flag){
-            let citys = ['sz','gz'];
-            if(parseInt(type) == 11){
-                if(citys.indexOf(cityen) > 0){
-                    window.location.href = "//m."+ cityen +".centanet.com/xinfang/lp-"+ targetId +"/";
-                }else {
-                    window.location.href = "//wap.centanet.com/"+ cityen +"/xinfang/lp-"+ targetId +"/";
+        if (flag) {
+            let citys = ['sz', 'gz'];
+            if (parseInt(type) == 11) {
+                if (citys.indexOf(cityen) > 0) {
+                    window.location.href = "//m." + cityen + ".centanet.com/xinfang/lp-" + targetId + "/";
+                } else {
+                    window.location.href = "//wap.centanet.com/" + cityen + "/xinfang/lp-" + targetId + "/";
                 }
             }
-            if(parseInt(type) == 21){
-                if(citys.indexOf(cityen) > 0){
-                    window.location.href = "//m."+ cityen +".centanet.com/ershoufang/"+ targetId +".html";
-                }else {
-                    window.location.href = "//wap.centanet.com/"+ cityen +"/ershoufang/"+ targetId +".html";
+            if (parseInt(type) == 21) {
+                if (citys.indexOf(cityen) > 0) {
+                    window.location.href = "//m." + cityen + ".centanet.com/ershoufang/" + targetId + ".html";
+                } else {
+                    window.location.href = "//wap.centanet.com/" + cityen + "/ershoufang/" + targetId + ".html";
                 }
             }
 
-            if(parseInt(type) == 61){
-                if(citys.indexOf(cityen) > 0){
-                    window.location.href = "//m."+ cityen +".centanet.com/ershoufang/"+ targetId +".html";
-                }else {
-                    window.location.href = "//wap.centanet.com/"+ cityen +"/ershoufang/"+ targetId +".html";
+            if (parseInt(type) == 61) {
+                if (citys.indexOf(cityen) > 0) {
+                    window.location.href = "//m." + cityen + ".centanet.com/ershoufang/" + targetId + ".html";
+                } else {
+                    window.location.href = "//wap.centanet.com/" + cityen + "/ershoufang/" + targetId + ".html";
                 }
             }
-        }else {
+        } else {
             let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             if (isAndroid) {
                 //这个是安卓操作系统
-                window.salehouse.pushToNativePage("{\"type\":" + type +",\"target\":\""+ targetId+"\"}");
+                window.salehouse.pushToNativePage("{\"type\":" + type + ",\"target\":\"" + targetId + "\"}");
             }
             if (isIOS) {
                 //这个是ios操作系统
-                window.webkit.messageHandlers.pushToNativePage.postMessage("{\"type\":\"" + type +"\",\"target\":\""+ targetId+"\"}")
+                window.webkit.messageHandlers.pushToNativePage.postMessage("{\"type\":\"" + type + "\",\"target\":\"" + targetId + "\"}")
             }
         }
     }
