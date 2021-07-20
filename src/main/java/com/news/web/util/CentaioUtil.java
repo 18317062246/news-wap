@@ -1,10 +1,7 @@
 package com.news.web.util;
 
-import org.apache.jasper.compiler.JspUtil;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,15 +11,13 @@ public class CentaioUtil {
      * NewsController中的
      */
     //测试url
-//    m/cd/?platform=wechat&sem=wechat&hmpl=&openid=oc7gI0bVkg8ZYu2hK2ebUZXEtAUE&unionid=odCF9jgI75oB3Kf_YTbqyCMOsQTU&userid=123432
     public static final boolean IS_CENTIO_ON = true;
     //埋点日志是否打开
-    public static final boolean IS_CENTIO_LOG_ON = false;
+    public static final boolean IS_CENTIO_LOG_ON = true;
     //是否是测试环境
-    public static final boolean IS_CENTIO_DEV_ON = false;
+    public static final boolean IS_CENTIO_DEV_ON = true;
     //跳转自动触发的功能是否开启，需开启
     public static final boolean IS_CENTIO_MONITOR_ON = true;
-    //是否来自小程序
     /**
      * 埋点和微信相关的各种信息
      */
@@ -35,6 +30,7 @@ public class CentaioUtil {
     public static final String CENTAIO_CITYCODE_KEY = "centio_citycode";
     public static final String CENTAIO_UNION_PARENT_ID = "UnionParentId";
     public static final String CENTAIO_SHARE_TIME = "ShareTime";
+    public static final String CENTAIO_MOBILE = "mobile";
     /**
      * 根据城市缩写获取城市代码
      * @param ：城市拼音缩写
@@ -89,13 +85,26 @@ public class CentaioUtil {
         map.put("zz", "0371");
         return map.get(cityShort);
     }
+    public static boolean getCentaIOCity(String cityShort) {
+        Map<String, String> map = new HashMap<>();
+        map.put("tj", "022");
+        map.put("cd", "028");
+        return map.containsKey(cityShort);
+    }
 
     /**
      * 把从url中接到的参数，openId，unionId，userId，citycode返回到view中
      * citycode：接受的城市缩写cityshort，返回的是城市区号 citycode
      */
 
-    public static void setWechatAppInfo(Model model, String openId, String unionId, String userId, String cityShort,String UnionParentId, String ShareTime) {
+    public static void setWechatAppInfo(Model model,
+                                        String openId,
+                                        String unionId,
+                                        String userId,
+                                        String cityShort,
+                                        String UnionParentId,
+                                        String ShareTime,
+                                        String mobile) {
         if (openId != null) {
             model.addAttribute(WECHAT_OPEN_ID_KEY, openId);
         } else {
@@ -128,6 +137,11 @@ public class CentaioUtil {
             model.addAttribute(CENTAIO_SHARE_TIME, ShareTime);
         } else {
             model.addAttribute(CENTAIO_SHARE_TIME, "");
+        }
+        if (mobile!=null) {
+            model.addAttribute(CENTAIO_MOBILE, mobile);
+        } else {
+            model.addAttribute(CENTAIO_MOBILE, "");
         }
         model.addAttribute("is_log_on", IS_CENTIO_LOG_ON);
         model.addAttribute("is_dev_on", IS_CENTIO_DEV_ON);

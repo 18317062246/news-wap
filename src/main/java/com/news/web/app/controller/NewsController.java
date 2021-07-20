@@ -96,6 +96,7 @@ public class NewsController {
                         @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize,
                         @RequestParam(value = "key", required = false) String key ,
                         @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab,
+                        @RequestParam(value = "mobile", required = false) String mobile,
                         HttpServletRequest request) {
 
         setCommon(model, cityen);
@@ -368,11 +369,11 @@ public class NewsController {
             model.addAttribute(AD_LIST,adTypeList);
         }
         //是否是成都
-        if(Objects.equals(cityen,Cityen.CD_CITY_EN)){
+        if(CentaioUtil.getCentaIOCity(cityen)){
             //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
                 //请求是否来自小程序
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,"","");
+                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,"","",mobile);
                 if(request.getHeader("user-agent").contains("MicroMessenger")){
                     return CentaioUtil.INDEX_PAGE_CENTAIO;
                 }
@@ -419,6 +420,7 @@ public class NewsController {
             ,@RequestParam(value = "userid", required = false) String userId
             ,@RequestParam(value = "parentid", required = false) String UnionParentId
             ,@RequestParam(value = "sharetime", required = false) String ShareTime
+            ,@RequestParam(value = "mobile", required = false) String mobile
             ,HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
@@ -537,14 +539,14 @@ public class NewsController {
          */
         //把微信来的各种ID放在model里
         //是否是成都
-        if(Objects.equals(cityen,Cityen.CD_CITY_EN)){
+        if(CentaioUtil.getCentaIOCity(cityen)){
             //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
-                //请求是否来自小程序
-                if(request.getHeader("user-agent").contains("MicroMessenger")){
-                    CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime);
+                //请求是否来自小程序c
+                //if(request.getHeader("user-agent").contains("MicroMessenger")){
+                    CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime,mobile);
                     return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
-                }
+                //}
             }
         }
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
