@@ -55,5 +55,14 @@ public class XinfangResult implements Serializable {
     @JsonProperty("oid")
     private String oid;
 
+    @JsonProperty("MinArea")
+    private Long minArea;
+
+    @JsonProperty("MaxArea")
+    private Long maxArea;
+
+    @JsonProperty("MinTotalPrice")
+    private Long minTotalPrice;
+
 
 }

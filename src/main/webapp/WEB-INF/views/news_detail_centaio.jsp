@@ -364,8 +364,9 @@
                     <div class="room-img">
                         <c:if test="${n.xinfangResult != null}">
                             <img class="lazy"
-                                 src="${defaultpic}"
+                                 src="${n.xinfangResult.defaultImage}"
                                  data-original="${n.xinfangResult.defaultImage}"
+                                 onerror="this.src='${defaultpic}'"
                                  alt=""/>
                         </c:if>
                     </div>
@@ -417,8 +418,9 @@
                     <div class="room-img">
                         <c:if test="${n.esfResult != null}">
                             <img class="lazy"
-                                 src="${defaultpic}"
-                                 data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                 src="${n.esfResult.fullImagePath}"
+                                 data-original="${n.esfResult.fullImagePath}"
+                                 onerror="this.src='${defaultpic}'"
                                  alt=""/>
                         </c:if>
                     </div>
@@ -473,8 +475,9 @@
                     <div class="room-img">
                         <c:if test="${n.xiaoQuResult != null}">
                             <img class="lazy"
-                                 src="${defaultpic}"
-                                 data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
+                                 src="${n.xiaoQuResult.imagePath}"
+                                 data-original="${n.xiaoQuResult.imagePath}"
+                                 onerror="this.src='${defaultpic}'"
                                  alt=""/>
                         </c:if>
 
@@ -549,20 +552,10 @@
                             </div>
                         </div>
                         <div class="new-img">
-                            <c:choose>
-                                <c:when test="${n.LitPic != null && n.LitPic.length() >= 10}">
-                                    <img class="lazy"
-                                         src="${defaultpic}"
-                                         data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
-                                         alt="${item.Title}"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <img class="lazy"
-                                         src="${defaultpic}"
-                                         data-original="${defaultpic}"
-                                         alt="${item.Title}"/>
-                                </c:otherwise>
-                            </c:choose>
+                            <img class="lazy"
+                                 src="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                                 data-original="${fn:substring(n.LitPic, 0 , mfn:lastIndexOf(n.LitPic, "."))}_300x210_c${fn:substring(n.LitPic,mfn:lastIndexOf(n.LitPic, ".") , fn:length(n.LitPic))}"
+                                 alt="${item.Title}" onerror="this.src='${defaultpic}'"/>
 
                         </div>
                     </a>

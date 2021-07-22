@@ -52,6 +52,8 @@ public class NewsController {
     public String staticurl;
     @Value("${city.dss}")
     public String dss;
+    @Value("${dw.citys}")
+    public String dwCitys;
 
     /**
      * 热门专题
@@ -529,6 +531,11 @@ public class NewsController {
         model.addAttribute(AttributeKeyHelper.NEWS_DETAIL_CLICK_ADDRESS, apiurl);
         model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
         model.addAttribute(AttributeKeyHelper.REFERER, referer);
+
+        List<String> dwCityList = Arrays.asList(dwCitys.split(","));
+        if(dwCityList.contains(cityen)){
+            return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;
+        }
         //System.out.println(cityen);
         /**
          *
@@ -549,6 +556,9 @@ public class NewsController {
                 //}
             }
         }
+
+
+
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
     }
 

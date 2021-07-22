@@ -279,7 +279,7 @@ public class NewsServiceImpl implements NewsService {
         //循环新房集合,取出新房数据
         ershoufangTypes.stream().forEach(l -> {
             map.put("adsNo", l.getOid());
-            JSONObject jSONObject = restTemplate.getForObject(serviceUrl + "?cityen={cityen}&AdsNo={adsNo}&platform=wap", JSONObject.class, map);
+            JSONObject jSONObject = restTemplate.getForObject(serviceUrl + "?cityen={cityen}&AdsNo={adsNo}&platform=wap&PostType=S", JSONObject.class, map);
             JSONObject newsList = jSONObject.getJSONObject(RESULT);
             if (CollectionUtils.isEmpty(newsList)) {
                 log.error(ARTICLE_IS_NULL_TEXT, newsList);
@@ -295,7 +295,7 @@ public class NewsServiceImpl implements NewsService {
                         String plainString = db.toPlainString();
                         String salePrice = plainString.substring(0, plainString.lastIndexOf("0000"));
                         esfResult.setSalePriceString(salePrice);
-                        esfResult.setSalePrice(Double.parseDouble(salePrice));
+                        esfResult.setSalePrice(Long.parseLong(salePrice));
                     }
                     esfResult.setNewsId(l.getNewsid());
                     esfResult.setOid(l.getOid());

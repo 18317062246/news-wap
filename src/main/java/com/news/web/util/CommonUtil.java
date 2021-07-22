@@ -15,4 +15,18 @@ public class CommonUtil {
     public static Long getCurrentMills(){
         return Instant.now().getEpochSecond();
     }
+
+    public static void main(String[] args) {
+        System.out.println(getCurrentMills());
+    }
+
+    /**
+     * 将数字智能转换
+     */
+    public static String numberFormat(Double data){
+        long round = Math.round(data);
+        //获取数据
+        String result = NumberUtils.getTenThousandOfANumber((int)round);
+        return result.substring(0 , result.length() - 1);
+    }
 }

@@ -23,4 +23,16 @@
         </example>
     </function>
 
+    <function>
+        <description>
+            Number Format.
+        </description>
+        <name>numberFormat</name>
+        <function-class>com.news.web.util.CommonUtil</function-class>
+        <function-signature>java.lang.String numberFormat(java.lang.Double))</function-signature>
+        <example>
+            ${mfn:numberFormat(data)}
+        </example>
+    </function>
+
 </taglib>

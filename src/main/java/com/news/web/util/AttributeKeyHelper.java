@@ -195,6 +195,11 @@ public interface AttributeKeyHelper extends Serializable {
     String NEWS_DETAIL_PAGE = "news_detail";
 
     /**
+     * 详情页面
+     */
+    String NEWS_DETAIL_PAGE_DW = "news_detail_dw";
+
+    /**
      * 总页数
      */
     String TOTAL_PAGE = "TotalPage";

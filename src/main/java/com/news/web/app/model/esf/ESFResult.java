@@ -35,8 +35,8 @@ public class ESFResult implements Serializable {
     @JsonProperty("FullImagePath")
     private String fullImagePath;
 
-    @JsonProperty("SsalePrice")
-    private Double salePrice;
+    @JsonProperty("SalePrice")
+    private Long salePrice;
 
     @JsonProperty("Title")
     private String title;
@@ -46,4 +46,31 @@ public class ESFResult implements Serializable {
 
     @JsonProperty("SalePriceString")
     private String salePriceString;
+
+    @JsonProperty("RoomCount")
+    private Integer roomCount;
+
+    @JsonProperty("HallCount")
+    private Integer hallCount;
+
+    @JsonProperty("Garea")
+    private Double gArea;
+
+    @JsonProperty("RegionName")
+    private String regionName;
+
+    @JsonProperty("GscopeName")
+    private String gScopeName;
+
+    @JsonProperty("TagTitle")
+    private String tagTitle;
+
+    @JsonProperty("UnitSalePrice")
+    private Long unitSalePrice;
+
+    @JsonProperty("GuidingPrice")
+    private Long guidingPrice;
+
+    @JsonProperty("GuidingSalePriceStr")
+    private KeyValueResult guidingSalePriceStr;
 }
