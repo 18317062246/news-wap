@@ -23,4 +23,7 @@ public class BaseNewProp implements Serializable {
 
     @JsonProperty("GScope")
     private GScope gScope;
+
+    @JsonProperty("Status")
+    private String status;
 }

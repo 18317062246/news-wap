@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail.css">
+    <link rel="stylesheet" href="${staticurl}/css/fonts_jt.css">
 
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
@@ -75,13 +76,15 @@
 </div>
 <div class="newdetail-wrapper">
     <h3 class="new-title">${detail.Title}</h3>
-    <div class="new-source">
-        <span>${detail.Sources}</span>
+    <div class="new-time">
         <span class="time"><%--${detail.PublishDate}--%>
             <jsp:useBean id="detailDate" class="java.util.Date"/>
             <c:set target="${detailDate}" property="time" value="${detail.SenddateTime*1000}"/>
             <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${detailDate}" type="both"/>
         </span>
+    </div>
+    <div class="new-source">
+        <span>${detail.Sources}</span>
     </div>
     <div>
         <p class="new-content">
@@ -93,56 +96,42 @@
     免责声明：本文仅代表作者个人观点，与环球网无关。其原创性以及文中陈述文字和内容未经本站证实，对本文以及其中全部或者部分内容、文字的真实性、完整性、及时性本站不作任何保证或承诺，请读者仅作参考，并请自行核实相关内容。
 </p>--%>
 <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-<div class="room-container">
-
+<div style="width: 100%;height: 20px;background-color: #EEEEEE;"></div>
+<div class="room-container" style="padding-top: 40px;">
     <c:forEach items="${xfInfoResult}" varStatus="status" var="n">
-        <div class="roomlists">
+        <div class="roomlists" >
             <c:if test="${xfInfoResult[0].xinfangResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐新房</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 10px;">
+                    推荐新房</h3>
             </c:if>
             <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
-                <div class="room-item" >
-                    <div class="room-img">
-                        <c:if test="${n.xinfangResult != null}">
-                                <img class="lazy"
-                                     src="${n.xinfangResult.defaultImage}"
-                                     data-original="${n.xinfangResult.defaultImage}"
-                                     onerror="this.src='${defaultpic}'"
-                                     alt="" />
+                <div class="list_item_xf">
+                    <div >
+                        <div  class="houseimg_xf">
+                            <c:if test="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0}">
+                                <i  class="iconfont icon-VR3D vr" style="margin-left: 5px;"></i>
                             </c:if>
-                    </div>
-                    <div class="room-mid">
-                        <c:if test="${n.xinfangResult != null}">
-                            <h5>${n.xinfangResult.adName}</h5>
-                            <div class="room-type" style="white-space: nowrap;">${n.xinfangResult.roomsName}</div>
-                            <p class="room-address" style="white-space: nowrap;color: #666;">${n.xinfangResult.baseNewProp.address}</p>
-                            <c:if test="${n.xinfangResult.averagePrice != null && n.xinfangResult.averagePrice > 0}">
-                                <div style=" white-space: nowrap;display: inline-block;">
-                                    <p class="room-price">${n.xinfangResult.averagePrice}元/平</p>
-                                </div>
+                            <c:if test="${n.xinfangResult.videoCnt != null && n.xinfangResult.videoCnt > 0}">
+                                <i  class="iconfont icon-bofang2 video" style="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0 ? 'margin-left: 30px;': 'margin-left: 5px;'}"></i>
                             </c:if>
-                        </c:if>
-                    </div>
-                    <div class="room-side">
-                        <c:set var="apartmentStr" value="公寓"></c:set>
-                        <c:set var="residenceStr" value="住宅"></c:set>
-                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                        <c:set var="villaStr" value="别墅"></c:set>
-                        <p class="onsale"><%--${n.estType}--%>
-                            <c:if test="${n.xinfangResult != null}">
-                                <c:if test="${fn:contains(apartmentStr, n.xinfangResult.estType)}">
-                                    ${apartmentStr}
-                                </c:if>
-                                <c:if test="${fn:contains(residenceStr, n.xinfangResult.estType)}">
-                                    ${residenceStr}
-                                </c:if>
-                                <c:if test="${fn:contains(villaStr, n.xinfangResult.estType)}">
-                                    ${villaStr}
-                                </c:if>
+                            <c:if test="${n.xinfangResult.isTop != null && n.xinfangResult.isTop}">
+                                <i class="xf_top_label">热门</i>
                             </c:if>
-                        </p>
-                    </div>
-                </div>
+
+                            <img  data-src="${n.xinfangResult.defaultImage}"
+                                  src="${n.xinfangResult.defaultImage}" lazy="loaded" onerror="this.src='${defaultpic}'" style="border-radius: 5px;">
+                            <!----></div><div  class="housetitle_xf hidden"><p  class="title_xf hidden">
+                        <span  class="h2" style="color: rgb(51, 51, 51);">${n.xinfangResult.adName}</span><!----><!----><span class="xf_estate_status">${n.xinfangResult.baseNewProp.status}</span></p>
+                        <span  class="mr6_xf mcolor hidden"><i >${n.xinfangResult.baseNewProp.district.GScopeCnName}<c:if test="${n.xinfangResult.baseNewProp.GScope.GScopeCnName != null && n.xinfangResult.baseNewProp.GScope.GScopeCnName.length() > 0}">-${n.xinfangResult.baseNewProp.GScope.GScopeCnName}</c:if></i><i >/${n.xinfangResult.minArea}-${n.xinfangResult.maxArea}平</i><c:if test="${n.xinfangResult.minTotalPrice != null && n.xinfangResult.minTotalPrice > 0  && n.xinfangResult.maxTotalPrice != null && n.xinfangResult.maxTotalPrice > 0 }"><i >/${n.xinfangResult.minTotalPrice}-${n.xinfangResult.maxTotalPrice}万</i></c:if>
+                            </span><span  class="hidden Typetags">
+                                <c:forTokens items="${n.xinfangResult.features}" delims="、" var="temp" begin="0" end="2">
+                                    <i >${temp}</i>
+                                </c:forTokens>
+                               </span>
+                        <p  class="mt-4">
+                            <span  class="total-price_xf">${n.xinfangResult.minUnitPrice}-${n.xinfangResult.maxUnitPrice}元/平</span>
+                            <span  class="discountInfo">  </span></p></div></div>
+                    <span  class="desc"><i  class="bookimg"></i>“${n.xinfangResult.simpleDescription}”</span></div>
             </a>
         </div>
     </c:forEach>
@@ -150,112 +139,79 @@
     <c:forEach items="${esfInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
             <c:if test="${esfInfoResult[0].esfResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐二手房</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 10px;margin-top: 30px;margin-bottom: 20px;">
+                    推荐二手房</h3>
             </c:if>
-            <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
-                <div class="room-item" >
-                    <div class="room-img">
-                        <c:if test="${n.esfResult != null}">
-                                <img  class="lazy"
-                                      src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                      data-original="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
-                                      alt="" onerror="this.src='${defaultpic}'"/>
+            <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')">
 
-                        </c:if>
-                    </div>
-                    <div class="room-mid">
-                        <c:if test="${n.esfResult != null}">
-                                <h5>${n.esfResult.estateName}</h5>
-                            <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>
-                            <p class="room-address" style="white-space: nowrap; color: #666;">${n.esfResult.address}</p>
-                            <c:if test="${n.esfResult.salePriceString != null}">
-                                <div style=" white-space: nowrap;display: inline-block;">
-                                    <p class="room-price">
-                                            ${n.esfResult.salePriceString}万</p>
-                                </div>
+                <div  class="list_item_esf">
+                    <div class="item_esf commonCity">
+                        <div  class="houseimg_esf">
+
+                            <c:if test="${n.esfResult.vrSeeHouseUrl != null && n.esfResult.vrSeeHouseUrl.length() > 0}">
+                                <i  class="iconfont icon-VR3D vr" style="margin-left: 5px;"></i>
                             </c:if>
-                        </c:if>
-                    </div>
-                    <div class="room-side">
-                        <c:set var="apartmentStr" value="公寓"></c:set>
-                        <c:set var="residenceStr" value="住宅"></c:set>
-                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                        <c:set var="villaStr" value="别墅"></c:set>
-                        <p class="onsale"><%--${n.estType}--%>
-                            <c:if test="${n.esfResult != null}">
-                                <c:if test="${fn:contains(apartmentStr, n.esfResult.propertyType)}">
-                                    ${apartmentStr}
-                                </c:if>
-                                <c:if test="${fn:contains(residenceStr, n.esfResult.propertyType)}">
-                                    ${residenceStr}
-                                </c:if>
-                                <c:if test="${fn:contains(villaStr, n.esfResult.propertyType)}">
-                                    ${villaStr}
-                                </c:if>
-                                <c:if test="${fn:contains(vilaResidenceStr, n.esfResult.propertyType)}">
-                                    ${residenceStr}
-                                </c:if>
+                            <c:if test="${n.esfResult.estateVideo != null}">
+                                <i  class="iconfont icon-bofang2 video" style="${n.esfResult.vrSeeHouseUrl != null && n.esfResult.vrSeeHouseUrl.length() > 0? 'margin-left: 30px;': 'margin-left: 5px;'}"></i>
                             </c:if>
-                        </p>
-                    </div>
-                </div>
-             </a>
+                            <img  class="load_bakimg"
+                                  data-src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
+                                  lazy="loaded" onerror="this.src='${defaultpic}'"  style="border-radius: 5px;">
+                        </div>
+                        <div  class="housetitle_esf"><div  class="list_right"><h2  class="" style="color: rgb(51, 51, 51);"><!---->
+                            <c:if test="${n.esfResult.isHot != null && n.esfResult.isHot}">
+                                <span class="esf_hot_title">经理推荐</span>
+                            </c:if>
+                                ${n.esfResult.title}
+                        </h2><span  class="house_info"><!---->
+                               <span  class="mr6_esf">${n.esfResult.roomCount}室${n.esfResult.hallCount}厅/</span><span class="mr6_esf">${n.esfResult.GArea}平/</span><span  class="mr6_esf">朝${n.esfResult.direction}/</span><span  class="mr6_esf">${n.esfResult.estateName}/</span><span  class="mr6_esf">${n.esfResult.GScopeName}</span>
+                            <p >
+                                <c:forTokens items="${n.esfResult.keyWords}" delims="," var="temp"  begin="0" end="2">
+                                    <span  class="tags-common">${temp}</span>
+                                </c:forTokens>
+
+                            </p></div><!---->
+                            <div class="houseInfo_price"><!---->
+                                <span >${n.esfResult.salePrice}<i >万</i></span><!---->
+                                <span  class="unitPrice">${n.esfResult.unitSalePrice}元/平</span></div><!----></div></div></div>
+            </a>
         </div>
     </c:forEach>
 
     <c:forEach items="${xqInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
-            <c:if test="${commonHouseResult[0].xiaoQuResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;" >推荐小区</h3>
+            <c:if test="${n.xiaoQuResult != null && status.index == 0}">
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 10px;margin-top: 30px;margin-bottom: 10px;">
+                    推荐小区</h3>
             </c:if>
-            <a href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')" >
-                <div class="room-item" >
-                    <div class="room-img">
-                        <c:if test="${n.xiaoQuResult != null}">
-                                <img  class="lazy"
-                                      src="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                      data-original="${fn:substring(n.xiaoQuResult.imagePath, 0 , mfn:lastIndexOf(n.xiaoQuResult.imagePath, "."))}_180x130_c${fn:substring(n.xiaoQuResult.imagePath,mfn:lastIndexOf(n.xiaoQuResult.imagePath, ".") , fn:length(n.xiaoQuResult.imagePath))}"
-                                      alt="" onerror="this.src='${defaultpic}'"/>
-                        </c:if>
-
-                    </div>
-                    <div class="room-mid">
-                        <c:if test="${n.xiaoQuResult != null}">
-                                <h5>${n.xiaoQuResult.estateName}</h5>
-                            <%-- <div class="room-type" style="white-space: nowrap;">${n.esfResult.title}</div>--%>
-                            <p class="room-address" style="white-space: nowrap;color: #666;">${n.xiaoQuResult.address}</p>
-                            <c:if test="${n.xiaoQuResult.saleAvgPriceString != null }">
-                                <div style=" white-space: nowrap;display: inline-block;">
-                                    <p class="room-price">
-                                            ${n.xiaoQuResult.saleAvgPriceString}元/平</p>
-                                </div>
+            <li  class="house_item_xq">
+                <a  href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')">
+                    <div  class="list_item_xq">
+                        <div  class="houseimg_xq">
+                            <c:if test="${n.xiaoQuResult.isVideo != null && n.xiaoQuResult.isVideo}">
+                                <i  class="iconfont icon-play xiaoquimg_i"></i>
                             </c:if>
-                        </c:if>
-                    </div>
-                    <div class="room-side">
-                        <c:set var="apartmentStr" value="公寓"></c:set>
-                        <c:set var="residenceStr" value="住宅"></c:set>
-                        <c:set var="vilaResidenceStr" value="普通住宅"></c:set>
-                        <c:set var="villaStr" value="别墅"></c:set>
-                        <p class="onsale"><%--${n.estType}--%>
-                            <c:if test="${n.xiaoQuResult != null}">
-                                <c:if test="${fn:contains(apartmentStr, n.xiaoQuResult.propertyType)}">
-                                    ${apartmentStr}
-                                </c:if>
-                                <c:if test="${fn:contains(residenceStr, n.xiaoQuResult.propertyType)}">
-                                    ${residenceStr}
-                                </c:if>
-                                <c:if test="${fn:contains(vilaResidenceStr, n.xiaoQuResult.propertyType)}">
-                                    ${residenceStr}
-                                </c:if>
-                                <c:if test="${fn:contains(villaStr, n.xiaoQuResult.propertyType)}">
-                                    ${villaStr}
-                                </c:if>
-                            </c:if>
-                        </p>
-                    </div>
-                </div>
-            </a>
+                            <img  class="load_bakimg"
+                                  data-src="${n.xiaoQuResult.imagePath}"
+                                  src="${n.xiaoQuResult.imagePath}"
+                                  lazy="loaded" onerror="this.src='${defaultpic}'"  style="border-radius: 5px;"></div>
+                        <div  class="housetitle_xq">
+                            <div class="xqtitle" style="color: rgb(51, 51, 51);">
+                                <!---->${n.xiaoQuResult.estateName}</div>
+                            <div  class="double-columns_xq">
+                                <div  class="left-column_xq">
+                                    <span >${n.xiaoQuResult.regionName}</span><span >${n.xiaoQuResult.GScopeName}</span><span >${n.xiaoQuResult.address}</span></div>
+                                <div  class="right-column_xq"><!---->
+                                    <span  class="total-price_xq">${n.xiaoQuResult.saleAvgPrice}元/平</span><!----></div></div>
+                            <div  class="double-columns_xq">
+                                <div  class="left-column_xq"><span >
+                                  <jsp:useBean id="myDate1" class="java.util.Date"/>
+                                <c:set target="${myDate1}" property="time" value="${n.xiaoQuResult.opDate*1000}"/>
+                                <fmt:formatDate pattern="yyyy" value="${myDate1}" type="both"/>年建成</span></div>
+                                <div  class="right-column_xq"><!----></div></div>
+                            <div  class="double-columns_xq f8_xq">
+                                <span >在售${n.xiaoQuResult.saleNumber}套&nbsp;在租${n.xiaoQuResult.rentNumber}套</span></div><!----></div></div></a></li>
         </div>
     </c:forEach>
 

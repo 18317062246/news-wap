@@ -64,5 +64,26 @@ public class XinfangResult implements Serializable {
     @JsonProperty("MinTotalPrice")
     private Long minTotalPrice;
 
+    @JsonProperty("MaxTotalPrice")
+    private Long maxTotalPrice;
+
+    @JsonProperty("MinUnitPrice")
+    private Long minUnitPrice;
+
+    @JsonProperty("MaxUnitPrice")
+    private Long maxUnitPrice;
+
+    @JsonProperty("SimpleDescription")
+    private String simpleDescription;
+
+    @JsonProperty("IsTop")
+    private Boolean isTop;
+
+    @JsonProperty("VRCnt")
+    private Integer vrCnt;
+
+    @JsonProperty("VideoCnt")
+    private Integer videoCnt;
+
 
 }

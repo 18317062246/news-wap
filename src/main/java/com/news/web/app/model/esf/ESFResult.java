@@ -73,4 +73,16 @@ public class ESFResult implements Serializable {
 
     @JsonProperty("GuidingSalePriceStr")
     private KeyValueResult guidingSalePriceStr;
+
+    @JsonProperty("Direction")
+    private String direction;
+
+    @JsonProperty("IsHot")
+    private Boolean isHot;
+
+    @JsonProperty("VRSeeHouseUrl")
+    private String vrSeeHouseUrl;
+
+    @JsonProperty("EstateVideo")
+    private EstateVideo estateVideo;
 }

@@ -31,7 +31,7 @@ public class XiaoQuResult implements Serializable {
     private String imagePath;
 
     @JsonProperty("SaleAvgPrice")
-    private Double saleAvgPrice;
+    private Long saleAvgPrice;
 
     @JsonProperty("RentAvgPrice")
     private Double rentAvgPrice;
@@ -56,4 +56,29 @@ public class XiaoQuResult implements Serializable {
 
     @JsonProperty("SaleAvgPriceString")
     private Long saleAvgPriceString;
+
+    @JsonProperty("RegionName")
+    private String regionName;
+
+    @JsonProperty("GscopeName")
+    private String gScopeName;
+
+    @JsonProperty("SaleNumber")
+    private Integer saleNumber;
+
+    @JsonProperty("RentNumber")
+    private Integer rentNumber;
+
+    @JsonProperty("OpDate")
+    private Long opDate;
+
+    @JsonProperty("IsDealHot")
+    private Boolean isDealHot;
+
+    @JsonProperty("GuidingPrice")
+    private Long guidingPrice;
+
+    @JsonProperty("IsVideo")
+    private Boolean isVideo;
+
 }

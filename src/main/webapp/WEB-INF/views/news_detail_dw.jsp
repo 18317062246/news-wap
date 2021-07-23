@@ -22,10 +22,12 @@
     <link rel="icon" href="${staticurl}/images/favicon.ico" type="image/x-icon"/>
     <link type="text/css" rel="stylesheet" href="${staticurl}/css/materialize.min.css" media="screen,projection"/>
     <link rel="stylesheet" href="${staticurl}/css/font.css">
-    <link rel="stylesheet" href="${staticurl}/iconfont/iconfont.css">
+
+    <link type="text/css" rel="stylesheet" href="//at.alicdn.com/t/font_1711561_vq9r96ey3c.css">
     <link rel="stylesheet" href="${staticurl}/css/common.css">
     <link rel="stylesheet" href="${staticurl}/css/news_common.css">
     <link rel="stylesheet" href="${staticurl}/css/zixun_detail_dwq.css">
+    <link rel="stylesheet" href="${staticurl}/css/fonts_jt.css">
 
     <script type="text/javascript" src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${staticurl}/js/materialize.min.js"></script>
@@ -80,13 +82,15 @@
 </div>
 <div class="newdetail-wrapper">
     <h3 class="new-title">${detail.Title}</h3>
-    <div class="new-source">
-        <span>${detail.Sources}</span>
+    <div class="new-time">
         <span class="time"><%--${detail.PublishDate}--%>
             <jsp:useBean id="detailDate" class="java.util.Date"/>
             <c:set target="${detailDate}" property="time" value="${detail.SenddateTime*1000}"/>
             <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${detailDate}" type="both"/>
         </span>
+    </div>
+    <div class="new-source">
+        <span>${detail.Sources}</span>
     </div>
     <div>
         <p class="new-content">
@@ -98,12 +102,13 @@
     免责声明：本文仅代表作者个人观点，与环球网无关。其原创性以及文中陈述文字和内容未经本站证实，对本文以及其中全部或者部分内容、文字的真实性、完整性、及时性本站不作任何保证或承诺，请读者仅作参考，并请自行核实相关内容。
 </p>--%>
 <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
-<div class="room-container">
+<div style="width: 100%;height: 20px;background-color: #EEEEEE;"></div>
+<div class="room-container" style="padding-top: 40px;">
 
     <c:forEach items="${xfInfoResult}" varStatus="status" var="n">
-        <div class="roomlists">
+        <div class="roomlists" >
             <c:if test="${xfInfoResult[0].xinfangResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;margin-left: 20px;" >新房推荐</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 20px;" >新房推荐</h3>
             </c:if>
             <a href="javascript:loadPropertyDetail(11,'${n.xinfangResult.oid}','${cityen}')">
 
@@ -114,6 +119,9 @@
                                src="${n.xinfangResult.defaultImage}"
                                onerror="this.src='${defaultpic}'">
                           <!---->
+                          <c:if test="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0}">
+                              <i data-v-3e6af0be="" class="h-vr"></i>
+                          </c:if>
                       </div>
                       <div  class="h-left">
                           <div  class="h-info">
@@ -182,7 +190,7 @@
     <c:forEach items="${esfInfoResult}" varStatus="status" var="n">
         <div class="roomlists">
             <c:if test="${esfInfoResult[0].esfResult != null && status.index == 0}">
-                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 30px; padding: 20px 0 17px;margin-left: 20px;" >二手房推荐</h3>
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 20px;margin-top: 30px;margin-bottom: 20px;" >二手房推荐</h3>
             </c:if>
             <a href="javascript:loadPropertyDetail(21,'${n.esfResult.oid}','${cityen}')" >
 
@@ -193,6 +201,9 @@
                                      class="load_bakimg" height="90px" width="120px"
                                      data-src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}"
                                      src="${fn:substring(n.esfResult.fullImagePath, 0 , mfn:lastIndexOf(n.esfResult.fullImagePath, "."))}_180x130_c${fn:substring(n.esfResult.fullImagePath,mfn:lastIndexOf(n.esfResult.fullImagePath, ".") , fn:length(n.esfResult.fullImagePath))}" lazy="loaded"><!----><!---->
+                                <c:if test="${n.esfResult.vrSeeHouseUrl != null && n.esfResult.vrSeeHouseUrl.length() > 0}">
+                                    <i data-v-3e6af0be="" class="h-vr"></i>
+                                </c:if>
                             </div>
                             <div class="housetitle_esf">
                                 <h2 class="" style="color: rgb(51, 51, 51);">
@@ -235,9 +246,56 @@
         </div>
     </c:forEach>
 
+    <c:forEach items="${xqInfoResult}" varStatus="status" var="n">
+        <div class="roomlists">
+            <c:if test="${n.xiaoQuResult != null && status.index == 0}">
+                <h3 style="font-size: 16px;color: #333333;font-weight: 700;line-height: 10px; margin-left: 20px;margin-top: 30px;margin-bottom: 20px;" >小区推荐</h3>
+            </c:if>
+            <li  class="house_item_xq">
+                <a  href="javascript:loadPropertyDetail(61,'${n.xiaoQuResult.oid}','${cityen}')">
+                    <div  class="list_item_xq"><div  class="houseimg_xq">
+                        <i  class="iconfont icon-play xiaoquimg_i" style="display: none;"></i>
+                        <img  class="load_bakimg"
+                              data-src="${n.xiaoQuResult.imagePath}"
+                              src="${n.xiaoQuResult.imagePath}"
+                              lazy="loaded" onerror="this.src='${defaultpic}'">
+                    </div><div  class="housetitle_xq">
+                        <div  class="xqtitle" style="color: rgb(51, 51, 51);">
+                            <c:if test="${n.xiaoQuResult.isDealHot != null && n.xiaoQuResult.isDealHot}">
+                                <img  src="data:image/png;base64,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" class="hotIcon">
+                            </c:if>
+                                ${n.xiaoQuResult.estateName}</div>
+                        <div  class="double-columns_xq">
+                            <div  class="left-column_xq">
+                                <span >${n.xiaoQuResult.regionName}</span>
+                                <span >${n.xiaoQuResult.GScopeName}</span>
+                                <span >${n.xiaoQuResult.address}</span>
+                            </div><!----></div>
+                        <div  class="double-columns_xq">
+                            <div  class="left-column_xq">
+                                <span >
+                                    <jsp:useBean id="myDate1" class="java.util.Date"/>
+                                <c:set target="${myDate1}" property="time" value="${n.xiaoQuResult.opDate*1000}"/>
+                                <fmt:formatDate pattern="yyyy" value="${myDate1}" type="both"/>年建成</span></div>
+                            <div  class="right-column_xq"><!----></div></div>
+                        <div  class="double-columns_xq f8_xq">
+                            <span >在售${n.xiaoQuResult.saleNumber}套&nbsp;在租${n.xiaoQuResult.rentNumber}套</span></div>
+                        <c:if test="${n.xiaoQuResult.guidingPrice != null && n.xiaoQuResult.guidingPrice > 0}">
+                            <div  class="priceInfo"><span >
+                            <span  class="priceTitle">参考单价：</span><span  class="priceNum">${n.xiaoQuResult.guidingPrice}</span>元/平
+                            </span></div>
+                        </c:if>
+
+                    </div></div></a></li>
+
+
+        </div>
+    </c:forEach>
+
 
 </div>
-<p class="new-disclaimer"></p>
+<%--<p class="new-disclaimer"></p>--%>
+<p style="width: 100%;height: 30px;"></p>
 <section class="new-houseblock">
     <h3 class="hot">热点排行</h3>
     <ul class="new-list">
