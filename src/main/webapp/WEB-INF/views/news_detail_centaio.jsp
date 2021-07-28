@@ -375,13 +375,13 @@
                                     <i  class="iconfont icon-bofang2 video" style="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0 ? 'margin-left: 30px;': 'margin-left: 5px;'}"></i>
                                 </c:if>
                                 <c:if test="${n.xinfangResult.isTop != null && n.xinfangResult.isTop}">
-                                    <i class="xf_top_label">热门</i>
+                                    <i class="xf_top_label" style="background: #37428F !important;color: #FFE0AC !important;">热门</i>
                                 </c:if>
 
                                 <img  data-src="${n.xinfangResult.defaultImage}"
                                      src="${n.xinfangResult.defaultImage}" lazy="loaded" onerror="this.src='${defaultpic}'" style="border-radius: 5px;width: 110px;height: 73px;">
                                 <!----></div><div  class="housetitle_xf hidden"><p  class="title_xf hidden">
-                            <span  class="h2" style="color: rgb(51, 51, 51);max-width: 155px !important;">${n.xinfangResult.adName}</span><!----><!----><span class="xf_estate_status">${n.xinfangResult.baseNewProp.status}</span></p>
+                            <span  class="h2" style="color: rgb(51, 51, 51);max-width: 135px !important;">${n.xinfangResult.adName}</span><!----><!----><span class="xf_estate_status">${n.xinfangResult.baseNewProp.status}</span></p>
                             <span  class="mr6_xf mcolor hidden"><i >${n.xinfangResult.baseNewProp.district.GScopeCnName}<c:if test="${n.xinfangResult.baseNewProp.GScope.GScopeCnName != null && n.xinfangResult.baseNewProp.GScope.GScopeCnName.length() > 0}">-${n.xinfangResult.baseNewProp.GScope.GScopeCnName}</c:if></i><i >/${n.xinfangResult.minArea}-${n.xinfangResult.maxArea}平</i><c:if test="${n.xinfangResult.minTotalPrice != null && n.xinfangResult.minTotalPrice > 0  && n.xinfangResult.maxTotalPrice != null && n.xinfangResult.maxTotalPrice > 0 }"><i >/${n.xinfangResult.minTotalPrice}-${n.xinfangResult.maxTotalPrice}万</i></c:if>
                             </span><span  class="hidden Typetags">
                                  <c:if test="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0}">
