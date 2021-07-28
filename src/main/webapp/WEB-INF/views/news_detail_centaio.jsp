@@ -381,7 +381,7 @@
                                 <img  data-src="${n.xinfangResult.defaultImage}"
                                      src="${n.xinfangResult.defaultImage}" lazy="loaded" onerror="this.src='${defaultpic}'" style="border-radius: 5px;width: 110px;height: 73px;">
                                 <!----></div><div  class="housetitle_xf hidden"><p  class="title_xf hidden">
-                            <span  class="h2" style="color: rgb(51, 51, 51);">${n.xinfangResult.adName}</span><!----><!----><span class="xf_estate_status">${n.xinfangResult.baseNewProp.status}</span></p>
+                            <span  class="h2" style="color: rgb(51, 51, 51);max-width: 155px !important;">${n.xinfangResult.adName}</span><!----><!----><span class="xf_estate_status">${n.xinfangResult.baseNewProp.status}</span></p>
                             <span  class="mr6_xf mcolor hidden"><i >${n.xinfangResult.baseNewProp.district.GScopeCnName}<c:if test="${n.xinfangResult.baseNewProp.GScope.GScopeCnName != null && n.xinfangResult.baseNewProp.GScope.GScopeCnName.length() > 0}">-${n.xinfangResult.baseNewProp.GScope.GScopeCnName}</c:if></i><i >/${n.xinfangResult.minArea}-${n.xinfangResult.maxArea}平</i><c:if test="${n.xinfangResult.minTotalPrice != null && n.xinfangResult.minTotalPrice > 0  && n.xinfangResult.maxTotalPrice != null && n.xinfangResult.maxTotalPrice > 0 }"><i >/${n.xinfangResult.minTotalPrice}-${n.xinfangResult.maxTotalPrice}万</i></c:if>
                             </span><span  class="hidden Typetags">
                                  <c:if test="${n.xinfangResult.vrCnt != null && n.xinfangResult.vrCnt > 0}">
@@ -393,7 +393,19 @@
                                 </c:forTokens>
                                </span>
                             <p  class="mt-4">
-                                <span  class="total-price_xf">${n.xinfangResult.minUnitPrice}-${n.xinfangResult.maxUnitPrice}元/平</span>
+                                <span  class="total-price_xf">
+                                    <c:if test="${(n.xinfangResult.minUnitPrice != null && n.xinfangResult.minUnitPrice > 0) && (n.xinfangResult.maxUnitPrice != null && n.xinfangResult.maxUnitPrice > 0)}">
+                                        ${n.xinfangResult.minUnitPrice}-${n.xinfangResult.maxUnitPrice}元/平
+                                    </c:if>
+                                    <c:if test="${(n.xinfangResult.minUnitPrice == null || n.xinfangResult.minUnitPrice <= 0) || (n.xinfangResult.maxUnitPrice == null || n.xinfangResult.maxUnitPrice <= 0)}">
+                                        <c:if test="${n.xinfangResult.minUnitPrice != null && n.xinfangResult.minUnitPrice > 0}">
+                                            ${n.xinfangResult.minUnitPrice}元/平
+                                        </c:if>
+                                        <c:if test="${n.xinfangResult.maxUnitPrice != null && n.xinfangResult.maxUnitPrice > 0}">
+                                            ${n.xinfangResult.maxUnitPrice}元/平
+                                        </c:if>
+                                    </c:if>
+                                </span>
                                 <span  class="discountInfo">  </span></p></div></div>
                         <span  class="desc"><i  class="bookimg"></i>“${n.xinfangResult.simpleDescription}”</span></div>
             </a>

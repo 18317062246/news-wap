@@ -6,9 +6,9 @@ api:
   domain: https://testnews.centanet.com/api/
   xinfang:
     other:
-      city: http://10.4.18.227:8080/lion/json/reply/NewPropExtInfoRequest
+      city: http://api-testweb.centaline.com.cn/lion/json/reply/NewPropExtInfoRequest
     sz:
-      city: http://10.6.252.37:8081/lion/json/reply/NewPropExtInfoRequest
+      city: http://api-testweb.centaline.com.cn/lion/json/reply/NewPropExtInfoRequest
   esf:
     other:
       city: http://mobileapi-test.centaline.com.cn/json/reply/GetPostByAdsNoRequest
