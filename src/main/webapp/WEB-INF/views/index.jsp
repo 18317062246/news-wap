@@ -293,7 +293,7 @@
                         if(litPic != null && litPic.length >= 10){
                             temp += ' <img src="'+litPic.substring(0 ,litPic.lastIndexOf(".") )+'_180x130_c.'+ litPic.substring(litPic.lastIndexOf(".") + 1 , litPic.length)  +'"/>';
                         }else {
-                            temp += ' <img  src="${staticurl}images/load_photo.jpg" data-original="${staticurl}/images/load_photo.jpg">';
+                            temp += ' <img  src="${staticurl}/images/load_photo.jpg" data-original="${staticurl}/images/load_photo.jpg">';
                         }
 
                         temp += '  </div>';
