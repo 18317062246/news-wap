@@ -105,7 +105,8 @@
     $(document).ready(function () {
         $.sendCentaIOData("1", "zx_detail_view");
         if ($.paramNotNull($('#ShareTime').val())) {
-            $.sendFissionDate("分享资讯文章");
+            //$.sendFissionDate("分享资讯文章");
+            $.sendFissionDate("Link");
         }
     });
     $.extend({
@@ -126,7 +127,7 @@
             dataObj.ShareType = ShareType;
             //console.log(data);
             $.ajax({
-                url: "https://trace.centanet.com/api/Fission/CreateFission",
+                url: "https://trace.centanet.com/prod/api/Fission/CreateFission",
                 type: 'post',
                 dataType: 'JSON',
                 //data: JSON.stringify({data:{status: "start"}}),
