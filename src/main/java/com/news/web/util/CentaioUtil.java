@@ -10,12 +10,11 @@ public class CentaioUtil {
      * 埋点系统开关，true表示打开，
      * NewsController中的
      */
-    //测试url
     public static final boolean IS_CENTIO_ON = true;
     //埋点日志是否打开
-    public static final boolean IS_CENTIO_LOG_ON = true;
+    public static final boolean IS_CENTIO_LOG_ON = false;
     //是否是测试环境
-    public static final boolean IS_CENTIO_DEV_ON = true;
+    public static final boolean IS_CENTIO_DEV_ON = false;
     //跳转自动触发的功能是否开启，需开启
     public static final boolean IS_CENTIO_MONITOR_ON = true;
     /**
@@ -87,7 +86,7 @@ public class CentaioUtil {
     }
     public static boolean getCentaIOCity(String cityShort) {
         Map<String, String> map = new HashMap<>();
-        map.put("tj", "022");
+//        map.put("tj", "022");
         map.put("cd", "028");
         return map.containsKey(cityShort);
     }
