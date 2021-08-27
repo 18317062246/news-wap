@@ -292,12 +292,32 @@ public class NewsController {
             }
         }
 
+        //添加品牌部栏位
+        if(dss.contains(cityen)){
+            List<NewsType> jtNewsTypesAdd = new ArrayList<>();
+            for (NewsType newsType : types) {
+                //41为中原资讯，循环取出品牌部栏位
+                if(Objects.equals(newsType.getId() , 41)){
+                    List<NewsType> childList = newsType.getChildList();
+                    for (NewsType child : childList) {
+                        jtNewsTypesAdd.add(child);
+                    }
+
+                }
+            }
+
+            //添加到东三省type
+            if(!CollectionUtils.isEmpty(jtNewsTypesAdd)){
+                dssType.addAll(jtNewsTypesAdd);
+            }
+        }
+
         List<Integer> typeid = Arrays.asList(type);
         List<Map> news = new ArrayList<>();
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
         //判断集团资讯是否有效
-        if (type.equals(41)) {//说明是集团资讯
+        if (type.equals(41) || type.equals(42)) {//说明是集团资讯
             isJtyy = true;//将集团资讯置为true
             if (!CollectionUtils.isEmpty(childTypes)) {
                 //默认获取第一个id
@@ -328,7 +348,7 @@ public class NewsController {
         List<Integer> collect = types.stream().map(NewsType::getId).collect(Collectors.toList());
         if(!collect.contains(type)){
             //如果是二级栏目,取出对应的父栏目赋值给type
-            for(NewsType n : types){
+            for(NewsType n : dss.contains(cityen) ? dssType : types){
                 List<Integer> children = n.getChildList().stream().map(NewsType::getId).collect(Collectors.toList());
                 if(children.contains(type)){
                     childrenTypeId = n.getId();
@@ -606,7 +626,7 @@ public class NewsController {
 
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
-        if(type.equals(41)){//说明是集团资讯
+        if(type.equals(41) || type.equals(42)){//说明是集团资讯
             isJtyy = true;
         }
 
