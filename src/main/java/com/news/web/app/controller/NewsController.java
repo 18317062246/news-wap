@@ -278,7 +278,7 @@ public class NewsController {
         }
 
         //移除中原资讯
-        if(Objects.equals(Cityen.HZ_CITY_EN , cityen)) {
+        if(Objects.equals(Cityen.HZ_CITY_EN , cityen) || Objects.equals(Cityen.DG_CITY_EN , cityen)) {
             List<NewsType> jtNewsTypesRemove = new ArrayList<>();
             for (NewsType newsType : types) {
                 //41为中原资讯，移除当前栏目
