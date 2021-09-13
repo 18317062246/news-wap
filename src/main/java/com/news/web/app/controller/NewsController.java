@@ -570,13 +570,12 @@ public class NewsController {
             //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
                 //请求是否来自小程序c
-                //if(request.getHeader("user-agent").contains("MicroMessenger")){
+                if(request.getHeader("user-agent").contains("MicroMessenger")){
                     CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime,mobile);
                     return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
-                //}
+                }
             }
         }
-
 
 
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
