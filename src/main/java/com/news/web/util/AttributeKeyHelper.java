@@ -233,4 +233,9 @@ public interface AttributeKeyHelper extends Serializable {
      * 资讯下架页面
      */
     String OFF_SHELF_NEWS = "off_shelf_news";
+
+    /**
+     * 底部信息
+     */
+    String FOOT_INFO = "footInfo";
 }

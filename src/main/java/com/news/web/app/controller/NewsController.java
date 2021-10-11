@@ -6,11 +6,15 @@ import com.news.web.app.common.Cityen;
 import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
+import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
-import com.news.web.util.*;
+import com.news.web.util.AttributeKeyHelper;
+import com.news.web.util.CentaioUtil;
+import com.news.web.util.PageUtil;
+import com.news.web.util.StringResource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +41,11 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class NewsController {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-
-    @Autowired
-    private NewsService newsService;
+    private final RestTemplate restTemplate;
+    private final NewsService newsService;
 
     @Value("${api.domain}")
     public String apiurl;
@@ -421,7 +422,10 @@ public class NewsController {
      * @date: 2020-05-27
      */
     private void setCommon(Model model, String cityen) {
+        //获取公共底部的日期和时间
+        CommonFootInfo footInfo = newsService.getFootInfo(cityen);
         model.addAttribute(CITYEN, cityen);
+        model.addAttribute(AttributeKeyHelper.FOOT_INFO, footInfo);
         model.addAttribute(AttributeKeyHelper.STATIC_URL, staticurl);
     }
 

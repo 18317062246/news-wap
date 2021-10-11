@@ -26,3 +26,5 @@ api:
       city:  http://mobileapi-test.centaline.com.cn/json/reply/GetEstateRequest
 logapi:
   url: http://api-testpassport.centaline.com.cn/json/reply/
+bizcom:
+  foot-url: http://api-testweb.centaline.com.cn/bizcom/json/reply/AppVersionRequest?cityen=%s&platform=wap

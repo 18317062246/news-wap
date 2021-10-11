@@ -3,8 +3,8 @@
     <div data-v-c631e254="" class="appinfo" >
         <div data-v-c631e254="">
             <p data-v-c631e254="">开发者：中原（中国）房地产代理有限公司</p>
-            <p data-v-c631e254="">版本：7.33.3</p></div>
-        <p data-v-c631e254="">更新时间：2021年10月04日
+            <p data-v-c631e254="">版本：${footInfo.version}</p></div>
+        <p data-v-c631e254="">更新时间：${footInfo.currentDate}
             <span data-v-c631e254="" class="btn-blue">权限详情</span>
             <span data-v-c631e254="" class="btn-blue" onclick="zhengce()">隐私政策</span></p></div></div>
 </div>

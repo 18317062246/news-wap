@@ -6,14 +6,16 @@
 package com.news.web.app.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.news.web.app.config.ApiConfig;
+import com.news.web.app.config.BizComConfig;
 import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.AopResult;
+import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.model.esf.ESFResult;
 import com.news.web.app.model.param.InsertLogParam;
@@ -24,8 +26,8 @@ import com.news.web.util.CommonUtil;
 import com.news.web.util.HttpUtil;
 import com.news.web.util.StringResource;
 import com.news.web.util.parser.NewsParser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -43,16 +45,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @SuppressWarnings("all")
+@RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private ApiConfig apiConfig;
-
-    @Autowired
-    private HttpUtil httpUtil;
+    private final RestTemplate restTemplate;
+    private final ApiConfig apiConfig;
+    private final HttpUtil httpUtil;
+    private final BizComConfig bizComConfig;
 
     @Value("${api.domain}")
     public String apiurl;
@@ -444,6 +443,17 @@ public class NewsServiceImpl implements NewsService {
             return JSON.parseArray(data, AdType.class);
         } catch (IOException e) {
             return Collections.EMPTY_LIST;
+        }
+    }
+
+    @Override
+    public CommonFootInfo getFootInfo(String cityen) {
+        try {
+            String json = httpUtil.get(String.format(bizComConfig.getFootUrl(), cityen));
+            return JSON.parseObject(json, new TypeReference<AopResult<CommonFootInfo>>() {
+            }).getResult();
+        } catch (IOException e) {
+            return null;
         }
     }
 

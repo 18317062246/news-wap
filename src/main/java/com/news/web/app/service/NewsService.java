@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.news.web.app.model.AdType;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
+import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,4 +92,9 @@ public interface NewsService extends Serializable {
 
 
     List<AdType> adList(String cityen, String ad_name, String app_name);
+
+    /**
+     * 获取工信部审核的最新日期和时间
+     */
+    CommonFootInfo getFootInfo(String cityen);
 }
