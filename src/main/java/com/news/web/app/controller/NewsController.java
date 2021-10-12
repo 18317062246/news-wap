@@ -9,10 +9,7 @@ import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
 import com.news.web.app.service.NewsService;
-import com.news.web.util.AttributeKeyHelper;
-import com.news.web.util.CentaioUtil;
-import com.news.web.util.PageUtil;
-import com.news.web.util.StringResource;
+import com.news.web.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -426,6 +423,7 @@ public class NewsController {
         CommonFootInfo footInfo = newsService.getFootInfo(cityen);
         model.addAttribute(CITYEN, cityen);
         model.addAttribute(AttributeKeyHelper.FOOT_INFO, footInfo);
+        model.addAttribute(AttributeKeyHelper.FOOT_INFO_CURRENT_DATE, DateHelper.dateToString(new Date()));
         model.addAttribute(AttributeKeyHelper.STATIC_URL, staticurl);
     }
 

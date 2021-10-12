@@ -238,4 +238,9 @@ public interface AttributeKeyHelper extends Serializable {
      * 底部信息
      */
     String FOOT_INFO = "footInfo";
+
+    /**
+     * 底部当前时间
+     */
+    String FOOT_INFO_CURRENT_DATE = "footInfoCurrentDate";
 }
