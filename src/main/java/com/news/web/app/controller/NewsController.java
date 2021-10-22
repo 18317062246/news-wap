@@ -97,6 +97,7 @@ public class NewsController {
                         @RequestParam(value = "key", required = false) String key ,
                         @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab,
                         @RequestParam(value = "mobile", required = false) String mobile,
+                        @RequestParam(value = "entry", required = false) String entry,
                         HttpServletRequest request) {
 
         setCommon(model, cityen);
@@ -399,6 +400,12 @@ public class NewsController {
                 }
             }
         }
+        //大湾区埋点 神策数据
+        List<String> dwCityList = Arrays.asList(dwCitys.split(","));
+        if(dwCityList.contains(cityen)&&DwMaiDianUtiil.isMaiDianON){
+            DwMaiDianUtiil.setModel(model,entry,cityen,request);
+            return DwMaiDianUtiil.INDEX_DW_MAIDIAN;
+        }
         /**
          *
          * @param: 小程序传过来的unionId，openId，userId，放到前端
@@ -556,8 +563,13 @@ public class NewsController {
 
         List<String> dwCityList = Arrays.asList(dwCitys.split(","));
         if(dwCityList.contains(cityen)){
+            if(DwMaiDianUtiil.isMaiDianON){
+                return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
+            }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;
         }
+
+
         //System.out.println(cityen);
         /**
          *
@@ -572,14 +584,12 @@ public class NewsController {
             //是否打开埋点
             if(CentaioUtil.IS_CENTIO_ON){
                 //请求是否来自小程序c
-                if(request.getHeader("user-agent").contains("MicroMessenger")){
+//                if(request.getHeader("user-agent").contains("MicroMessenger")){
                     CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime,mobile);
                     return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
-                }
+//                }
             }
         }
-
-
         return AttributeKeyHelper.NEWS_DETAIL_PAGE;
     }
 
