@@ -108,6 +108,10 @@
 <c:set var="defaultpic" value="https://static.centanet.com/v7p20415/images/error/220x165_loading.gif?v202005111"></c:set>
 <div style="width: 100%;height: 20px;background-color: #EEEEEE;"></div>
 <div class="room-container" style="padding-top: 40px;">
+    <input type="hidden" id="typeName" value="${typeName}"  />
+    <input type="hidden" id="entry" value="${entry}" />
+    <input type="hidden" id="cityCn" value="${cityCn}" />
+    <input type="hidden" id="platform" value="${platform}">
     <script>
         $(document).ready(function () {
             var sc_information_title=$('#dw-new-title').text();
@@ -133,18 +137,18 @@
                 var sc_information_author=$('#dw-new-source').text().replace( /^\s+/, "" ).replace("\n","").replace( /\s+$/, "");;
                 sendObj.sc_information_author=sc_information_author;
             }
-            var crrentTab=localStorage.getItem("currentTab")
+            var crrentTab=$('#typeName').val();
             if(crrentTab !=null && crrentTab !=''){
                 sendObj.sc_information_type=crrentTab;
             }
             //公共属性
             var pulicObj=new Object();
-            var platform=localStorage.getItem("platform");
+            var platform=$('#platform').val();
             if(platform !=null && platform !=''){
                 pulicObj.sc_platform_type=platform;
                 sendObj.sc_platform_type=platform;
             }
-            var cityCn=localStorage.getItem("cityCn");
+            var cityCn=$('#cityCn').val();
             if(platform !=null && platform !=''){
                 pulicObj.sc_city=cityCn;
                 sendObj.sc_city=cityCn;

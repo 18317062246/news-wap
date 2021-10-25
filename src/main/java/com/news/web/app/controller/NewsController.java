@@ -452,6 +452,7 @@ public class NewsController {
             ,@RequestParam(value = "parentid", required = false) String UnionParentId
             ,@RequestParam(value = "sharetime", required = false) String ShareTime
             ,@RequestParam(value = "mobile", required = false) String mobile
+            ,@RequestParam(value = "entry", required = false) String entry
             ,HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
@@ -537,7 +538,6 @@ public class NewsController {
         List<Integer> typeid = Arrays.asList();
         JSONObject newsList = newsService.newsList(cityen, 1, 10, 0);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
-
         if (Objects.equals(detail.get(AttributeKeyHelper.FLAG) , AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
             return String.format(AttributeKeyHelper.REDIRECT_LINK , detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
         }
@@ -564,6 +564,8 @@ public class NewsController {
         List<String> dwCityList = Arrays.asList(dwCitys.split(","));
         if(dwCityList.contains(cityen)){
             if(DwMaiDianUtiil.isMaiDianON){
+                String typename=(String)detail.get("Typename");
+                DwMaiDianUtiil.setModel(model,entry,cityen,request,typename);
                 return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
             }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;
