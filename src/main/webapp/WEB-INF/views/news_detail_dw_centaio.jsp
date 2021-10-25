@@ -142,10 +142,12 @@
             var platform=localStorage.getItem("platform");
             if(platform !=null && platform !=''){
                 pulicObj.sc_platform_type=platform;
+                sendObj.sc_platform_type=platform;
             }
             var cityCn=localStorage.getItem("cityCn");
             if(platform !=null && platform !=''){
                 pulicObj.sc_city=cityCn;
+                sendObj.sc_city=cityCn;
             }
             //初始化埋点对象
             var sensors = window['sensorsDataAnalytic201505'];
