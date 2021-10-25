@@ -120,7 +120,7 @@
             var sc_post_time = new Date(sdate[0], sdate[1]-1, sdate[2]);
 
             var entry=localStorage.getItem("entry");
-            var sendUrl=localStorage.getItem("sendUrl");
+            // var sendUrl=localStorage.getItem("sendUrl");
             //封装发送的对象
             var sendObj=new Object();
             sendObj.sc_information_title=sc_information_title;
@@ -136,6 +136,16 @@
             var crrentTab=localStorage.getItem("currentTab")
             if(crrentTab !=null && crrentTab !=''){
                 sendObj.sc_information_type=crrentTab;
+            }
+            //公共属性
+            var pulicObj=new Object();
+            var platform=localStorage.getItem("platform");
+            if(platform !=null && platform !=''){
+                pulicObj.sc_platform_type=platform;
+            }
+            var cityCn=localStorage.getItem("cityCn");
+            if(platform !=null && platform !=''){
+                pulicObj.sc_city=cityCn;
             }
             //初始化埋点对象
             var sensors = window['sensorsDataAnalytic201505'];
@@ -156,6 +166,7 @@
             // );
             // sensors.registerPage(sendObj);
             sensors.track('sc_information_read',sendObj);
+            sensors.registerPage(pulicObj);
             sensors.quick('autoTrack');
         });
     </script>

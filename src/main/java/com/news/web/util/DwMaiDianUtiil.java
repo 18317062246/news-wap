@@ -19,12 +19,24 @@ public class DwMaiDianUtiil {
         }
         if(!isNullOrEmpty(cityen)){
             model.addAttribute("cityCode",getCityCode(cityen));
+            model.addAttribute("cityCn",getDwCnName(cityen));
         }
 //        String[] urlParts=request.getRequestURL().toString().split("/");
-//        if(request.getHeader("user-agent").contains("MicroMessenger")){
-//            String sendUrl=urlParts[0]+"//"+urlParts[2]+"/"+urlParts[3]+"/"+urlParts[4]+"/";
-//            model.addAttribute("sendUrl",sendUrl);
-//        }
+        if(request.getHeader("user-agent")
+                .toLowerCase()
+                .contains("micromessenger")){
+            model.addAttribute("platform","minipro");
+        }else if(request.getHeader("user-agent")
+                .toLowerCase()
+                .contains("android")) {
+            model.addAttribute("platform","app_android");
+        }else if (request.getHeader("user-agent")
+                .toLowerCase()
+                .contains("like mac")){
+            model.addAttribute("platform","app_ios");
+        }else {
+            model.addAttribute("platform","wap");
+        }
     }
     public static boolean isNullOrEmpty(Object o){
         return null==o||o.toString().equals("");
@@ -62,6 +74,14 @@ public class DwMaiDianUtiil {
         map.put("zs", "0760");
         map.put("zq", "0758");
         map.put("zz", "0371");
+        return map.get(cityShort);
+    }
+    public static String getDwCnName(String cityShort) {
+        Map<String, String> map = new HashMap<>();
+        map.put("sz", "深圳");
+        map.put("dg", "东莞");
+        map.put("zs", "中山");
+        map.put("zh", "珠海");
         return map.get(cityShort);
     }
 }
