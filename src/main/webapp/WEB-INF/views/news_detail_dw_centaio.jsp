@@ -140,19 +140,22 @@
             //初始化埋点对象
             var sensors = window['sensorsDataAnalytic201505'];
             sensors.init({
-                server_url: 'http://data.zhongyuanzhaofang.com/sa',
-                heatmap: {scroll_notice_map: 'not_collect'},
+                server_url: 'https://data.zhongyuanzhaofang.com/sa',
+                heatmap: {
+                    scroll_notice_map: 'not_collect'
+                },
                 is_track_single_page: true,
                 use_client_time: true,
                 send_type: 'beacon',
                 show_log:true
             });
-            sensors.use('SiteLinker',
-                {linker: [
-                        {part_url: sendUrl, after_hash: false}
-                    ]}
-            );
-            sensors.registerPage(sendObj);
+            // sensors.use('SiteLinker',
+            //     {linker: [
+            //             {part_url: sendUrl, after_hash: false}
+            //         ]}
+            // );
+            // sensors.registerPage(sendObj);
+            sensors.track('sc_information_read',sendObj);
             sensors.quick('autoTrack');
         });
     </script>

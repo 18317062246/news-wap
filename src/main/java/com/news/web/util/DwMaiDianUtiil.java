@@ -14,16 +14,17 @@ public class DwMaiDianUtiil {
     public static void setModel(Model model, String entry, String cityen, HttpServletRequest request) {
         if(!isNullOrEmpty(entry)){
             model.addAttribute("entry",entry);
+        }else {
+            model.addAttribute("entry","资讯icon");
         }
         if(!isNullOrEmpty(cityen)){
             model.addAttribute("cityCode",getCityCode(cityen));
         }
-        String[] urlParts=request.getRequestURL().toString().split("/");
-        if(request.getHeader("user-agent").contains("MicroMessenger")){
-            String sendUrl=urlParts[0]+"//"+urlParts[2]+"/"+urlParts[3]+"/"+urlParts[4]+"/";
-            model.addAttribute("sendUrl",sendUrl);
-        }
-
+//        String[] urlParts=request.getRequestURL().toString().split("/");
+//        if(request.getHeader("user-agent").contains("MicroMessenger")){
+//            String sendUrl=urlParts[0]+"//"+urlParts[2]+"/"+urlParts[3]+"/"+urlParts[4]+"/";
+//            model.addAttribute("sendUrl",sendUrl);
+//        }
     }
     public static boolean isNullOrEmpty(Object o){
         return null==o||o.toString().equals("");
