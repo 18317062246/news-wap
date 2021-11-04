@@ -41,7 +41,7 @@
     </a>
     <c:choose>
         <c:when test="${cityen == 'sz' || cityen == 'gz'}">
-            <a href="//m.${cityen}.centanet.com/search?type=7" class="search-a">
+            <a href="//m.${cityen}.centanet.com/search?type=7&from=news" class="search-a">
                 <div class="search-box"><i class="icon-sousuo iconfont"></i>
                     <c:if test="${key != null && key.length() > 0}">
                         ${key}
@@ -53,7 +53,7 @@
             </a>
         </c:when>
         <c:otherwise>
-            <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
+            <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7&from=news" class="search-a">
                 <div class="search-box"><i class="icon-sousuo iconfont"></i>
                     <c:if test="${key != null && key.length() > 0}">
                         ${key}
