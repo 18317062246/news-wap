@@ -14,7 +14,7 @@ public class DwMaiDianUtiil {
         if(!isNullOrEmpty(entry)){
             model.addAttribute("entry",entry);
         }else {
-            model.addAttribute("entry","资讯icon");
+            model.addAttribute("entry","资讯url");
         }
         if(!isNullOrEmpty(cityen)){
             model.addAttribute("cityCn",getDwCnName(cityen));

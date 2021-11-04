@@ -117,13 +117,15 @@
             var sc_information_title=$('#dw-new-title').text();
              var sc_post_time_or=$('#dw-time').text();
             var sc_post_time_str=sc_post_time_or.replace( /^\s+/, "" ).replace("\n","").replace( /\s+$/, "");
-
             //处理时间
             var arr1 = sc_post_time_str.split(" ");
             var sdate = arr1[0].split('-');
             var sc_post_time = new Date(sdate[0], sdate[1]-1, sdate[2]);
-
-            var entry=localStorage.getItem("entry");
+                if(localStorage.getItem('entry')!=null && localStorage.getItem('entry')!=''){
+                    var entry=localStorage.getItem('entry');
+                }else {
+                    var entry=$('#entry').val();
+                }
             // var sendUrl=localStorage.getItem("sendUrl");
             //封装发送的对象
             var sendObj=new Object();
