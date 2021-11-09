@@ -133,7 +133,7 @@
             sendObj.sc_post_time=sc_post_time;
 
             if(entry !=null && entry!='' ){
-                sendObj.sc_information_entry=entry;
+                sendObj.sc_click_entry=entry;
             }
             if($('#dw-new-source').text()!=null && $('#dw-new-source').text()!=''){
                 var sc_information_author=$('#dw-new-source').text().replace( /^\s+/, "" ).replace("\n","").replace( /\s+$/, "");;
