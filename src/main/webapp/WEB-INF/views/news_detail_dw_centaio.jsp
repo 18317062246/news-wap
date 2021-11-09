@@ -156,6 +156,7 @@
                 sendObj.sc_city=cityCn;
             }
             //初始化埋点对象
+            if(crrentTab!=null && crrentTab!='' ){
             var sensors = window['sensorsDataAnalytic201505'];
             sensors.init({
                 server_url: 'https://data.zhongyuanzhaofang.com/sa',
@@ -176,6 +177,7 @@
             sensors.track('sc_information_read',sendObj);
             sensors.registerPage(pulicObj);
             sensors.quick('autoTrack');
+            }
         });
     </script>
     <c:forEach items="${xfInfoResult}" varStatus="status" var="n">
