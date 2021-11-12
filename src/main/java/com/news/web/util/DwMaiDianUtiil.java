@@ -108,7 +108,6 @@ public class DwMaiDianUtiil {
     public static String getDwCnName(String cityShort) {
         Map<String, String> map = new HashMap<>();
         map.put("sz", "深圳");
-        map.put("dg", "东莞");
         map.put("zs", "中山");
         map.put("zh", "珠海");
         return map.get(cityShort);
