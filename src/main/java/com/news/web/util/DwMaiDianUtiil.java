@@ -3,7 +3,9 @@ package com.news.web.util;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DwMaiDianUtiil {
@@ -111,5 +113,12 @@ public class DwMaiDianUtiil {
         map.put("zs", "中山");
         map.put("zh", "珠海");
         return map.get(cityShort);
+    }
+    public static List<String> getDwCnName() {
+        List<String> dwList=new ArrayList();
+        dwList.add("sz");
+        dwList.add("zs");
+        dwList.add("zh");
+        return dwList;
     }
 }

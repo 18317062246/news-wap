@@ -561,7 +561,7 @@ public class NewsController {
         model.addAttribute(AttributeKeyHelper.NEWS_ID, id);
         model.addAttribute(AttributeKeyHelper.REFERER, referer);
 
-        List<String> dwCityList = Arrays.asList(dwCitys.split(","));
+        List<String> dwCityList = DwMaiDianUtiil.getDwCnName();
         if(dwCityList.contains(cityen)){
             if(DwMaiDianUtiil.isMaiDianON){
                 String typename=(String)detail.get("Typename");
