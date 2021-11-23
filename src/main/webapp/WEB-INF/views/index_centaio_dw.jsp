@@ -85,6 +85,7 @@
             <input type="hidden" id="sendUrl" value="${sendUrl}"/>
             <input type="hidden" id="cityCn" value="${cityCn}"/>
             <input type="hidden" id="platform" value="${platform}"/>
+            <input type="hidden" id="downloadChannel" value="${downloadChannel}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
                     <li class="tab" ref="${type.id}"><a id="a${type.id}" href="/m/${cityen}/list/c${type.id == 41 ? type.id : fn:length(type.childList) > 0 ? type.childList[0].id : type.id}/">${type.columnsName}</a></li>
             </c:forEach>
@@ -99,12 +100,14 @@
                 var sendUrl=$('#sendUrl').val();
                 var cityCn=$('#cityCn').val();
                 var platform=$('#platform').val();
+                var downloadChannel=$('#downloadChannel').val();
                 localStorage.setItem("currentTab",currentTab);
                 localStorage.setItem("cityCode",cityCode);
                 localStorage.setItem("entry",entry);
                 localStorage.setItem("sendUrl",sendUrl);
                 localStorage.setItem("cityCn",cityCn);
                 localStorage.setItem("platform",platform);
+                localStorage.setItem("downloadChannel",downloadChannel);
             })
         </script>
     </div>

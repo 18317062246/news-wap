@@ -9,69 +9,81 @@ import java.util.List;
 import java.util.Map;
 
 public class DwMaiDianUtiil {
-    public static final boolean isMaiDianON=true;
-    public  static  final String  NEWS_DETAIL_PAGE_DW_MAIDIAN="news_detail_dw_centaio";
-    public  static  final String  INDEX_DW_MAIDIAN="index_centaio_dw";
-    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request,String typeName) {
-        if(!isNullOrEmpty(entry)){
-            model.addAttribute("entry",entry);
-        }else {
-            model.addAttribute("entry","资讯url");
+    public static final boolean isMaiDianON = true;
+    public static final String NEWS_DETAIL_PAGE_DW_MAIDIAN = "news_detail_dw_centaio";
+    public static final String INDEX_DW_MAIDIAN = "index_centaio_dw";
+
+    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request, String typeName, String downloadChannel) {
+        if (!isNullOrEmpty(entry)) {
+            model.addAttribute("entry", entry);
+        } else {
+            model.addAttribute("entry", "资讯url");
         }
-        if(!isNullOrEmpty(cityen)){
-            model.addAttribute("cityCn",getDwCnName(cityen));
+        if (!isNullOrEmpty(cityen)) {
+            model.addAttribute("cityCn", getDwCnName(cityen));
         }
-        if(!isNullOrEmpty(typeName)){
-            model.addAttribute("typeName",typeName);
+        if (!isNullOrEmpty(typeName)) {
+            model.addAttribute("typeName", typeName);
+        }
+        if(!isNullOrEmpty(downloadChannel)){
+            model.addAttribute("downloadChannel", downloadChannel);
         }
 //        String[] urlParts=request.getRequestURL().toString().split("/");
-        if(request.getHeader("user-agent")
+        if (request.getHeader("user-agent")
                 .toLowerCase()
-                .contains("micromessenger")){
-            model.addAttribute("platform","minipro");
-        }else if(request.getHeader("user-agent")
+                .contains("micromessenger")) {
+            model.addAttribute("platform", "minipro");
+        } else if (request.getHeader("user-agent")
                 .toLowerCase()
                 .contains("android")) {
-            model.addAttribute("platform","app_android");
-        }else if (request.getHeader("user-agent")
+            model.addAttribute("platform", "app_android");
+        } else if (request.getHeader("user-agent")
                 .toLowerCase()
-                .contains("like mac")){
-            model.addAttribute("platform","app_ios");
-        }else {
-            model.addAttribute("platform","wap");
+                .contains("like mac")) {
+            model.addAttribute("platform", "app_ios");
+        } else {
+            model.addAttribute("platform", "wap");
         }
 
+
     }
-    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request) {
-        if(!isNullOrEmpty(entry)){
-            model.addAttribute("entry",entry);
-        }else {
-            model.addAttribute("entry","资讯icon");
+
+    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request,String downloadChannel) {
+        if (!isNullOrEmpty(entry)) {
+            model.addAttribute("entry", entry);
+        } else {
+            model.addAttribute("entry", "资讯icon");
         }
-        if(!isNullOrEmpty(cityen)){
-            model.addAttribute("cityCode",getCityCode(cityen));
-            model.addAttribute("cityCn",getDwCnName(cityen));
+        if (!isNullOrEmpty(cityen)) {
+            model.addAttribute("cityCode", getCityCode(cityen));
+            model.addAttribute("cityCn", getDwCnName(cityen));
         }
+        if (!isNullOrEmpty(downloadChannel)) {
+            model.addAttribute("downloadChannel", downloadChannel);
+        }
+
 //        String[] urlParts=request.getRequestURL().toString().split("/");
-        if(request.getHeader("user-agent")
+        if (request.getHeader("user-agent")
                 .toLowerCase()
-                .contains("micromessenger")){
-            model.addAttribute("platform","minipro");
-        }else if(request.getHeader("user-agent")
+                .contains("micromessenger")) {
+            model.addAttribute("platform", "minipro");
+        } else if (request.getHeader("user-agent")
                 .toLowerCase()
                 .contains("android")) {
-            model.addAttribute("platform","app_android");
-        }else if (request.getHeader("user-agent")
+            model.addAttribute("platform", "app_android");
+        } else if (request.getHeader("user-agent")
                 .toLowerCase()
-                .contains("like mac")){
-            model.addAttribute("platform","app_ios");
-        }else {
-            model.addAttribute("platform","wap");
+                .contains("like mac")) {
+            model.addAttribute("platform", "app_ios");
+        } else {
+            model.addAttribute("platform", "wap");
         }
     }
-    public static boolean isNullOrEmpty(Object o){
-        return null==o||o.toString().equals("");
+
+    public static boolean isNullOrEmpty(Object o) {
+        return null == o || o.toString().equals("");
     }
+
     public static String getCityCode(String cityShort) {
         Map<String, String> map = new HashMap<>();
         map.put("bj", "010");
@@ -107,6 +119,7 @@ public class DwMaiDianUtiil {
         map.put("zz", "0371");
         return map.get(cityShort);
     }
+
     public static String getDwCnName(String cityShort) {
         Map<String, String> map = new HashMap<>();
         map.put("sz", "深圳");
@@ -114,8 +127,9 @@ public class DwMaiDianUtiil {
         map.put("zh", "珠海");
         return map.get(cityShort);
     }
+
     public static List<String> getDwCnName() {
-        List<String> dwList=new ArrayList();
+        List<String> dwList = new ArrayList();
         dwList.add("sz");
         dwList.add("zs");
         dwList.add("zh");

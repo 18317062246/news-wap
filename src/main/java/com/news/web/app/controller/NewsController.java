@@ -72,11 +72,10 @@ public class NewsController {
 
     /**
      * 广告业测试
-     *
      */
-    private static final String AD_NAMES="资讯列表页";
-    private static final String APP_NAME="scrm_loupan";
-    private static final String AD_LIST="adList";
+    private static final String AD_NAMES = "资讯列表页";
+    private static final String APP_NAME = "scrm_loupan";
+    private static final String AD_LIST = "adList";
 
     /**
      * @param: null
@@ -94,20 +93,20 @@ public class NewsController {
                         @RequestParam(value = "unionid", required = false) String unionId,
                         @RequestParam(value = "userid", required = false) String userId,
                         @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize,
-                        @RequestParam(value = "key", required = false) String key ,
-                        @RequestParam(value = "hidetab" , defaultValue = "close") String hidetab,
+                        @RequestParam(value = "key", required = false) String key,
+                        @RequestParam(value = "hidetab", defaultValue = "close") String hidetab,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "entry", required = false) String entry,
+                        @RequestParam(value = "downloadChannel", required = false) String downloadChannel,
                         HttpServletRequest request) {
-
         setCommon(model, cityen);
-        model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID , type);
+        model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID, type);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN , hidetab)){
+        if (org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN, hidetab)) {
             model.addAttribute(AttributeKeyHelper.HIDE_TAB, true);
-        }else {
+        } else {
             //否则不隐藏tab，赋值hidetab为false
-            model.addAttribute(AttributeKeyHelper.HIDE_TAB , false);
+            model.addAttribute(AttributeKeyHelper.HIDE_TAB, false);
         }
         //获取栏目类型
         List<NewsType> types = newsService.typeList(cityen, null);
@@ -137,7 +136,7 @@ public class NewsController {
         }
 
         //判断types是否为空，不为空就进行判断，栏目是否不存在新闻列表
-        if(!CollectionUtils.isEmpty(types)) {
+        if (!CollectionUtils.isEmpty(types)) {
             //创建一个List对象，将没有文章的栏目进行存储
             List<NewsType> newsTypesRemove = new ArrayList<>();
             //创建一个List对象，深圳海外城市需要将中原资讯频道移除
@@ -145,9 +144,9 @@ public class NewsController {
             //循环types,将没有文章的栏目进行删除
             for (NewsType newsType : types) {
                 //41为中原资讯，如果是41，则进行跳过，深圳海外城市，其他的城市保留
-                if(Objects.equals(newsType.getId() , 41)){
+                if (Objects.equals(newsType.getId(), 41)) {
                     //深圳海外城市，移除中原资讯
-                    if(Objects.equals(Cityen.SZWORLD_CITYEN , cityen)){
+                    if (Objects.equals(Cityen.SZWORLD_CITYEN, cityen)) {
                         jtNewsTypesRemove.add(newsType);
                     }
                     continue;
@@ -161,34 +160,34 @@ public class NewsController {
             }
 
             //若newsTypesRemove对象不为空，就删除栏目
-            if(!CollectionUtils.isEmpty(newsTypesRemove)) {
+            if (!CollectionUtils.isEmpty(newsTypesRemove)) {
                 //删除所有栏目
                 types.removeAll(newsTypesRemove);
             }
 
             //若jtNewsTypesRemove对象不为空，就删除栏目
-            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
+            if (!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
                 //删除所有栏目
                 types.removeAll(jtNewsTypesRemove);
             }
 
             //如果是北京，隐藏北京写字楼资讯栏目
-            if(Objects.equals(cityen , AttributeKeyHelper.BJ_CITY_EN)){
+            if (Objects.equals(cityen, AttributeKeyHelper.BJ_CITY_EN)) {
                 //筛选出北京写字楼栏目对象，栏目id为659
                 List<NewsType> xzlDelList = types.stream().filter(l -> Objects.equals(659, l.getId())).collect(Collectors.toList());
                 //如果北京写字楼资讯栏目集合不为空，就隐藏这些栏目
-                if(!CollectionUtils.isEmpty(xzlDelList)){
+                if (!CollectionUtils.isEmpty(xzlDelList)) {
                     //隐藏写字楼相关的所有栏目
                     types.removeAll(xzlDelList);
                 }
             }
 
             //如果是南京，隐藏南京楼市和政策法规栏目
-            if(Objects.equals(cityen , AttributeKeyHelper.NJ_CITY_EN)){
+            if (Objects.equals(cityen, AttributeKeyHelper.NJ_CITY_EN)) {
                 //筛选出南京楼市栏目对象，栏目id为65
                 List<NewsType> njlsDelList = types.stream().filter(l -> Objects.equals(65, l.getId())).collect(Collectors.toList());
                 //如果南京楼市栏目集合不为空，就隐藏这些栏目
-                if(!CollectionUtils.isEmpty(njlsDelList)){
+                if (!CollectionUtils.isEmpty(njlsDelList)) {
                     //隐藏南京楼市相关的所有栏目
                     types.removeAll(njlsDelList);
                 }
@@ -196,18 +195,18 @@ public class NewsController {
                 //筛选出政策法规栏目对象，栏目id为67
                 List<NewsType> zcfgDelList = types.stream().filter(l -> Objects.equals(67, l.getId())).collect(Collectors.toList());
                 //如果政策法规栏目集合不为空，就隐藏这些栏目
-                if(!CollectionUtils.isEmpty(zcfgDelList)){
+                if (!CollectionUtils.isEmpty(zcfgDelList)) {
                     //隐藏政策法规相关的所有栏目
                     types.removeAll(zcfgDelList);
                 }
             }
 
             //如果是东莞，隐藏东莞政策法规和东莞成交走势资讯栏目
-            if(Objects.equals(cityen , AttributeKeyHelper.DG_CITY_EN)){
+            if (Objects.equals(cityen, AttributeKeyHelper.DG_CITY_EN)) {
                 //筛选出东莞成交走势栏目对象，栏目id为89
                 List<NewsType> dgcjzsList = types.stream().filter(l -> Objects.equals(89, l.getId())).collect(Collectors.toList());
                 //如果东莞成交走势资讯栏目集合不为空，就隐藏这些栏目
-                if(!CollectionUtils.isEmpty(dgcjzsList)){
+                if (!CollectionUtils.isEmpty(dgcjzsList)) {
                     //隐藏东莞成交走势相关的栏目
                     types.removeAll(dgcjzsList);
                 }
@@ -215,14 +214,14 @@ public class NewsController {
                 //筛选出东莞政策法规栏目对象，栏目id为87
                 List<NewsType> dgzcfgList = types.stream().filter(l -> Objects.equals(87, l.getId())).collect(Collectors.toList());
                 //如果东莞政策法规资讯栏目集合不为空，就隐藏这些栏目
-                if(!CollectionUtils.isEmpty(dgzcfgList)){
+                if (!CollectionUtils.isEmpty(dgzcfgList)) {
                     //隐藏政策法规相关的栏目
                     types.removeAll(dgzcfgList);
                 }
             }
 
             //如果是惠州，隐藏Ben钟话市栏目
-            if(Objects.equals(cityen , AttributeKeyHelper.HZ_CITY_EN)){
+            if (Objects.equals(cityen, AttributeKeyHelper.HZ_CITY_EN)) {
                 //筛选出Ben钟话市栏目对象，栏目id为107
                 List<NewsType> benDelList = types.stream().filter(l -> Objects.equals(107, l.getId())).collect(Collectors.toList());
                 //隐藏Ben钟话市相关的栏目
@@ -230,16 +229,15 @@ public class NewsController {
             }
 
             //不是东三省城市
-            if(!dss.contains(cityen)) {
+            if (!dss.contains(cityen)) {
                 //默认取第一个tab_type
                 type = ObjectUtils.isEmpty(type) ? types.get(0).getId() : type;
             }
         }
 
 
-
         //判断dssType是否为空，不为空就进行判断，栏目是否不存在新闻列表
-        if(!CollectionUtils.isEmpty(dssType)) {
+        if (!CollectionUtils.isEmpty(dssType)) {
             //创建一个List对象，将没有文章的栏目进行存储(东三省)
             List<NewsType> dssNewsTypesRemove = new ArrayList<>();
             //创建一个List对象，东三省城市需要将中原资讯频道移除
@@ -247,7 +245,7 @@ public class NewsController {
             //循环东三省types,将没有文章的栏目进行删除
             for (NewsType newsType : dssType) {
                 //41为中原资讯，移除当前栏目
-                if(Objects.equals(newsType.getId() , 41)){
+                if (Objects.equals(newsType.getId(), 41)) {
                     jtNewsTypesRemove.add(newsType);
                 }
                 //获取集团资讯栏目下的文章
@@ -259,44 +257,44 @@ public class NewsController {
             }
 
             //若dssNewsTypesRemove对象不为空，就删除栏目
-            if(!CollectionUtils.isEmpty(dssNewsTypesRemove)) {
+            if (!CollectionUtils.isEmpty(dssNewsTypesRemove)) {
                 //删除所有栏目(东三省)
                 dssType.removeAll(dssNewsTypesRemove);
             }
 
             //若jtNewsTypesRemove对象不为空，就删除栏目
-            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
+            if (!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
                 //删除中原资讯栏目(东三省)
                 dssType.removeAll(jtNewsTypesRemove);
             }
             //是东三省城市
-            if(dss.contains(cityen)) {
+            if (dss.contains(cityen)) {
                 //东三省城市判断type是否存在，存在就正常赋值，不存在将第一个栏目id赋值给type
                 type = ObjectUtils.isEmpty(type) ? dssType.get(0).getId() : type;
             }
         }
 
         //移除中原资讯
-        if(Objects.equals(Cityen.HZ_CITY_EN , cityen) || Objects.equals(Cityen.DG_CITY_EN , cityen)) {
+        if (Objects.equals(Cityen.HZ_CITY_EN, cityen) || Objects.equals(Cityen.DG_CITY_EN, cityen)) {
             List<NewsType> jtNewsTypesRemove = new ArrayList<>();
             for (NewsType newsType : types) {
                 //41为中原资讯，移除当前栏目
-                if(Objects.equals(newsType.getId() , 41)){
+                if (Objects.equals(newsType.getId(), 41)) {
                     jtNewsTypesRemove.add(newsType);
                 }
             }
 
-            if(!CollectionUtils.isEmpty(jtNewsTypesRemove)){
+            if (!CollectionUtils.isEmpty(jtNewsTypesRemove)) {
                 types.removeAll(jtNewsTypesRemove);
             }
         }
 
         //添加品牌部栏位
-        if(dss.contains(cityen)){
+        if (dss.contains(cityen)) {
             List<NewsType> jtNewsTypesAdd = new ArrayList<>();
             for (NewsType newsType : types) {
                 //41为中原资讯，循环取出品牌部栏位
-                if(Objects.equals(newsType.getId() , 41)){
+                if (Objects.equals(newsType.getId(), 41)) {
                     List<NewsType> childList = newsType.getChildList();
                     for (NewsType child : childList) {
                         jtNewsTypesAdd.add(child);
@@ -306,7 +304,7 @@ public class NewsController {
             }
 
             //添加到东三省type
-            if(!CollectionUtils.isEmpty(jtNewsTypesAdd)){
+            if (!CollectionUtils.isEmpty(jtNewsTypesAdd)) {
                 dssType.addAll(jtNewsTypesAdd);
             }
         }
@@ -324,15 +322,15 @@ public class NewsController {
             }
         }
 
-            if (isJtyy) {//说明是集团资讯
-                //获取集团资讯栏目下的文章
-                JSONObject jtResult = newsService.newsList(AttributeKeyHelper.CENTANET, typeid, 1, 15, null, null);
-                if (!ObjectUtils.isEmpty(jtResult.get(NEWS_LIST))) {
-                    List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get(NEWS_LIST)), Map.class);
-                    news.addAll(jtNews);
-                }
-                model.addAttribute(AttributeKeyHelper.FLAG, 1);
+        if (isJtyy) {//说明是集团资讯
+            //获取集团资讯栏目下的文章
+            JSONObject jtResult = newsService.newsList(AttributeKeyHelper.CENTANET, typeid, 1, 15, null, null);
+            if (!ObjectUtils.isEmpty(jtResult.get(NEWS_LIST))) {
+                List<Map> jtNews = JSON.parseArray(JSON.toJSONString(jtResult.get(NEWS_LIST)), Map.class);
+                news.addAll(jtNews);
             }
+            model.addAttribute(AttributeKeyHelper.FLAG, 1);
+        }
 
         if (!isJtyy) {
             //栏目非集团栏目编号获取文章列表
@@ -345,18 +343,18 @@ public class NewsController {
         Integer childrenTypeId = type;
         //获取types的id
         List<Integer> collect = types.stream().map(NewsType::getId).collect(Collectors.toList());
-        if(!collect.contains(type)){
+        if (!collect.contains(type)) {
             //如果是二级栏目,取出对应的父栏目赋值给type
-            for(NewsType n : dss.contains(cityen) ? dssType : types){
+            for (NewsType n : dss.contains(cityen) ? dssType : types) {
                 List<Integer> children = n.getChildList().stream().map(NewsType::getId).collect(Collectors.toList());
-                if(children.contains(type)){
+                if (children.contains(type)) {
                     childrenTypeId = n.getId();
                     break;
                 }
             }
         }
         //获取二级栏目
-        List<NewsType> childrenTypeList = newsService.typeList(cityen, null , childrenTypeId);
+        List<NewsType> childrenTypeList = newsService.typeList(cityen, null, childrenTypeId);
         model.addAttribute(AttributeKeyHelper.TYPES, dss.contains(cityen) ? dssType : types);
         model.addAttribute(AttributeKeyHelper.TAB_TYPE, type);
         model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_LIST, childrenTypeList);
@@ -367,43 +365,43 @@ public class NewsController {
             if (type.equals(t.getId())) {
                 String colName = t.getColumnsName();
                 //不是武汉的城市，是否为热门专题栏目
-                if (!Objects.equals(cityen , Cityen.WH_CITY_EN) && HOT_SUB.equals(colName)) {
+                if (!Objects.equals(cityen, Cityen.WH_CITY_EN) && HOT_SUB.equals(colName)) {
                     return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
                 //武汉城市，是否为武汉热门专题栏目
-                if (Objects.equals(cityen , Cityen.WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
+                if (Objects.equals(cityen, Cityen.WH_CITY_EN) && WH_HOT_SUB.equals(colName)) {
                     return AttributeKeyHelper.HOT_LIST_PAGE;
                 }
             }
         }
 
-    /**
-     *
-     * @param: cityen
-     * @description: 如果是成都，加上成都的逢五加一的广告
-     * @author: 蔡瑞林
-     * @date: 2021-5-27开始
-     */
-        if(Objects.equals(cityen , Cityen.CD_CITY_EN)){
-            List<AdType> adTypeList=newsService.adList(cityen,AD_NAMES,APP_NAME);
+        /**
+         *
+         * @param: cityen
+         * @description: 如果是成都，加上成都的逢五加一的广告
+         * @author: 蔡瑞林
+         * @date: 2021-5-27开始
+         */
+        if (Objects.equals(cityen, Cityen.CD_CITY_EN)) {
+            List<AdType> adTypeList = newsService.adList(cityen, AD_NAMES, APP_NAME);
             //System.out.println(adTypeList.toString());
-            model.addAttribute(AD_LIST,adTypeList);
+            model.addAttribute(AD_LIST, adTypeList);
         }
         //是否是成都
-        if(CentaioUtil.getCentaIOCity(cityen)){
+        if (CentaioUtil.getCentaIOCity(cityen)) {
             //是否打开埋点
-            if(CentaioUtil.IS_CENTIO_ON){
+            if (CentaioUtil.IS_CENTIO_ON) {
                 //请求是否来自小程序
-                CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,"","",mobile);
-                if(request.getHeader("user-agent").contains("MicroMessenger")){
+                CentaioUtil.setWechatAppInfo(model, openId, unionId, userId, cityen, "", "", mobile);
+                if (request.getHeader("user-agent").contains("MicroMessenger")) {
                     return CentaioUtil.INDEX_PAGE_CENTAIO;
                 }
             }
         }
         //大湾区埋点 神策数据
-        List<String> dwCityList = Arrays.asList(dwCitys.split(","));
-        if(dwCityList.contains(cityen)&&DwMaiDianUtiil.isMaiDianON){
-            DwMaiDianUtiil.setModel(model,entry,cityen,request);
+        List<String> dwCityList = DwMaiDianUtiil.getDwCnName();
+        if (dwCityList.contains(cityen) && DwMaiDianUtiil.isMaiDianON) {
+            DwMaiDianUtiil.setModel(model, entry, cityen, request,downloadChannel);
             return DwMaiDianUtiil.INDEX_DW_MAIDIAN;
         }
         /**
@@ -447,13 +445,14 @@ public class NewsController {
             , @PathVariable(name = "cityen") String cityen
             , @PathVariable(name = "id") String id
             , @RequestParam(value = "openid", required = false) String openId
-            ,@RequestParam(value = "unionid", required = false) String unionId
-            ,@RequestParam(value = "userid", required = false) String userId
-            ,@RequestParam(value = "parentid", required = false) String UnionParentId
-            ,@RequestParam(value = "sharetime", required = false) String ShareTime
-            ,@RequestParam(value = "mobile", required = false) String mobile
-            ,@RequestParam(value = "entry", required = false) String entry
-            ,HttpServletRequest request) {
+            , @RequestParam(value = "unionid", required = false) String unionId
+            , @RequestParam(value = "userid", required = false) String userId
+            , @RequestParam(value = "parentid", required = false) String UnionParentId
+            , @RequestParam(value = "sharetime", required = false) String ShareTime
+            , @RequestParam(value = "mobile", required = false) String mobile
+            , @RequestParam(value = "entry", required = false) String entry
+            , @RequestParam(value = "downloadChannel", required = false) String downloadChannel
+            , HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
         //获取引用
@@ -461,21 +460,21 @@ public class NewsController {
         //详情
         JSONObject result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + id + "&cityen=bj&platform=pc", JSONObject.class);
         //判断是否存在房源
-        if(result.get(RESULT) != null){
+        if (result.get(RESULT) != null) {
             JSONObject detailByProp = result.getJSONObject(RESULT);
 
             //获取是否上架的标识
-            Integer upper = (Integer)detailByProp.get(AttributeKeyHelper.UPPER);
+            Integer upper = (Integer) detailByProp.get(AttributeKeyHelper.UPPER);
             //如果upper为0代表是下架,返回到资讯下架提示页面
-            if(Objects.equals(0 , upper)){
+            if (Objects.equals(0, upper)) {
                 return AttributeKeyHelper.OFF_SHELF_NEWS;
             }
 
-            if(detailByProp != null) {
+            if (detailByProp != null) {
                 //将房源对象进行转换
                 String newsRelatedData = JSON.toJSONString(detailByProp.get(NEWS_RELATED));
                 List<NewsRelated> types = JSON.parseArray(newsRelatedData, NewsRelated.class);
-                if(!CollectionUtils.isEmpty(types)){
+                if (!CollectionUtils.isEmpty(types)) {
                     //将新房和二手房进行过滤
                     List<NewsRelated> xinfangTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.XINFANG_KEY)).collect(Collectors.toList());
                     List<NewsRelated> esfTypes = types.stream().filter(l -> l.getOtype().equals(AttributeKeyHelper.ERSHOUFANG_KEY)).collect(Collectors.toList());
@@ -516,16 +515,16 @@ public class NewsController {
                     }
 
                     //判断新房房源是否为空，如果不为空就返回到页面
-                    if(!CollectionUtils.isEmpty(xfInfoResult)){
-                        model.addAttribute(AttributeKeyHelper.XF_INFO_RESULT , xfInfoResult);
+                    if (!CollectionUtils.isEmpty(xfInfoResult)) {
+                        model.addAttribute(AttributeKeyHelper.XF_INFO_RESULT, xfInfoResult);
                     }
                     //判二手房房源是否为空，如果不为空就返回到页面
-                    if(!CollectionUtils.isEmpty(esfInfoResult)){
-                        model.addAttribute(AttributeKeyHelper.ESF_INFO_RESULT , esfInfoResult);
+                    if (!CollectionUtils.isEmpty(esfInfoResult)) {
+                        model.addAttribute(AttributeKeyHelper.ESF_INFO_RESULT, esfInfoResult);
                     }
                     //判断小区房源是否为空，如果不为空就返回到页面
-                    if(!CollectionUtils.isEmpty(xqInfoResult)){
-                        model.addAttribute(AttributeKeyHelper.XQ_INFO_RESULT , xqInfoResult);
+                    if (!CollectionUtils.isEmpty(xqInfoResult)) {
+                        model.addAttribute(AttributeKeyHelper.XQ_INFO_RESULT, xqInfoResult);
                     }
                 }
 
@@ -538,16 +537,16 @@ public class NewsController {
         List<Integer> typeid = Arrays.asList();
         JSONObject newsList = newsService.newsList(cityen, 1, 10, 0);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
-        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG) , AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
-            return String.format(AttributeKeyHelper.REDIRECT_LINK , detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
+        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG), AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
+            return String.format(AttributeKeyHelper.REDIRECT_LINK, detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
         }
         //获取所有参数
         String queryString = request.getQueryString();
         //如果queryString不为空，就将经纪人的信息参数存储起来
-        if(org.apache.commons.lang3.StringUtils.isNoneBlank(queryString)){
+        if (org.apache.commons.lang3.StringUtils.isNoneBlank(queryString)) {
             //如果不为空，就转换成小写
             queryString = queryString.toLowerCase();
-            model.addAttribute(StringResource.JINGJIREN_SHARE_KEY , String.format(StringResource.JINGJIREN_SHARE_VALUE , queryString));
+            model.addAttribute(StringResource.JINGJIREN_SHARE_KEY, String.format(StringResource.JINGJIREN_SHARE_VALUE, queryString));
         }
 
         model.addAttribute(AttributeKeyHelper.NEWS, news);
@@ -562,10 +561,10 @@ public class NewsController {
         model.addAttribute(AttributeKeyHelper.REFERER, referer);
 
         List<String> dwCityList = DwMaiDianUtiil.getDwCnName();
-        if(dwCityList.contains(cityen)){
-            if(DwMaiDianUtiil.isMaiDianON){
-                String typename=(String)detail.get("Typename");
-                DwMaiDianUtiil.setModel(model,entry,cityen,request,typename);
+        if (dwCityList.contains(cityen)) {
+            if (DwMaiDianUtiil.isMaiDianON) {
+                String typename = (String) detail.get("Typename");
+                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, downloadChannel);
                 return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
             }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;
@@ -582,13 +581,13 @@ public class NewsController {
          */
         //把微信来的各种ID放在model里
         //是否是成都
-        if(CentaioUtil.getCentaIOCity(cityen)){
+        if (CentaioUtil.getCentaIOCity(cityen)) {
             //是否打开埋点
-            if(CentaioUtil.IS_CENTIO_ON){
+            if (CentaioUtil.IS_CENTIO_ON) {
                 //请求是否来自小程序c
 //                if(request.getHeader("user-agent").contains("MicroMessenger")){
-                    CentaioUtil.setWechatAppInfo(model,openId,unionId,userId,cityen,UnionParentId,ShareTime,mobile);
-                    return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
+                CentaioUtil.setWechatAppInfo(model, openId, unionId, userId, cityen, UnionParentId, ShareTime, mobile);
+                return CentaioUtil.NEWS_DETAIL_PAGE_CENTAIO;
 //                }
             }
         }
@@ -600,12 +599,11 @@ public class NewsController {
      */
     @ResponseBody
     @GetMapping("/m/{cityen}/detail/loadNewsViewHistory")
-    public void insertLog(HttpServletRequest request , @PathVariable(name = "cityen") String cityen
-            ,@RequestParam(name = "newsId") Integer newsId){
+    public void insertLog(HttpServletRequest request, @PathVariable(name = "cityen") String cityen
+            , @RequestParam(name = "newsId") Integer newsId) {
         //记录log
-        newsService.insertLog(request , cityen , newsId);
+        newsService.insertLog(request, cityen, newsId);
     }
-
 
 
     /**
@@ -613,7 +611,7 @@ public class NewsController {
      * @param cityen 城市编号
      * @param type   栏目类型编号
      * @param page   页码
-     * @param flag 集团资讯专用标识 1 取第一个，2取二个 ， 3取第三个
+     * @param flag   集团资讯专用标识 1 取第一个，2取二个 ， 3取第三个
      * @return
      */
     @ResponseBody
@@ -624,7 +622,7 @@ public class NewsController {
             , @PathVariable(name = "type", required = false) Integer type
             , @PathVariable(name = "page", required = false) Integer page
             , @RequestParam(value = "key", required = false) String key
-            , @RequestParam(value = "pagesize", defaultValue = "15", required = false) Integer pagesize , @RequestParam(value = "flag", defaultValue = "1") Integer flag) {
+            , @RequestParam(value = "pagesize", defaultValue = "15", required = false) Integer pagesize, @RequestParam(value = "flag", defaultValue = "1") Integer flag) {
         JSONObject obj = new JSONObject();
         //文章列表
         List<Integer> typeid = new ArrayList<>(Arrays.asList(type));
@@ -639,14 +637,14 @@ public class NewsController {
 
         //当前栏目ID是否集团资讯下的栏目
         Boolean isJtyy = false;
-        if(type.equals(41) || type.equals(42)){//说明是集团资讯
+        if (type.equals(41) || type.equals(42)) {//说明是集团资讯
             isJtyy = true;
         }
 
         if (isJtyy) {//说明是集团资讯
             //判断集团资讯是否有效
             if (!CollectionUtils.isEmpty(childTypes)) {
-                switch (flag){
+                switch (flag) {
                     case 1:
                         //获取第一个id
                         typeid = Arrays.asList(childTypes.get(0).getId());
@@ -685,28 +683,28 @@ public class NewsController {
             }
 
             //判断pageTotal是否和当前页相等
-            if(page >= pageTotal){
+            if (page >= pageTotal) {
                 //判断typeid是否等于childTypes
-                if(childTypes.get(0).getId().equals(typeid.get(0))){
+                if (childTypes.get(0).getId().equals(typeid.get(0))) {
                     JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(0).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
                     obj.put(AttributeKeyHelper.FLAG, 1);
-                }else if(childTypes.get(1).getId().equals(typeid.get(0))){
+                } else if (childTypes.get(1).getId().equals(typeid.get(0))) {
                     JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(1).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
                     obj.put(AttributeKeyHelper.FLAG, 2);
-                }else if(childTypes.get(2).getId().equals(typeid.get(0))){
+                } else if (childTypes.get(2).getId().equals(typeid.get(0))) {
                     JSONObject tempResult = newsService.newsList(AttributeKeyHelper.CENTANET, Arrays.asList(childTypes.get(2).getId()), page, pagesize, null, null);
                     pageTotal = jtResult.getInteger(PAGE_TOTAL);
                     obj.put(AttributeKeyHelper.FLAG, 3);
                 }
-            }else {
+            } else {
                 obj.put(AttributeKeyHelper.FLAG, 1);
             }
 
         }
 
-        if(!isJtyy) {
+        if (!isJtyy) {
             JSONObject result = newsService.newsList(cityen, typeid, page, pagesize, null, key);
             news = JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class);
             pageTotal = result.getInteger(PAGE_TOTAL);
@@ -730,7 +728,7 @@ public class NewsController {
     public String baike(Model model, @PathVariable("cityen") String cityen,
                         @PathVariable(value = "page", required = false) Integer page,
                         @RequestParam(value = "pagesize", defaultValue = "10") Integer pagesize,
-                        @RequestParam(value = "channel" , required = false) Integer channel) {
+                        @RequestParam(value = "channel", required = false) Integer channel) {
         page = ObjectUtils.isEmpty(page) ? 1 : page;
         //栏目类型
         List<NewsType> types = newsService.typeList(cityen, BAIKE);
@@ -748,20 +746,20 @@ public class NewsController {
         //获取文章列表的结果集
         JSONObject result;
 
-        if(channel != null) {
-                result = newsService.newsListByBaike(cityen, channel,BAIKE, page, pagesize, null, null);
-                if (result.get(NEWS_LIST) != null) {
-                    news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
-                }
-        }else {
-            result = newsService.newsListByBaike(cityen, null , BAIKE, page, pagesize, null, null);
+        if (channel != null) {
+            result = newsService.newsListByBaike(cityen, channel, BAIKE, page, pagesize, null, null);
+            if (result.get(NEWS_LIST) != null) {
+                news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
+            }
+        } else {
+            result = newsService.newsListByBaike(cityen, null, BAIKE, page, pagesize, null, null);
             if (result.get(NEWS_LIST) != null) {
                 news.addAll(JSON.parseArray(JSON.toJSONString(result.get(NEWS_LIST)), Map.class));
             }
         }
         setCommon(model, cityen);
-        if(ObjectUtils.isEmpty(channel)){
-           channel = types.get(0).getChildList().get(0).getChildList().get(0).getId();
+        if (ObjectUtils.isEmpty(channel)) {
+            channel = types.get(0).getChildList().get(0).getChildList().get(0).getId();
         }
         model.addAttribute(AttributeKeyHelper.TYPES, baikeTypes);
         model.addAttribute(AttributeKeyHelper.TAB_TYPE, channel);
@@ -780,22 +778,21 @@ public class NewsController {
     @SuppressWarnings("all")
     @GetMapping(value = {"/m/{cityen}/xzl/list"})
     public String xzlIndex(Model model, @PathVariable(name = "cityen") String cityen,
-                        @PathVariable(value = "page", required = false) Integer page,
-                        @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize) {
+                           @PathVariable(value = "page", required = false) Integer page,
+                           @RequestParam(value = "pagesize", defaultValue = "15") Integer pagesize) {
         setCommon(model, cityen);
 
         //装载数据
         List<Map> news = new ArrayList<>();
 
 
-
         List<Integer> typeid = null;
         //如果是北京，那么typeid设置为659
-        if(Objects.equals(cityen , AttributeKeyHelper.BJ_CITY_EN)){
+        if (Objects.equals(cityen, AttributeKeyHelper.BJ_CITY_EN)) {
             typeid = Arrays.asList(659);
         }
         //若typeid不为空，那么查询对应城市写字楼的数据
-        if(!CollectionUtils.isEmpty(typeid)) {
+        if (!CollectionUtils.isEmpty(typeid)) {
             //获取写字楼栏目下的文章
             JSONObject xzlResult = newsService.newsList(cityen, typeid, 1, 15, null, null);
             if (!ObjectUtils.isEmpty(xzlResult.get(NEWS_LIST))) {
@@ -805,9 +802,8 @@ public class NewsController {
         }
 
 
-
         //若news不为空，那么将数据传递到前台页面
-        if(!CollectionUtils.isEmpty(news)) {
+        if (!CollectionUtils.isEmpty(news)) {
             model.addAttribute(AttributeKeyHelper.NEWS, news);
         }
         return AttributeKeyHelper.BUSINESS_HEADLINE_LIST_PAGE;
@@ -821,8 +817,8 @@ public class NewsController {
     @SuppressWarnings("all")
     @GetMapping(value = {"/m/{cityen}/xzl/detail/{id}.html"})
     public String xzlDetail(Model model, @PathVariable(name = "cityen") String cityen,
-                        @PathVariable(value = "type", required = false) Integer type,
-                        @PathVariable(value = "id" , required = true) Integer id) {
+                            @PathVariable(value = "type", required = false) Integer type,
+                            @PathVariable(value = "id", required = true) Integer id) {
         setCommon(model, cityen);
 
         //获取详情
@@ -835,8 +831,8 @@ public class NewsController {
         JSONObject newsList = newsService.newsList(cityen, 1, 5, 0);
         List<Map> news = JSON.parseArray(JSON.toJSONString(newsList.get(NEWS_LIST)), Map.class);
 
-        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG) , AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
-            return String.format(AttributeKeyHelper.REDIRECT_LINK , detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
+        if (Objects.equals(detail.get(AttributeKeyHelper.FLAG), AttributeKeyHelper.URL)) {//若flag的值为url,将文章跳转到此url指向的地址
+            return String.format(AttributeKeyHelper.REDIRECT_LINK, detail.get(AttributeKeyHelper.DETAIL_BY_URL_ATTR));
         }
 
         model.addAttribute(AttributeKeyHelper.NEWS, news);

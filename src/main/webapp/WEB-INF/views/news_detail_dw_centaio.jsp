@@ -112,6 +112,8 @@
     <input type="hidden" id="entry" value="${entry}" />
     <input type="hidden" id="cityCn" value="${cityCn}" />
     <input type="hidden" id="platform" value="${platform}">
+    <input type="hidden" id="downloadChannel" value="${downloadChannel}">
+
     <script>
         $(document).ready(function () {
             var sc_information_title=$('#dw-new-title').text();
@@ -142,6 +144,15 @@
             var crrentTab=$('#typeName').val();
             if(crrentTab !=null && crrentTab !=''){
                 sendObj.sc_information_type=crrentTab;
+            }
+            // var downloadChannel=$('#downloadChannel').val();
+            var downloadChannel=localStorage.getItem('downloadChannel');
+            console.log(downloadChannel);
+            if(downloadChannel ==null || downloadChannel ==''){
+                downloadChannel=$('#downloadChannel').val();
+            }
+            if(downloadChannel !=null && downloadChannel !=''){
+                sendObj.sc_downloadchannel=downloadChannel;
             }
             //公共属性
             var pulicObj=new Object();
