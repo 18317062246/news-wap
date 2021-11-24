@@ -362,7 +362,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void insertLog(HttpServletRequest request , String cityShort, Integer newsId) {
+    public void insertLog(HttpServletRequest request , String cityShort, Integer newsId, String title , String downloadChannel) {
         //获取请求头
         String ua = request.getHeader(StringResource.USER_AGENT);
         String cityCode = "";
@@ -411,7 +411,7 @@ public class NewsServiceImpl implements NewsService {
             }
         }
         //封装对象
-        InsertLogParam param = NewsParser.build(appName , cityCode , ClientIP , jPushId , String.valueOf(newsId) , postId , sourceChild , trackId , userId);
+        InsertLogParam param = NewsParser.build(appName , cityCode , ClientIP , jPushId , String.valueOf(newsId) , postId , sourceChild , trackId , userId, title , downloadChannel);
         try{
             String abc=httpUtil.post(String.format(StringResource.INSERT_VIEW_HISTORY_REQUEST_BY_RABBIT , apiConfig.getUrl()) , param);
         } catch (IOException e) {

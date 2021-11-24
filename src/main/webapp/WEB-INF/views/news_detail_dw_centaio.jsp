@@ -534,7 +534,7 @@
     if(!flag){
         let locationAddress = window.location;
         $.get(
-            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+locationAddress+"&platform=wap&Referer=${referer}",
+            "https://news.centanet.com/api/NewsAddToVisit?newsid=${newsId}&cityen=${cityen}&url="+locationAddress+"&platform=wap&Referer=${referer}&downloadChannel=${downloadChannel}",
             function (data) {
             });
     }
@@ -634,7 +634,7 @@
     //页面加载完之后进行加载
     function loadNewsViewHistory() {
         $.get(
-            "/m/${cityen}/detail/loadNewsViewHistory?newsId=${newsId}",
+            "/m/${cityen}/detail/loadNewsViewHistory?newsId=${newsId}&downloadChannel=${downloadChannel}",
             function (resp) {
             }
         );

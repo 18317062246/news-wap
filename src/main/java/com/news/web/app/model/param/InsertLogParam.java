@@ -42,6 +42,17 @@ public class InsertLogParam {
 
     private String userId;
 
+    @ApiModelProperty("资讯名称")
+    private String valueName;
+    @ApiModelProperty("推广大渠道")
+    private String  calledSem;
+    @ApiModelProperty("推广小渠道 ")
+    private String calledHpml;
+    @ApiModelProperty("运营大渠道")
+    private String firstQudao;
+    @ApiModelProperty("运营小渠道")
+    private String secondQudao;
+
     public void setAppName(String appName) {
         if(Objects.isNull(appName))
             this.appName = "";

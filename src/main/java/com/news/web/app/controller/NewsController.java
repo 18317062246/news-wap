@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.news.web.app.common.Cityen;
 import com.news.web.app.model.AdType;
+import com.news.web.app.model.ApiResult;
 import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
+import com.news.web.app.model.response.NewsDetailResponse;
 import com.news.web.app.service.NewsService;
 import com.news.web.util.*;
 import lombok.RequiredArgsConstructor;
@@ -600,9 +602,12 @@ public class NewsController {
     @ResponseBody
     @GetMapping("/m/{cityen}/detail/loadNewsViewHistory")
     public void insertLog(HttpServletRequest request, @PathVariable(name = "cityen") String cityen
-            , @RequestParam(name = "newsId") Integer newsId) {
+            , @RequestParam(name = "newsId") Integer newsId,@RequestParam(name = "downloadChannel" , required = false) String downloadChannel) {
+        //详情信息
+        ApiResult<NewsDetailResponse> result = restTemplate.getForObject(apiurl + "GetNewsContent?newsid=" + newsId + "&cityen="+cityen+"&platform=pc", ApiResult.class);
+        NewsDetailResponse response = JSON.parseObject(JSON.toJSONString(result.getResult()) , NewsDetailResponse.class);
         //记录log
-        newsService.insertLog(request, cityen, newsId);
+        newsService.insertLog(request, cityen, newsId , response.getTitle() , downloadChannel);
     }
 
 

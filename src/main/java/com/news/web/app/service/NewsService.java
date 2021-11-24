@@ -88,7 +88,7 @@ public interface NewsService extends Serializable {
     /**
      * 记录日志
      */
-    void insertLog(HttpServletRequest request , String cityShort , Integer newsId);
+    void insertLog(HttpServletRequest request , String cityShort , Integer newsId, String title , String downloadChannel);
 
 
     List<AdType> adList(String cityen, String ad_name, String app_name);
