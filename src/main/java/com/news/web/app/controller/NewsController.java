@@ -9,6 +9,7 @@ import com.news.web.app.model.NewsRelated;
 import com.news.web.app.model.NewsType;
 import com.news.web.app.model.common.CommonFootInfo;
 import com.news.web.app.model.common.CommonHouseResult;
+import com.news.web.app.model.request.NewsDetailRequest;
 import com.news.web.app.model.response.NewsDetailResponse;
 import com.news.web.app.service.NewsService;
 import com.news.web.util.*;
@@ -453,7 +454,6 @@ public class NewsController {
             , @RequestParam(value = "sharetime", required = false) String ShareTime
             , @RequestParam(value = "mobile", required = false) String mobile
             , @RequestParam(value = "entry", required = false) String entry
-            , @RequestParam(value = "downloadChannel", required = false) String downloadChannel
             , HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
@@ -566,7 +566,10 @@ public class NewsController {
         if (dwCityList.contains(cityen)) {
             if (DwMaiDianUtiil.isMaiDianON) {
                 String typename = (String) detail.get("Typename");
-                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, downloadChannel);
+                //获取参数
+                String json = CommonUtil.getQuerysParam(request);
+                NewsDetailRequest detailRequest = JSON.parseObject(json , NewsDetailRequest.class);
+                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, detailRequest.getDownloadChannel());
                 return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
             }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;

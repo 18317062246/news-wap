@@ -81,6 +81,14 @@
             <version>3.141.59</version>
         </dependency>
 
+        <!--hutool start-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.5.7</version>
+        </dependency>
+        <!--hutool end-->
+
         <!-- swagger start -->
         <dependency>
             <groupId>io.springfox</groupId>
