@@ -3,7 +3,7 @@ server:
   port: 9092
 #api地址
 api:
-  domain: https://testnews.centanet.com/api/
+  domain: https://news.centanet.com/api/
   xinfang:
     other:
       city: http://api-testweb.centaline.com.cn/lion/json/reply/NewPropExtInfoRequest

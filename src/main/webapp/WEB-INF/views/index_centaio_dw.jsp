@@ -87,7 +87,7 @@
             <input type="hidden" id="platform" value="${platform}"/>
             <input type="hidden" id="downloadChannel" value="${downloadChannel}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
-                    <li class="tab" ref="${type.id}"><a id="a${type.id}" href="/m/${cityen}/list/c${type.id == 41 ? type.id : fn:length(type.childList) > 0 ? type.childList[0].id : type.id}/">${type.columnsName}</a></li>
+                    <li class="tab" ref="${type.id}"><a id="a${type.id}" href="/m/${cityen}/list/c${type.id == 41 ? type.id : fn:length(type.childList) > 0 ? type.childList[0].id : type.id}?downloadChannel=${downloadChannel}">${type.columnsName}</a></li>
             </c:forEach>
         </ul>
         <script>
@@ -132,7 +132,7 @@
     <ul class="new-list">
         <c:forEach items="${news}" var="item" varStatus="i">
             <li class="item type${item.TypeID}">
-                <a href="/m/${cityen}/detail/${item.ID}.html" class="item-a">
+                <a href="/m/${cityen}/detail/${item.ID}.html?downloadChannel=${downloadChannel}" class="item-a">
                     <div class="new-main">
                         <h4 class="title">${item.Title}</h4>
                         <div class="desc">
