@@ -113,7 +113,7 @@
     <input type="hidden" id="cityCn" value="${cityCn}" />
     <input type="hidden" id="platform" value="${platform}">
     <input type="hidden" id="downloadChannel" value="${downloadChannel}">
-
+    <input type="hidden" id="mobile" value="${mobile}">
     <script>
         $(document).ready(function () {
             var sc_information_title=$('#dw-new-title').text();
@@ -167,29 +167,90 @@
                 sendObj.sc_city=cityCn;
             }
             //初始化埋点对象
-            if(crrentTab!=null && crrentTab!='' ){
-            var sensors = window['sensorsDataAnalytic201505'];
-            sensors.init({
-                server_url: 'https://data.zhongyuanzhaofang.com/sa',
-                heatmap: {
-                    scroll_notice_map: 'not_collect'
-                },
-                is_track_single_page: true,
-                use_client_time: true,
-                send_type: 'beacon',
-                show_log:true
-            });
-            // sensors.use('SiteLinker',
-            //     {linker: [
-            //             {part_url: sendUrl, after_hash: false}
-            //         ]}
-            // );
-            // sensors.registerPage(sendObj);
-            sensors.track('sc_information_read',sendObj);
-            sensors.registerPage(pulicObj);
-            sensors.quick('autoTrack');
-            }
-        });
+            if(crrentTab!=null && crrentTab!='' ) {
+                (function () {
+                    let userAgent = window.navigator.userAgent.toLowerCase()
+                    let inApp = userAgent.indexOf('salehouse') > 0
+
+                    // 获取用户信息回调
+                    let resolves = {}
+                    window.observeUserInfo = function (info) {
+                        if (typeof info === 'string') {
+                            info = JSON.parse(info)
+                        }
+                        for (let key in resolves) {
+                            resolves[key](info)
+                            delete resolves[key]
+                        }
+                    }
+
+                    // 获取用户信息
+                    getUserInfo().catch(function () {
+                    })
+                        .then(function (userInfo) {
+
+                            // 神策代码开始
+                            let sensors = window['sensorsDataAnalytic201505'];
+                            sensors.init({
+                                server_url: 'https://data.zhongyuanzhaofang.com/sa',
+                                // server_url:'https://data.zhongyuanzhaofang.com/sa?project=production',
+                                heatmap: {
+                                    scroll_notice_map: 'not_collect'
+                                },
+                                is_track_single_page: true,
+                                use_client_time: true,
+                                send_type: 'beacon',
+                                show_log: true
+                            });
+                            if (platform != null && platform != '') {
+                                if (platform == 'minipro') {
+                                    var mobile = localStorage.getItem('mobile');
+                                    if (mobile != null && mobile != '') {
+                                        alert(111);
+                                        sensors.identify(mobile, true)
+                                    } else {
+                                        mobile = $('#mobile').val();
+                                        if (mobile != null && mobile != '') {
+
+                                            sensors.identify(mobile, true)
+                                        }
+                                    }
+                                }
+                            }
+                            // 以下是绑定手机号代码不要动，其他神策代码根据情况设置，确保在 autoTrack 之前即可
+                            if (userInfo && userInfo.data && userInfo.data.Phone) {
+                                sensors.login(userInfo.data.Phone)
+                            }
+                            sensors.track('sc_information_read', sendObj);
+                            sensors.registerPage(pulicObj);
+                            sensors.quick('autoTrack');
+                        })
+
+                    function getUserInfo() {
+                        return new Promise(function (resolve, reject) {
+                            if (!inApp) {
+                                resolve()
+                                return
+                            }
+                            resolves[Math.random()] = resolve
+                            if (!includes('windows')) {
+                                if (includes('iphone')) {
+                                    window.webkit.messageHandlers.getUserInfoNoLogin.postMessage(null)
+                                } else if (includes('android')) {
+                                    window.salehouse.getUserInfoNoLogin()
+                                }
+                            }
+                            setTimeout(function () {
+                                reject(new Error('Timeout'))
+                            }, 1000)
+                        })
+                    }
+
+                    function includes(needle) {
+                        return userAgent.indexOf(needle) !== -1
+                    }
+                })();
+            }})
     </script>
     <c:forEach items="${xfInfoResult}" varStatus="status" var="n">
         <div class="roomlists" >

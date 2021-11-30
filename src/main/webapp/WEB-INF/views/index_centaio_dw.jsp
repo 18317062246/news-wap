@@ -86,6 +86,7 @@
             <input type="hidden" id="cityCn" value="${cityCn}"/>
             <input type="hidden" id="platform" value="${platform}"/>
             <input type="hidden" id="downloadChannel" value="${downloadChannel}"/>
+            <input type="hidden" id="mobile" value="${mobile}"/>
             <c:forEach items="${types}" var="type" varStatus="status">
                     <li class="tab" ref="${type.id}"><a id="a${type.id}" href="/m/${cityen}/list/c${type.id == 41 ? type.id : fn:length(type.childList) > 0 ? type.childList[0].id : type.id}?downloadChannel=${downloadChannel}">${type.columnsName}</a></li>
             </c:forEach>
@@ -101,13 +102,31 @@
                 var cityCn=$('#cityCn').val();
                 var platform=$('#platform').val();
                 var downloadChannel=$('#downloadChannel').val();
-                localStorage.setItem("currentTab",currentTab);
-                localStorage.setItem("cityCode",cityCode);
-                localStorage.setItem("entry",entry);
-                localStorage.setItem("sendUrl",sendUrl);
-                localStorage.setItem("cityCn",cityCn);
-                localStorage.setItem("platform",platform);
-                localStorage.setItem("downloadChannel",downloadChannel);
+                var mobile=$('#mobile').val();
+                if(currentTab !=null && currentTab !=''){
+                    localStorage.setItem("currentTab",currentTab);
+                }
+                if(cityCode !=null && cityCode !=''){
+                    localStorage.setItem("cityCode",cityCode);
+                }
+                if(entry !=null && entry !=''){
+                    localStorage.setItem("entry",entry);
+                }
+                if(sendUrl !=null && sendUrl !=''){
+                    localStorage.setItem("sendUrl",sendUrl);
+                }
+                if(cityCn !=null && cityCn !=''){
+                    localStorage.setItem("cityCn",cityCn);
+                }
+                if(platform !=null && platform !=''){
+                    localStorage.setItem("platform",platform);
+                }
+                if(downloadChannel !=null && downloadChannel !=''){
+                    localStorage.setItem("downloadChannel",downloadChannel);
+                }
+                if(mobile !=null && mobile !=''){
+                    localStorage.setItem("mobile",mobile);
+                }
             })
         </script>
     </div>

@@ -404,7 +404,7 @@ public class NewsController {
         //大湾区埋点 神策数据
         List<String> dwCityList = DwMaiDianUtiil.getDwCnName();
         if (dwCityList.contains(cityen) && DwMaiDianUtiil.isMaiDianON) {
-            DwMaiDianUtiil.setModel(model, entry, cityen, request,downloadChannel);
+            DwMaiDianUtiil.setModel(model,entry,cityen,request,"",downloadChannel,mobile);
             return DwMaiDianUtiil.INDEX_DW_MAIDIAN;
         }
         /**
@@ -569,7 +569,7 @@ public class NewsController {
                 //获取参数
                 String json = CommonUtil.getQuerysParam(request);
                 NewsDetailRequest detailRequest = JSON.parseObject(json , NewsDetailRequest.class);
-                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, detailRequest.getDownloadChannel());
+                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, detailRequest.getDownloadChannel(),mobile);
                 return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
             }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;

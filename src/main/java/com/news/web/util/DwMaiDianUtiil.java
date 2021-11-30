@@ -13,7 +13,7 @@ public class DwMaiDianUtiil {
     public static final String NEWS_DETAIL_PAGE_DW_MAIDIAN = "news_detail_dw_centaio";
     public static final String INDEX_DW_MAIDIAN = "index_centaio_dw";
 
-    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request, String typeName, String downloadChannel) {
+    public static void setModel(Model model, String entry, String cityen, HttpServletRequest request, String typeName, String downloadChannel,String mobile) {
         if (!isNullOrEmpty(entry)) {
             model.addAttribute("entry", entry);
         } else {
@@ -33,6 +33,7 @@ public class DwMaiDianUtiil {
                 .toLowerCase()
                 .contains("micromessenger")) {
             model.addAttribute("platform", "minipro");
+            System.out.println(request.getHeader("user-agent"));
         } else if (request.getHeader("user-agent")
                 .toLowerCase()
                 .contains("android")) {
@@ -44,7 +45,9 @@ public class DwMaiDianUtiil {
         } else {
             model.addAttribute("platform", "wap");
         }
-
+        if(!isNullOrEmpty(mobile)){
+            model.addAttribute("mobile", mobile);
+        }
 
     }
 
