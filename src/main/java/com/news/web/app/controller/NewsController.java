@@ -568,8 +568,11 @@ public class NewsController {
                 String typename = (String) detail.get("Typename");
                 //获取参数
                 String json = CommonUtil.getQuerysParam(request);
-                NewsDetailRequest detailRequest = JSON.parseObject(json , NewsDetailRequest.class);
-                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, detailRequest.getDownloadChannel(),mobile);
+                NewsDetailRequest detailRequest = null;
+                if(StringUtils.isEmpty(json)){
+                    detailRequest = JSON.parseObject(json , NewsDetailRequest.class);;
+                }
+                DwMaiDianUtiil.setModel(model, entry, cityen, request, typename, Objects.nonNull(detailRequest) ? detailRequest.getDownloadChannel() : StringResource.EMPTY,mobile);
                 return DwMaiDianUtiil.NEWS_DETAIL_PAGE_DW_MAIDIAN;
             }
             return AttributeKeyHelper.NEWS_DETAIL_PAGE_DW;

@@ -12,6 +12,7 @@ import java.util.Map;
 @SuppressWarnings("all")
 public class StringResource implements Serializable {
 
+    public static final String EMPTY = "";
     /**
      * 经纪人信息需要存储的参数
      */
