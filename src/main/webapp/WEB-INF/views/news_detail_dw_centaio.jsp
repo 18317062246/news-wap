@@ -192,8 +192,8 @@
                             // 神策代码开始
                             let sensors = window['sensorsDataAnalytic201505'];
                             sensors.init({
-                                server_url: 'https://data.zhongyuanzhaofang.com/sa',
-                                // server_url:'https://data.zhongyuanzhaofang.com/sa?project=production',
+                                // server_url: 'https://data.zhongyuanzhaofang.com/sa',
+                                server_url:'https://data.zhongyuanzhaofang.com/sa?project=production',
                                 heatmap: {
                                     scroll_notice_map: 'not_collect'
                                 },
