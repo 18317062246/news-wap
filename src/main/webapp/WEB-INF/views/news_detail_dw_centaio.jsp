@@ -206,7 +206,6 @@
                                 if (platform == 'minipro') {
                                     var mobile = localStorage.getItem('mobile');
                                     if (mobile != null && mobile != '') {
-                                        alert(111);
                                         sensors.identify(mobile, true)
                                     } else {
                                         mobile = $('#mobile').val();
