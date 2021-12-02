@@ -166,6 +166,8 @@
                 pulicObj.sc_city=cityCn;
                 sendObj.sc_city=cityCn;
             }
+            pulicObj.sc_business_type='Information';
+            sendObj.sc_business_type='Information';
             //初始化埋点对象
             if(crrentTab!=null && crrentTab!='' ) {
                 (function () {
