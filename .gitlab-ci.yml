@@ -1,0 +1,7 @@
+sonar:
+  image: docker.centaline.com.cn/aist_maven_docker_agent
+  stage: build
+  script:
+    - mvn clean verify sonar:sonar -Dsonar.host.url=http://sonar.centaline.com.cn -Dsonar.login=${username} -Dsonar.password=${password} -Dfile.encoding=UTF-8 -Dsonar.exclusions=**/*.png,**/*.html,**/*.jsp,**/*.css,**/*.js
+  only:
+    - schedules
