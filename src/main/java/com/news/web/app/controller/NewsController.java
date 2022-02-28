@@ -21,10 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -457,6 +454,15 @@ public class NewsController {
             , HttpServletRequest request) {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
+        //如果城市为上海则根据id查url
+        if (cityen.equals("sh")){
+            JSONObject urls = restTemplate.getForObject(apiurl + "getnewsforshurl?newsid=" + id + "&cityen="+cityen+"&platform=pc", JSONObject.class);
+            JSONObject jsonObject = urls.getJSONObject(RESULT);
+            Object url = jsonObject.get("url");
+            model.addAttribute("url",url);
+            //重定向到上海的资讯url
+            return AttributeKeyHelper.SH_INFO;
+        }
         //获取引用
         String referer = request.getHeader(AttributeKeyHelper.REFERER);
         //详情
