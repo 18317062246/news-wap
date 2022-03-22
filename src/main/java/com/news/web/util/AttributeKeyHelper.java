@@ -10,6 +10,7 @@ import java.io.Serializable;
 public interface AttributeKeyHelper extends Serializable {
 
     String SH_INFO = "shinfo";
+    String SH = "sh";
 
     /**
      * 是否隐藏顶部菜单标识

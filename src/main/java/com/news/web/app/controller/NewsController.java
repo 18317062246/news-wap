@@ -43,7 +43,6 @@ public class NewsController {
 
     private final RestTemplate restTemplate;
     private final NewsService newsService;
-
     @Value("${api.domain}")
     public String apiurl;
     @Value("${static.url}")
@@ -100,6 +99,10 @@ public class NewsController {
                         @RequestParam(value = "downloadChannel", required = false) String downloadChannel,
                         HttpServletRequest request) {
         setCommon(model, cityen);
+        if (cityen.equals("sh")){
+            //m栈更多点击重定向到上海自己的网页
+            return AttributeKeyHelper.SH;
+        }
         model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID, type);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
         if (org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN, hidetab)) {
