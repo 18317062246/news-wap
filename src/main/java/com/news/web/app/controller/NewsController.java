@@ -99,10 +99,6 @@ public class NewsController {
                         @RequestParam(value = "downloadChannel", required = false) String downloadChannel,
                         HttpServletRequest request) {
         setCommon(model, cityen);
-        if (cityen.equals("sh")){
-            //m栈更多点击重定向到上海自己的网页
-            return AttributeKeyHelper.SH;
-        }
         model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID, type);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
         if (org.apache.commons.lang3.StringUtils.isNoneBlank(hidetab) && Objects.equals(AttributeKeyHelper.OPEN, hidetab)) {
@@ -458,14 +454,6 @@ public class NewsController {
         log.info("detail id=>{}", id);
         setCommon(model, cityen);
         //如果城市为上海则根据id查url
-        if (cityen.equals("sh")){
-            JSONObject urls = restTemplate.getForObject(apiurl + "getnewsforshurl?newsid=" + id + "&cityen="+cityen+"&platform=pc", JSONObject.class);
-            JSONObject jsonObject = urls.getJSONObject(RESULT);
-            Object url = jsonObject.get("url");
-            model.addAttribute("url",url);
-            //重定向到上海的资讯url
-            return AttributeKeyHelper.SH_INFO;
-        }
         //获取引用
         String referer = request.getHeader(AttributeKeyHelper.REFERER);
         //详情
