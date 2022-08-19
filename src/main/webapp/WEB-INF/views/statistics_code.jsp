@@ -507,6 +507,19 @@
                 })();</script><noscript><p><img src="//statistics.centanet.com/stat/piwik.php?idsite=12" style="border:0" alt="" /></p></noscript>
         </c:when>
 
+        <%--        上海百度统计代码--%>
+        <c:when test="${cityen == 'sh'}">
+            <script>
+                var _hmt = _hmt || [];
+                (function() {
+                    var hm = document.createElement("script");
+                    hm.src = "https://hm.baidu.com/hm.js?cca621fa3a3d819c5f22f0cf33e5e2d8";
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(hm, s);
+                })();
+            </script>
+        </c:when>
+
         <c:when test="${cityen == 'xm'}">
             <script type="text/javascript">
                 var pkBaseURL = "//statistics.centanet.com/stat/";
