@@ -11,14 +11,14 @@ api:
       city: http://10.6.252.37:8081/lion/json/reply/NewPropExtInfoRequest
   esf:
     other:
-      city: http://mobileapi.centanet.com/v6/java/json/reply/GetPostByAdsNoRequest
+      city: https://mobileapi.centanet.com/v6/java/json/reply/GetPostByAdsNoRequest
     sz:
-      city: http://apisz.centanet.com/v6/java/json/reply/GetPostByAdsNoRequest
+      city: https://apisz.centanet.com/v6/java/json/reply/GetPostByAdsNoRequest
   xiaoqu:
     other:
-      city: http://mobileapi.centanet.com/v6/java/json/reply/GetEstateRequest
+      city: https://mobileapi.centanet.com/v6/java/json/reply/GetEstateRequest
     sz:
-      city: http://apisz.centanet.com/v6/java/json/reply/GetEstateRequest
+      city: https://apisz.centanet.com/v6/java/json/reply/GetEstateRequest
 logapi:
   url: http://10.4.18.227:8300/json/reply/
 bizcom:
