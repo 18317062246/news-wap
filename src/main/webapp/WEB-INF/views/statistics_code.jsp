@@ -469,14 +469,14 @@
                     piwikScript["defer"] = "defer";
                     piwikScript["onload"] = function(){
                         try {
-                            var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 41);
+                            var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
                             piwikTracker.trackPageView();piwikTracker.enableLinkTracking();
                         } catch( err ) {}
                     };
                     piwikScript["src"] = pkBaseURL + "piwik.js";
                     var head = document.head || document.getElementsByTagName('head')[0];
                     head.appendChild(piwikScript);
-                })();</script><noscript><p><img src="//sznewpiwik.centanet.com/stat/piwik.php?idsite=41" style="border:0" alt="" /></p></noscript>
+                })();</script><noscript><p><img src="//sznewpiwik.centanet.com/stat/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
         </c:when>
 
         <c:when test="${cityen == 'tj'}">
