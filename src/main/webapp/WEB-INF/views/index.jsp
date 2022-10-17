@@ -39,7 +39,7 @@
         <sapn class="search-title">中原资讯</sapn>
     </a>
     <c:choose>
-        <c:when test="${cityen == 'sz' || cityen == 'gz'}">
+        <c:when test="${cityen == 'sz' || cityen == 'gz'|| cityen == 'sh'}">
             <a href="//m.${cityen}.centanet.com/search?type=7" class="search-a">
                 <div class="search-box"><i class="icon-sousuo iconfont"></i>
                     <c:if test="${key != null && key.length() > 0}">
