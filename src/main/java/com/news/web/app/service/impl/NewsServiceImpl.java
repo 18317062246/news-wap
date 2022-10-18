@@ -22,6 +22,7 @@ import com.news.web.app.model.param.InsertLogParam;
 import com.news.web.app.model.xiaoqu.XiaoQuResult;
 import com.news.web.app.model.xinfang.XinfangResult;
 import com.news.web.app.service.NewsService;
+import com.news.web.util.CentaioUtil;
 import com.news.web.util.CommonUtil;
 import com.news.web.util.HttpUtil;
 import com.news.web.util.StringResource;
@@ -375,7 +376,7 @@ public class NewsServiceImpl implements NewsService {
         Integer begin = 0;
         Integer end = 0;
         String oringUri = request.getRequestURI();
-        cityCode = StringResource.getCityCode(cityShort);
+        cityCode = CentaioUtil.getCityCode(cityShort);
         //获取用户ip
         String ClientIP = request.getRemoteAddr();
         //那cookie中的信息
