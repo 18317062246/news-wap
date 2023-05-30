@@ -11,7 +11,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,  maximum-scale=1.0, minimum-scale=1.0"/>
-    <title>${detail.Title}</title>
+    <c:if test="${cityen =='dg'}">
+        <title>${detail.Title}_东莞中原找房</title>
+    </c:if>
+    <c:if test="${cityen !='dg'}">
+        <title>${detail.Title}</title>
+    </c:if>
     <!-- 默认meta标签中的content作为描述 -->
     <meta name="description" content="${fn:substring(detail.ShareTitle , 0 , 30)}">
     <meta name="keywords" content="">
