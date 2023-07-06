@@ -86,7 +86,7 @@ public class CentaioUtil {
     }
     public static boolean getCentaIOCity(String cityShort) {
         Map<String, String> map = new HashMap<>();
-//        map.put("tj", "022");
+        map.put("tj", "022");
         map.put("cd", "028");
         return map.containsKey(cityShort);
     }

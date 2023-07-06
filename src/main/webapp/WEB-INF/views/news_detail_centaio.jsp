@@ -114,6 +114,9 @@
 
             var dataObj = new Object();
 
+            if ($.paramNotNull($('#centio_citycode').val())) {
+                dataObj.CityCode = $('#centio_citycode').val();
+            }
             if ($.paramNotNull($('#wechat_union_id').val())) {
                 dataObj.UnionId = $('#wechat_union_id').val();
             }
@@ -127,7 +130,10 @@
             dataObj.ShareType = ShareType;
             //console.log(data);
             $.ajax({
+                //正式环境
                 url: "https://trace.centanet.com/prod/api/Fission/CreateFission",
+                //测试环境
+                // url: "https://trace.centanet.com/api/Fission/CreateFission",
                 type: 'post',
                 dataType: 'JSON',
                 //data: JSON.stringify({data:{status: "start"}}),
