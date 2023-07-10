@@ -6,7 +6,7 @@ api:
   domain: http://127.0.0.1:8044/api/
   xinfang:
     other:
-      city: http://10.4.18.227:8080/lion/json/reply/NewPropExtInfoRequest
+      city: http://api-web.centaline.com.cn/lion/json/reply/NewPropExtInfoRequest
     sz:
       city: http://10.6.252.37:8081/lion/json/reply/NewPropExtInfoRequest
   esf:
@@ -20,6 +20,6 @@ api:
     sz:
       city: https://apisz.centanet.com/v6/java/json/reply/GetEstateRequest
 logapi:
-  url: http://10.4.18.227:8300/json/reply/
+  url: http://api-mobile.centaline.com.cn/passport/json/reply/
 bizcom:
   foot-url: https://mobileapi.centanet.com/bizcom/java/json/reply/AppVersionRequest?cityen=%s&platform=wap
