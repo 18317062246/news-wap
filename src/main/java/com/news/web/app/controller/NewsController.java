@@ -51,6 +51,8 @@ public class NewsController {
     public String dss;
     @Value("${dw.citys}")
     public String dwCitys;
+    @Value("${notallow.citys}")
+    public String notallowcitys;
 
     /**
      * 热门专题
@@ -99,8 +101,9 @@ public class NewsController {
                         @RequestParam(value = "downloadChannel", required = false) String downloadChannel,
                         HttpServletRequest request) {
 
-        if (cityen.equals("sz") || cityen.equals("zs") || cityen.equals("zh") || cityen.equals("fz") || cityen.equals("dg") || cityen.equals("cs") || cityen.equals("hk") || cityen.equals("gz") || cityen.equals("nc") || cityen.equals("ganzhou") || cityen.equals("sh")){
-            throw new IllegalArgumentException("City code 'sz' is not allowed.");
+        //如果城市为notallowcitys的话 直接报错处理
+        if (notallowcitys.contains(cityen)){
+            throw new IllegalArgumentException("City code  "+ cityen +"  is not allowed.");
         }
         setCommon(model, cityen);
         model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID, type);
