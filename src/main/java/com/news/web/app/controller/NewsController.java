@@ -98,6 +98,10 @@ public class NewsController {
                         @RequestParam(value = "entry", required = false) String entry,
                         @RequestParam(value = "downloadChannel", required = false) String downloadChannel,
                         HttpServletRequest request) {
+
+        if (cityen.equals("sz") || cityen.equals("zs") || cityen.equals("zh") || cityen.equals("fz") || cityen.equals("dg") || cityen.equals("cs") || cityen.equals("hk") || cityen.equals("gz") || cityen.equals("nc") || cityen.equals("ganzhou") || cityen.equals("sh")){
+            throw new IllegalArgumentException("City code 'sz' is not allowed.");
+        }
         setCommon(model, cityen);
         model.addAttribute(AttributeKeyHelper.CHILDREN_TYPE_ID, type);
         //当hidetab为open的时候，赋值hidetab为true，前台要隐藏tab
