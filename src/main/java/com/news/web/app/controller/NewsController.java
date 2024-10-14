@@ -102,7 +102,8 @@ public class NewsController {
                         HttpServletRequest request) {
 
         //如果城市为notallowcitys的话 直接报错处理
-        if (notallowcitys.contains(cityen)){
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(notallowcitys.split(",")));
+        if (list.contains(cityen)){
             throw new IllegalArgumentException("City code  "+ cityen +"  is not allowed.");
         }
         setCommon(model, cityen);
