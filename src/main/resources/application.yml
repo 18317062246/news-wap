@@ -23,4 +23,4 @@ dw:
   citys: sz,zs,zh,fz,dg,cs,hk,gz,nc,ganzhou,sh
 
 notallow:
-  citys: sz,zs,fz,dg,cs,hk,gz,nc,ganzhou,sh
+  citys: sz,zs,fz,dg,cs,hk,gz,nc,ganzhou,sh,hq
