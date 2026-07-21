@@ -51,6 +51,9 @@
                 </div>
             </a>
         </c:when>
+        <c:when test="${cityen == 'ccdata'}">
+
+        </c:when>
         <c:otherwise>
             <a href="//wap.centanet.com/${cityen}/page/common/search.aspx?type=7" class="search-a">
                 <div class="search-box"><i class="icon-sousuo iconfont"></i>

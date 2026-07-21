@@ -449,6 +449,10 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public CommonFootInfo getFootInfo(String cityen) {
+        // 新增ccdata biz后台并无此城市 由于配置统一直接读取上海城市配置
+        if ("ccdata".equals(cityen)){
+            cityen = "sh";
+        }
         try {
             String json = httpUtil.get(String.format(bizComConfig.getFootUrl(), cityen));
             return JSON.parseObject(json, new TypeReference<AopResult<CommonFootInfo>>() {
